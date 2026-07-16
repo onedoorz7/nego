@@ -1,0 +1,47 @@
+{
+  "id": "10-walking-away",
+  "order": 10,
+  "concept": "walking_away",
+  "title": "Walking Away: When and How to Leave",
+  "emoji": "🚶",
+  "summary": "Every negotiation you enter, you should be able to leave. Your **reservation point** — the worst deal you'll accept, derived from your BATNA — only protects you if you honor it *under pressure*.\n\nTwo traps pull people past their limit:\n\n1. **Sunk costs.** *\"I've spent three weeks on this\"* is exactly why leaving feels hard — and exactly irrelevant to whether the deal on the table beats your alternative. The time is spent either way.\n2. **Escalating commitment.** Each concession, each friendly call, each \"we're so close\" deepens the urge to close *something*. Agreement starts to feel like the goal. It isn't — a deal is only good if it beats no deal.\n\nSometimes there is simply **no ZOPA** — no overlap between the worst you can accept and the best they can offer. That's not failure; discovering it early is a win.\n\nAnd when you go, **leave well**: state your reason as fit, not fault (*\"the numbers don't work for me,\"* never *\"your offer is insulting\"*); thank them and mean it; leave the door open. Circumstances change — today's no is often next quarter's yes.",
+  "example": "Dana has a written job offer: **$78,000 base**. Her current job pays $76,000 with a reliable **5% bonus ($3,800)** and **$4,200** in employer retirement contributions — **$84,000 total**. The new role has no bonus and contributes only **$2,000** to retirement, so its total is **$80,000**.\n\nDana's reservation point isn't the $76,000 base she'd \"beat.\" It's her $84,000 total package plus a premium for switching risk — she sets it at **$88,000**. The offer, at $80,000 all-in, lands **$8,000 short**.\n\nThree weeks of interviews scream *don't waste this* — but that's sunk cost talking. She replies: *\"Thank you — I genuinely enjoyed meeting the team. At $80,000 total compensation the move doesn't clear what I'd be giving up, so I have to pass. If the budget ever supports something closer to $90,000, I'd love to revisit this.\"*\n\nTwo months later a bigger role opens at the same company. They call Dana first.",
+  "common_mistake": "Treating walking away as either failure or theater. Those who see it as failure cave and accept deals below their reservation point \"to salvage something.\" Those who use it as a bluff get called — then either eat their words or burn the deal *and* the relationship. A walk-away only works when it's real, and it's only real if you computed your reservation point before emotions ran high.",
+  "prep_question": "Write down your true reservation point — counting everything, not just the headline number. If the final offer lands below it, what exact words will you use to leave gracefully?",
+  "quiz": [
+    {
+      "question": "Your reservation point should be based on…",
+      "choices": [
+        "The other side's first offer, minus 10%",
+        "How much time you've already invested in the negotiation",
+        "Your BATNA — the value of your best alternative if no deal happens",
+        "The number that would make you feel like a winner"
+      ],
+      "answer_index": 2,
+      "explanation": "The reservation point is derived from your real alternative and computed before the negotiation starts. Sunk time and the other side's anchor are the two things it must never depend on."
+    },
+    {
+      "question": "After a month of negotiating, the final offer's total compensation is $4,000 below your reservation point. What does discipline dictate?",
+      "choices": [
+        "Accept — a month of interviews shouldn't go to waste",
+        "Accept, then plan to renegotiate after six months in the job",
+        "Decline politely, explain the gap in neutral terms, and leave the door open",
+        "Decline and tell them their process wasted your time"
+      ],
+      "answer_index": 2,
+      "explanation": "The month is a sunk cost — spent whether you sign or not. Below your reservation point, your alternative is better by definition. Leaving warmly costs nothing and preserves the chance of a better offer later."
+    },
+    {
+      "question": "After several rounds, the most the buyer can pay is $9,000 and the least you can accept is $9,500. What have you discovered?",
+      "choices": [
+        "You need one more small concession to close the gap",
+        "There is no ZOPA — no deal can leave both sides better off, so parting ways is the right outcome",
+        "The buyer is bluffing and will find the extra $500",
+        "You should meet at $9,250 to be fair"
+      ],
+      "answer_index": 1,
+      "explanation": "When their maximum sits below your minimum, there's no zone of possible agreement — any number in between makes at least one side worse off than their alternative ($9,250 hurts you both). Recognizing that early and exiting gracefully is a successful negotiation, not a failed one."
+    }
+  ],
+  "scenario_id": "salary-offer-001"
+}

@@ -1,0 +1,47 @@
+{
+  "id": "04-zopa",
+  "order": 4,
+  "concept": "zopa",
+  "title": "ZOPA: The Zone of Possible Agreement",
+  "emoji": "🎪",
+  "summary": "Put two reservation points side by side and you get the **ZOPA** — the *Zone Of Possible Agreement*: the range where a deal beats walking away **for both sides**, running from the seller's minimum up to the buyer's maximum.\n\nThree things follow:\n\n1. **If the reservation points overlap, a deal exists.** Every price inside the zone leaves both sides better off than their BATNAs — the negotiation only decides who captures more of the surplus.\n2. **If they don't overlap, there is no deal to find.** Walking away isn't failure; it's the correct answer.\n3. **You only ever see your own edge of the zone.** The other side's reservation point must be estimated — from their alternatives, their pressure, and what they let slip.\n\nIn the used-camera negotiation, your cap was $460. Whether a deal was possible at all depended on a number you couldn't see: the seller's secret floor. Every question you asked — why the sale? what's the timeline? — was really an attempt to locate the far edge of the zone.",
+  "example": "A school's IT manager is buying 40 laptops. His alternative — leasing — works out to $550 per unit over the same period, so $550 is his reservation point: **$22,000 total, tops**.\n\nAcross the table, the supplier's cost plus her minimum acceptable margin puts her floor at $490 per unit — **$19,600 total**.\n\nNeither side can see the other's number, but the ZOPA is real: **$490 to $550 per unit**, a surplus of $60 per unit — $2,400 on the full order. They settle at $510. The manager pays $40/unit under his ceiling (saving $1,600 versus leasing); the supplier clears $20/unit above her floor ($800 of extra margin). $1,600 + $800 = the full $2,400. The zone made the deal possible — the negotiating decided the split.",
+  "common_mistake": "Assuming a zone must exist. When reservation points don't overlap, no amount of rapport, persistence, or clever tactics can conjure a deal that beats both sides' alternatives — yet negotiators regularly bulldoze past their own walk-away just to \"get it done.\" A close cousin: reading the other side's opening offer as their reservation point. Openings sit far outside floors by design; the true edge of the zone is almost never the first number you hear.",
+  "prep_question": "What's your best estimate of the other side's reservation point — and what question could you ask early on to sharpen that estimate?",
+  "quiz": [
+    {
+      "question": "The ZOPA is best defined as…",
+      "choices": [
+        "The gap between the two sides' opening offers",
+        "The range between your target and your reservation point",
+        "The range between the two sides' reservation points, where any deal beats both BATNAs",
+        "The midpoint both sides should regard as fair"
+      ],
+      "answer_index": 2,
+      "explanation": "The zone is bounded by walk-away points, not by openings or targets. Any agreement inside it leaves both sides better off than their alternatives — and nothing about the zone says the midpoint is the \"right\" split; that's what the negotiating decides."
+    },
+    {
+      "question": "You'll pay at most $550 per unit; you learn the supplier's true floor is $560. What's the right conclusion?",
+      "choices": [
+        "Offer $555 and hope she flinches",
+        "There's no ZOPA — taking your alternative is the correct outcome, not a failed negotiation",
+        "Split the difference at $555, since it's only $5 each way",
+        "Raise your reservation point to $560 to keep the deal alive"
+      ],
+      "answer_index": 1,
+      "explanation": "$550 below $560 means every possible price makes at least one side worse off than its alternative — $555 fails both of you. And raising your reservation point without any change in your alternative is just agreeing to overpay; preventing exactly that is the number's whole job."
+    },
+    {
+      "question": "The supplier opens at $650 per unit. What does that tell you about her reservation point?",
+      "choices": [
+        "Her floor is $650 — opening offers state the minimum",
+        "Her floor is around $520, since sellers typically open 25% high",
+        "Very little — opening offers are set well outside reservation points on purpose",
+        "There's no ZOPA, since $650 is above your $550 maximum"
+      ],
+      "answer_index": 2,
+      "explanation": "Openings are ambitious by design — that's the next two lessons. A high opening is compatible with almost any floor beneath it, and there's no reliable \"sellers open X% high\" formula. You locate the real edge of the zone through questions and how they behave under pressure, not from the first number."
+    }
+  ],
+  "scenario_id": null
+}

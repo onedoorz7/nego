@@ -1,0 +1,47 @@
+{
+  "id": "09-multi-issue-tradeoffs",
+  "order": 9,
+  "concept": "multi_issue_tradeoffs",
+  "title": "Multi-Issue Trade-offs: Grow the Pie",
+  "emoji": "🧩",
+  "summary": "Real deals rarely have one number. Price, scope, deadline, revisions, payment terms, support — and the two sides almost never value them equally. That gap is where value hides.\n\n**Logrolling** means trading issues that are cheap for you but valuable to them, for issues that are the reverse. If a month of support costs you two hours but calms the client's biggest fear, it's currency — spend it to buy price.\n\nThree tools:\n\n1. **Negotiate the package, not the pieces.** Settling issues one at a time (\"lock price first, then talk deadline\") kills trades before they exist. Keep everything on the table until everything is agreed.\n2. **Bundle your moves.** *\"I can hit that deadline if we trim the site to six pages and take 50% upfront\"* turns three issues into one balanced step instead of three losses.\n3. **Offer MESOs** — *multiple equivalent simultaneous offers*: two or three packages you'd be equally happy with. *\"A: $4,000 with three months of support. B: $3,600, support billed separately.\"* Whichever they pick, you're fine — and their choice reveals what they truly value. Free information.\n\nBefore the next scenario, list every negotiable issue and rank how much *you* care about each. Then guess their ranking. The mismatches are your trades.",
+  "example": "A freelance web designer quotes **$3,800** for a six-page site. The client counters at **$3,200**, and pure price haggling stalls at a $600 gap.\n\nA few diagnostic questions surface the client's real fear: the site breaking after launch with nobody to call. Post-launch support is precious to the client — but cheap for the designer, about two hours a month.\n\nNew package: **$3,700 with three months of support included, and 40% ($1,480) paid upfront.**\n\nRun the numbers. The support costs the designer about six hours of light maintenance, but at the designer's $150/hour rate it's roughly $900 of market value to the client. Compared with meeting in the middle at $3,500, the designer earns **$200 more** plus upfront cash — and the client pays $200 more but gets ~$900 of coverage against their biggest worry. The pie grew, and both slices grew with it.",
+  "common_mistake": "Treating every negotiation as a single-issue price fight — or settling issues one by one, in order. Once price is \"locked,\" you have nothing left to trade when the deadline or scope discussion turns hard. Keep all issues open and move them together: nothing is agreed until everything is agreed.",
+  "prep_question": "List every issue in the upcoming deal — price, pages, deadline, revisions, upfront payment, support months. Which two do you care about least, and what could each one buy you?",
+  "quiz": [
+    {
+      "question": "What is logrolling?",
+      "choices": [
+        "Conceding a little on every issue to seem fair",
+        "Trading an issue that's cheap for you but valuable to them, for one that's the reverse",
+        "Refusing to discuss anything except price",
+        "Making your largest concession first to build goodwill"
+      ],
+      "answer_index": 1,
+      "explanation": "Logrolling exploits differences in priorities. When each side gives on what it cares about least and gains on what it cares about most, both end up better off than any midpoint on a single issue."
+    },
+    {
+      "question": "Why do experienced negotiators prefer package offers over settling one issue at a time?",
+      "choices": [
+        "Packages hide bad terms so the other side won't notice",
+        "It's faster because there's less to discuss",
+        "Keeping issues linked preserves trades — a locked issue can no longer buy you anything",
+        "It prevents the other side from asking questions"
+      ],
+      "answer_index": 2,
+      "explanation": "Every issue you settle and close removes currency from the table. Bundles let you give on one dimension to gain on another; sequential settlement turns each remaining issue into a fresh zero-sum fight."
+    },
+    {
+      "question": "You present two packages you value equally — A: $4,000 with three months of support; B: $3,600 with none. The client instantly picks A. What did you just learn?",
+      "choices": [
+        "The client is careless with money",
+        "Support matters a lot to this client — a lever for every later trade",
+        "You should have opened at $4,400 instead",
+        "Nothing — a choice between offers carries no information"
+      ],
+      "answer_index": 1,
+      "explanation": "That's the quiet power of MESOs: you're equally happy either way, and their pick reveals their priorities. This client just paid $400 to keep support — now you know exactly what your cheap hours are worth to them."
+    }
+  ],
+  "scenario_id": "freelance-website-001"
+}

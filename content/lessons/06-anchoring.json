@@ -1,0 +1,47 @@
+{
+  "id": "06-anchoring",
+  "order": 6,
+  "concept": "anchoring",
+  "title": "Anchoring: The First Number Wins",
+  "emoji": "⚓",
+  "summary": "The first credible number in a negotiation exerts gravity. Every counteroffer gets framed as an adjustment *from it*, and final outcomes land measurably closer to whoever set it. That's **anchoring** — and it makes the old advice \"never go first\" mostly wrong.\n\n1. **When you know the range, move first.** Preparation is the license to anchor: if you've done the homework from the last four lessons, your number should start the bidding. Go second only when you're genuinely in the dark about what's normal.\n2. **Anchor at the edge of defensible.** Ambitious enough to leave room, justified enough to say with a straight face — an absurd anchor costs credibility instead of buying position.\n3. **Prefer precise numbers.** $18,750 outperforms \"about $19,000\": precision signals calculation, and people adjust less aggressively from a figure that sounds computed.\n\nAnd play defense: when the other side anchors first — like the $520 listing in the camera negotiation — don't bargain down from *their* number. Name your own, built from your own data, and let the two anchors fight.",
+  "example": "A web agency is scoping a site rebuild. The client asks, \"Roughly what would this cost?\" The tempting move is \"What's your budget?\" — but the agency knows this market far better than the client does, so waiting would only surrender the anchor.\n\nThe agency quotes first: **$18,750** — 150 hours at $125/hour, itemized. Precise, ambitious, defensible line by line.\n\nThe client counters at $16,000. The conversation is now happening on the agency's terms: they trim one nice-to-have feature and close at **$17,500** — comfortably above their $15,000 walk-away, right at their target.\n\nNow rewind the tape. If the agency had asked for a budget first, the client says \"we were thinking $12,000,\" and the whole meeting is spent clawing upward from a number $6,750 below that eventual close — a fight that usually ends thousands lower.",
+  "common_mistake": "Negotiating inside the other side's anchor. They open at an extreme number, you counter a bit below it, and every subsequent move splits differences on their terms — the anchor has already done its work. The counter to an aggressive anchor isn't a nudged-down version of it; it's a polite reset: name your own number, grounded in your own research, and negotiate between the two anchors instead of beneath one.",
+  "prep_question": "What exact first number will you put on the table, what justification goes with it — and what will you say if they anchor first?",
+  "quiz": [
+    {
+      "question": "Why does the first offer in a negotiation matter so much?",
+      "choices": [
+        "It's binding — you can't move far from a number once you've stated it",
+        "It anchors: counteroffers and final outcomes tend to adjust from the first credible number",
+        "It doesn't — experienced negotiators ignore opening numbers entirely",
+        "Whoever names a number first reveals their reservation point"
+      ],
+      "answer_index": 1,
+      "explanation": "Anchoring is a robust judgment effect: even people who know the first number is self-serving tend to adjust away from it insufficiently. Offers aren't binding, experience only partly immunizes — and as the ZOPA lesson showed, openings sit far from reservation points, so they reveal little."
+    },
+    {
+      "question": "You're quoting a project you've costed carefully. Which opening likely serves you best?",
+      "choices": [
+        "\"Around $19,000, but I'm flexible\"",
+        "\"$18,750\" with an itemized basis",
+        "\"What's your budget?\" — always let the client go first",
+        "\"$30,000\" — anchor as high as possible"
+      ],
+      "answer_index": 1,
+      "explanation": "Precise figures read as computed, and people counter them less aggressively than round ones — while \"I'm flexible\" invites a hard counter before talks even begin. Going second only makes sense when the other side knows the range better than you, and an anchor you can't justify costs credibility rather than buying position."
+    },
+    {
+      "question": "A seller opens at $520 for a camera you know trades between $430 and $490. What's the strongest response?",
+      "choices": [
+        "Counter at $500 so you don't seem unreasonable",
+        "Immediately propose $475 to split the difference",
+        "Counter from your own data — open near $430 and cite the sold listings",
+        "Refuse to name any number until the seller drops the price"
+      ],
+      "answer_index": 2,
+      "explanation": "Countering at $500 accepts the $520 anchor and negotiates beneath it — and the instant split does too, while skipping the questions that might reveal the seller's pressure to close. Re-anchoring from independent evidence resets the field: the deal then gets made between the two anchors, not under one."
+    }
+  ],
+  "scenario_id": null
+}

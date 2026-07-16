@@ -1,0 +1,47 @@
+{
+  "id": "07-concessions",
+  "order": 7,
+  "concept": "concessions",
+  "title": "Concessions: Give With a Purpose",
+  "emoji": "🪜",
+  "summary": "How you concede says as much as what you concede. Skilled negotiators treat every **concession** as a signal and a trade — never a gift.\n\nFour rules:\n\n1. **Shrink your steps.** Concessions that get smaller ($400, then $200, then $75) signal you're nearing your limit. Even-sized or growing steps signal there's plenty left to squeeze.\n2. **Trade, don't give.** Attach a condition to every move: *\"If you can pay upfront, then I can do $4,400.\"* A concession without a return teaches the other side that pushing works.\n3. **Never bid against yourself.** If they haven't countered, don't lower your own number. Two moves in a row from you means you're paying for their silence.\n4. **Label it.** Say out loud that a move is a concession and that it cost you: *\"That's a real stretch for us.\"* Unlabeled concessions get pocketed without credit — and without reciprocity.",
+  "example": "You're a vendor quoting a catering package. You open at **$5,000**; the client counters at $3,800.\n\nYour planned ladder: **$5,000 → $4,600 → $4,400 → $4,325**. The steps shrink — $400, then $200, then $75 — telegraphing that you're running out of room without you ever saying \"final offer.\"\n\nAnd each step buys something: $4,600 *if* they confirm this week; $4,400 *if* they take the weekday date; $4,325 *if* they pay a 50% deposit today. By the third step the client can read the pattern — the next concession, if any, might be $25 — and most will close near $4,325 rather than grind for pennies.\n\nCompare that with three flat cuts of $400 each ($5,000 → $4,600 → $4,200 → $3,800): the client does nothing, gets everything, and your pattern says *keep pushing*.",
+  "common_mistake": "Bidding against yourself. The other side goes quiet or says \"you'll have to do better,\" and you lower your offer again without any counter from them. Every unreciprocated cut resets their expectations and invites more silence. Make one move, then wait for theirs — or ask what they can give to earn the next step.",
+  "prep_question": "Plan your concession ladder before you start: what are your first, second, and third numbers — and what will you ask for in exchange at each step?",
+  "quiz": [
+    {
+      "question": "You've conceded $400, then $200, then $75. What message does this pattern send?",
+      "choices": [
+        "You're unpredictable and hard to read",
+        "You're approaching your limit and have little room left",
+        "Your first offer must have been inflated",
+        "You're eager to close at any price"
+      ],
+      "answer_index": 1,
+      "explanation": "Shrinking steps imply the well is running dry. Equal or growing steps imply the opposite — that pushing harder will keep paying off — so shape the ladder deliberately."
+    },
+    {
+      "question": "The buyer says \"that's still too high\" but offers no counter. Your best move?",
+      "choices": [
+        "Lower your price again to keep the momentum going",
+        "Hold your number and ask what they can offer to earn a better one",
+        "Withdraw the offer and restart from a higher price",
+        "Reveal your bottom line to save everyone time"
+      ],
+      "answer_index": 1,
+      "explanation": "Cutting your offer twice in a row is bidding against yourself — you'd be paying for their silence. Invite a counter or attach a condition, so the next step costs them something."
+    },
+    {
+      "question": "Which phrasing best turns a concession into a trade?",
+      "choices": [
+        "\"Fine, $4,400 — you drive a hard bargain.\"",
+        "\"I could probably go a bit lower if you want.\"",
+        "\"If you can pay 50% upfront, then I can do $4,400.\"",
+        "\"$4,400, and that's final — take it or leave it.\""
+      ],
+      "answer_index": 2,
+      "explanation": "The if–then structure prices your concession: they get the better number only by giving something back. Unconditional cuts — and empty \"final offer\" threats — train the other side to keep squeezing."
+    }
+  ],
+  "scenario_id": null
+}

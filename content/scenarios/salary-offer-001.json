@@ -1,0 +1,230 @@
+{
+  "id": "salary-offer-001",
+  "title": "The Offer on the Table",
+  "emoji": "💼",
+  "difficulty": 3,
+  "concepts": ["targets_and_openings", "diagnostic_questions", "multi_issue_tradeoffs", "objective_criteria", "walking_away"],
+  "tagline": "The offer is in writing. The real negotiation is the follow-up call — and every lever moves if you find out which ones Jordan can pull.",
+  "public_context": "**Offer email — Meridian Insights, Senior Product Analyst**\n\nTwo days ago, Jordan Reyes — the hiring manager for the analytics team at Meridian Insights, a mid-size analytics company — sent you a written offer:\n\n- Base salary: **$112,000**\n- Signing bonus: **none**\n- Remote work: **2 days/week**\n- Start date: **4 weeks** from acceptance\n- Professional development budget: **$1,500/yr**\n- Compensation review: **standard 12-month cycle**\n\nThe email closed warmly: *\"The whole panel is excited about you. Happy to hop on a call and talk through any questions before you sign.\"*\n\nThat 30-minute follow-up call with Jordan is now — and it's your one real chance to reshape the package.",
+  "player_role": {
+    "name": "Candidate",
+    "persona": "A senior product analyst with a written offer in hand, deciding whether to sign, counter, or walk.",
+    "private_brief": "You want this job — the team was sharp in interviews, the product is genuinely interesting, and your current role has gone stale. But the offer as written is beatable.\n\n**Your research:** market base for senior product analysts in this city runs **$105k–$130k**, with strong candidates landing in the upper half. At $112k, Meridian is offering below the midpoint for someone with your track record.\n\n**Your situation:**\n- Current job pays **$98k** with a flat growth path and a manager who's stopped advocating for you. Staying is survivable, not exciting.\n- You have **one other interview process** going — a promising company, but you've only finished the second round. Any offer there is weeks away and far from certain.\n- You're tired. Between wrapping up your current job and starting a new one, **a few extra weeks of breathing room** would be genuinely nice — but it's a nice-to-have, not a need.\n- **Remote days matter a lot** to you (focus time, no soul-crushing commute), and a **6-month compensation review** would de-risk accepting a base below your target.\n- Signing bonus and dev budget are real money, but they're seasoning, not the meal.\n\nDon't just haggle base. Ask questions — why is the role open, how is comp set, what's their timeline? What you learn about Jordan's constraints will tell you which levers actually move.",
+    "preferences": {
+      "base_salary": { "weight": 0.45, "best": 140000, "worst": 95000 },
+      "signing_bonus": { "weight": 0.1, "best": 15000, "worst": 0 },
+      "remote_days": { "weight": 0.18, "best": 5, "worst": 0 },
+      "start_date_weeks": { "weight": 0.05, "best": 12, "worst": 2 },
+      "dev_budget": { "weight": 0.07, "best": 6000, "worst": 0 },
+      "review_at_months": {
+        "weight": 0.15,
+        "option_values": { "6": 1, "12": 0 }
+      }
+    },
+    "batna": {
+      "description": "Stay in your current job at $98k with a stale growth path, and hope the other interview process — still two rounds from any offer — turns into something.",
+      "utility": 40
+    },
+    "reservation_utility": 42,
+    "target_utility": 62
+  },
+  "ai_role": {
+    "name": "Hiring manager (Jordan)",
+    "persona": "Jordan Reyes, analytics manager at Meridian Insights, running the follow-up call on the offer they extended.",
+    "private_brief": "You're Jordan. This candidate was the clear standout of the search and you want them signed — ideally starting soon, because your team is stretched painfully thin. You have hard constraints on base salary but more room than you'll admit on other levers: one-time money, flexibility, development budget, and review timing are all cheaper for you than headline salary. Stay warm, stay collaborative, and keep your internal pressures to yourself unless asked the right questions.",
+    "preferences": {
+      "base_salary": { "weight": 0.45, "best": 95000, "worst": 140000 },
+      "signing_bonus": { "weight": 0.08, "best": 0, "worst": 15000 },
+      "remote_days": { "weight": 0.1, "best": 0, "worst": 5 },
+      "start_date_weeks": { "weight": 0.22, "best": 2, "worst": 12 },
+      "dev_budget": { "weight": 0.05, "best": 0, "worst": 6000 },
+      "review_at_months": {
+        "weight": 0.1,
+        "option_values": { "12": 1, "6": 0.35 }
+      }
+    },
+    "batna": {
+      "description": "Reopen the search and run it for roughly six more weeks — with an exhausted team covering the gap the whole time.",
+      "utility": 46
+    },
+    "reservation_utility": 48,
+    "target_utility": 72,
+    "personality": {
+      "id": "professional_warm_guarded",
+      "style_prompt": "You are Jordan: professional, warm, and direct. You genuinely want this candidate and it shows — you talk about the team and the work with real enthusiasm. But you are guarded about internal constraints: you never reveal the salary band's ceiling unprompted, and you deflect budget questions gracefully unless asked pointed, specific questions. You respond well to enthusiasm and a collaborative, problem-solving tone; you get noticeably stiffer and more formal if the candidate turns purely extractive or drops ultimatums. Keep replies to 2–4 sentences, first person, conversational, no lists.",
+      "opening_demand": 0.75,
+      "concession_rate": 0.08,
+      "patience": 2,
+      "warns_before_walking": true
+    },
+    "hidden_info": [
+      {
+        "id": "band_cap_122",
+        "fact": "The approved salary band for this role tops out at $122,000. Going above it would require VP sign-off you are not willing to seek — you just spent your political capital getting this requisition approved at all.",
+        "reveal_topics": ["band", "range", "cap", "ceiling", "how is salary set", "flexibility on base", "budget for the role", "salary band", "top of the range", "comp structure", "how much room", "approved for", "max you can"],
+        "importance": 3
+      },
+      {
+        "id": "second_choice_declined",
+        "fact": "Your second-choice candidate accepted another offer last week. If this candidate walks, you're restarting the search from zero — you need this hire.",
+        "reveal_topics": ["other candidates", "how long", "search", "backup", "timeline to fill", "pressure to fill", "runner-up", "second choice", "other finalists", "anyone else in the running", "if i decline", "if i say no", "if this doesn't work"],
+        "importance": 3
+      },
+      {
+        "id": "team_lost_two",
+        "fact": "The team lost two analysts in the last three months — one to a competitor, one to a career break. The remaining team is drowning in dashboard requests, and coverage is genuinely painful.",
+        "reveal_topics": ["team", "workload", "why open", "who left", "turnover", "capacity", "attrition", "short-staffed", "backlog", "coverage", "how big is the", "who would i work with", "why is this role"],
+        "importance": 2
+      },
+      {
+        "id": "fought_for_req",
+        "fact": "You personally fought for two months to get this requisition approved. Filling it well is a point of pride — and quietly a point of career stakes for you.",
+        "reveal_topics": ["role history", "how did this role", "new position", "created", "requisition", "why now this role", "how the role came about", "is this a new role"],
+        "importance": 1
+      },
+      {
+        "id": "early_review_precedent",
+        "fact": "An early 6-month compensation review with real raise potential is an easy give for you — two people on an adjacent team got exactly that arrangement last year, so the precedent already exists.",
+        "reveal_topics": ["review", "raise", "growth", "promotion", "revisit", "six month", "early look", "6 month", "comp review", "re-evaluate", "merit", "revisit comp", "path to more"],
+        "importance": 2
+      },
+      {
+        "id": "hiring_freeze_rumor",
+        "fact": "There's a credible rumor of a hiring freeze next quarter. If this offer doesn't close soon, the headcount may simply vanish — it's close now or maybe never.",
+        "reveal_topics": ["freeze", "quarter", "budget cycle", "headcount", "timing", "why now", "hiring freeze", "deadline", "expire", "how long is the offer", "offer good", "any urgency"],
+        "importance": 2
+      }
+    ],
+    "talking_points": [
+      "The analytics team is currently six people — four analysts, a data engineer, and Jordan — supporting the whole product org.",
+      "The new hire would own analytics for Meridian's flagship product, Lens, an insights dashboard used by about 200 client teams.",
+      "The interview panel specifically loved the candidate's case study on retention funnels — it came up in the debrief more than once."
+    ]
+  },
+  "offer_fields": [
+    {
+      "key": "base_salary",
+      "label": "Base salary",
+      "type": "number",
+      "unit": "$",
+      "min": 95000,
+      "max": 140000,
+      "step": 1000
+    },
+    {
+      "key": "signing_bonus",
+      "label": "Signing bonus",
+      "type": "number",
+      "unit": "$",
+      "min": 0,
+      "max": 15000,
+      "step": 500
+    },
+    {
+      "key": "remote_days",
+      "label": "Remote work",
+      "type": "number",
+      "unit": "days/week",
+      "min": 0,
+      "max": 5,
+      "step": 1
+    },
+    {
+      "key": "start_date_weeks",
+      "label": "Start date",
+      "type": "number",
+      "unit": "weeks",
+      "min": 2,
+      "max": 12,
+      "step": 1
+    },
+    {
+      "key": "dev_budget",
+      "label": "Development budget",
+      "type": "number",
+      "unit": "$/yr",
+      "min": 0,
+      "max": 6000,
+      "step": 500
+    },
+    {
+      "key": "review_at_months",
+      "label": "Compensation review",
+      "type": "select",
+      "options": [
+        { "value": "12", "label": "Standard 12-month review" },
+        { "value": "6", "label": "Early 6-month review with raise potential" }
+      ]
+    }
+  ],
+  "primary_field": "base_salary",
+  "turn_limit": 14,
+  "preparation": [
+    {
+      "id": "goal",
+      "label": "What do you want out of this negotiation?",
+      "kind": "text",
+      "help": "Think beyond base salary — flexibility? a faster path to a raise? a package that makes leaving your current job clearly worth it?"
+    },
+    {
+      "id": "batna",
+      "label": "What's your best alternative if this falls through (your BATNA)?",
+      "kind": "text",
+      "help": "It's in your brief. Be honest about how strong it really is — that sets your walk-away point."
+    },
+    {
+      "id": "reservation",
+      "label": "The minimum base salary you'd accept, given the whole package ($)",
+      "kind": "number",
+      "refers_to": "base_salary",
+      "help": "Below this base — unless the rest of the package is exceptional — you're better off staying put and waiting out your other process."
+    },
+    {
+      "id": "target",
+      "label": "Your target base salary — ambitious but defensible ($)",
+      "kind": "number",
+      "refers_to": "base_salary",
+      "help": "Anchor it to your market research, not to their opening number."
+    },
+    {
+      "id": "opening",
+      "label": "Your planned opening counter on base salary ($)",
+      "kind": "number",
+      "refers_to": "base_salary",
+      "help": "First numbers anchor. Leave yourself room to concede toward your target."
+    },
+    {
+      "id": "questions",
+      "label": "What will you ask to learn Jordan's constraints?",
+      "kind": "text",
+      "help": "Why is the role open? How is the salary band set? What's their timeline to fill? Which levers are cheap for them to move?"
+    },
+    {
+      "id": "avoid_reveal",
+      "label": "What should you avoid revealing?",
+      "kind": "text",
+      "help": "e.g. your current salary, how tired you are of your current job, or how early-stage your other process really is."
+    }
+  ],
+  "events": [
+    {
+      "id": "hr_requisition_ping",
+      "turn": 6,
+      "player_note": "Jordan glances at a notification and winces slightly. \"Sorry — HR. They're, ah... keen for us to close out open requisitions this month.\"",
+      "ai_note": "HR just pinged you: leadership wants open requisitions closed this month. The pressure to land this candidate now just went up — you're more willing to stretch to close.",
+      "threshold_delta": -5
+    },
+    {
+      "id": "vp_walkby",
+      "turn": 10,
+      "player_note": "Someone leans into Jordan's doorway mid-call — you catch \"...keeping comp in line this cycle\" before they move on. Jordan's smile tightens a notch.",
+      "ai_note": "The VP of Analytics just walked by and reminded you about comp discipline this cycle. You feel the salary band's ceiling more acutely and get slightly firmer on base.",
+      "threshold_delta": 3
+    }
+  ],
+  "variation": {
+    "ai_reservation_utility": { "min": 45, "max": 52 },
+    "opening_demand": { "min": 0.68, "max": 0.82 },
+    "turn_limit": { "min": 12, "max": 14 }
+  }
+}

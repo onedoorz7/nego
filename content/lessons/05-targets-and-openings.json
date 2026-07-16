@@ -1,0 +1,47 @@
+{
+  "id": "05-targets-and-openings",
+  "order": 5,
+  "concept": "targets_and_openings",
+  "title": "Targets & Openings: Aim High, Start Higher",
+  "emoji": "🚀",
+  "summary": "Your reservation point tells you when to say no. Your **target** tells you what to aim for: the *ambitious-but-realistic* outcome — the best result you could defend with a straight face and real evidence.\n\nNegotiators who walk in with a specific, justified target consistently beat those who plan to \"see how it goes,\" because the target — not the walk-away — should steer everything you do.\n\n1. **Set the target from evidence** — comparables, market data, what similar deals actually closed at — then aim at the optimistic end of what the evidence supports.\n2. **Open beyond your target**, not at it. Concessions are expected; an opening at your target means every concession drags you below it.\n3. **Judge offers against your reservation point, but negotiate toward your target.** They're different numbers with different jobs.\n\nThis is why the prep screen in the camera negotiation asks for both numbers before you meet the seller: a walk-away without a target produces deals that merely clear the bar.",
+  "example": "You're selling your car. Recent local sales for the model and mileage run **$8,200–$8,900**; yours has new tires and full service records, which credibly supports the top of that range. A dealer has offered $7,800 trade-in — factoring in the convenience you'd be giving up, your reservation point is about **$8,000**.\n\nTarget: **$8,800** — ambitious, but the comps plus the tires make it defensible rather than delusional.\n\nOpening: **$9,200** — above the target, below the eye-roll threshold, and justified out loud (\"top-condition examples list around nine\"). That leaves room to concede twice — $9,200 to $8,950 to $8,800 — and still land on target. A buyer haggles you down to **$8,750**: $750 above your walk-away. Had you opened at $8,300 \"to be reasonable,\" the same haggling would have ended near $8,000 — a deal that merely didn't fail.",
+  "common_mistake": "Steering by the wrong number. Negotiators fixate on their walk-away — the number they can't go below — and it quietly becomes the destination: they open near it, concede toward it, land just above it, and then call the barely-acceptable deal a success. The reservation point is a floor, not a goal. If any number is going to run your negotiation from the back of your mind, make it the target.",
+  "prep_question": "What specific number is your target — and what evidence makes it realistic rather than a wish?",
+  "quiz": [
+    {
+      "question": "What's the difference between your target and your reservation point?",
+      "choices": [
+        "The target is the seller's number; the reservation point is the buyer's",
+        "The target is where you aim — ambitious but evidence-backed; the reservation point is the floor where walking away becomes better",
+        "The target is your reservation point plus a standard 15% cushion",
+        "There's no practical difference — both mark where the negotiation should end"
+      ],
+      "answer_index": 1,
+      "explanation": "They have different jobs: the target steers your opening and your concessions; the reservation point — derived from your BATNA — tells you when \"no\" beats \"yes.\" And there's no fixed formula linking them: the target comes from evidence about what's achievable, not from a markup on your floor."
+    },
+    {
+      "question": "You're selling with a reservation point of $8,000 and an evidence-backed target of $8,800. Where should you open?",
+      "choices": [
+        "At $8,000, to signal honesty and good faith",
+        "At exactly $8,800, so you can hold firm at your goal",
+        "Modestly above $8,800, with a justification, leaving room to concede and still hit the target",
+        "At $14,000 — the more extreme the opening, the better"
+      ],
+      "answer_index": 2,
+      "explanation": "Opening at your floor donates your entire range before the conversation starts; opening exactly at target means the customary back-and-forth pulls you below it. And an indefensible number damages credibility instead of helping — the opening should be the most ambitious figure you can still justify out loud."
+    },
+    {
+      "question": "Why do negotiators with specific, ambitious targets tend to outperform those who plan to \"do their best\"?",
+      "choices": [
+        "Specific targets intimidate the other side into conceding",
+        "A concrete number shapes what you ask for and resists the drift toward your walk-away that vague goals allow",
+        "An ambitious target means you can skip setting a reservation point",
+        "They don't — staying flexible beats fixed numbers in most negotiations"
+      ],
+      "answer_index": 1,
+      "explanation": "The advantage is internal, not theatrical: a specific target sets your opening, calibrates each concession, and gives you a reason to stop giving ground. \"Do my best\" has no such tripwire. And a target complements the reservation point — it never replaces it."
+    }
+  ],
+  "scenario_id": null
+}

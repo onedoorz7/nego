@@ -1,0 +1,47 @@
+{
+  "id": "02-batna",
+  "order": 2,
+  "concept": "batna",
+  "title": "BATNA: Your Best Alternative",
+  "emoji": "🚪",
+  "summary": "Your **BATNA** — *Best Alternative To a Negotiated Agreement* — is what you'll actually do if this negotiation fails. It is the single most important source of negotiating power, because it defines the point where saying \"no thanks\" beats saying \"yes.\"\n\nA negotiator with a strong alternative can push confidently; a negotiator with no alternative is at the other side's mercy — *and often doesn't realize it until it's too late*.\n\nThree moves before any negotiation:\n\n1. **Identify** your real alternative (not a fantasy one).\n2. **Improve** it if you can — even a little research strengthens it.\n3. **Estimate theirs** — their pressure to deal is your leverage.",
+  "example": "You're buying a used camera listed at $520. Before you meet the seller, you find another decent listing at $475 across town. That $475 option is your BATNA.\n\nNow every number in the conversation has a yardstick: a deal at $450 beats your alternative; a deal at $490 doesn't (once you factor in the drive, it's roughly a wash). You can negotiate calmly, because walking away is a *real option*, not a bluff.\n\nMeanwhile — if you learn the seller needs cash by Friday, you've discovered their BATNA is weak. That knowledge is worth more than any haggling trick.",
+  "common_mistake": "Confusing your BATNA with your wish. \"I'll just find a better deal somewhere\" is not a BATNA unless you've actually found it. Negotiators who overestimate their alternatives reject good deals; negotiators who never identify one accept terrible deals.",
+  "prep_question": "Before you start: what is your actual, concrete alternative if this negotiation fails — and how good is it really?",
+  "quiz": [
+    {
+      "question": "Your BATNA is best described as…",
+      "choices": [
+        "The lowest price you're willing to accept",
+        "What you will actually do if no deal is reached",
+        "Your opening offer",
+        "The other side's bottom line"
+      ],
+      "answer_index": 1,
+      "explanation": "BATNA is your best real alternative outside this negotiation. Your walk-away point (reservation point) is *derived from* it — that's the next lesson."
+    },
+    {
+      "question": "You're negotiating a used camera at $520 and your BATNA is a similar camera at $475 elsewhere. The seller won't go below $500. What does good practice suggest?",
+      "choices": [
+        "Accept $500 — it's below the listing price, so it's a win",
+        "Keep pushing until the seller gives in, no matter how long it takes",
+        "Compare $500 against your $475 alternative and walk away if the alternative is genuinely better",
+        "Reveal your alternative immediately to pressure the seller"
+      ],
+      "answer_index": 2,
+      "explanation": "The listing price is irrelevant; your alternative is the yardstick. A deal only makes sense if it beats your BATNA — otherwise take the alternative."
+    },
+    {
+      "question": "Which action most strengthens your position before negotiating?",
+      "choices": [
+        "Rehearsing a tougher tone of voice",
+        "Deciding to demand 20% more than you want",
+        "Finding and verifying one more real alternative",
+        "Planning to mention a fake competing offer"
+      ],
+      "answer_index": 2,
+      "explanation": "Power in negotiation largely comes from real alternatives. Bluffs get tested; verified alternatives don't need to bluff."
+    }
+  ],
+  "scenario_id": "used-camera-001"
+}

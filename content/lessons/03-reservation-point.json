@@ -1,0 +1,47 @@
+{
+  "id": "03-reservation-point",
+  "order": 3,
+  "concept": "reservation_point",
+  "title": "Reservation Point: Your Line in the Sand",
+  "emoji": "📏",
+  "summary": "Last lesson you found your **BATNA** — what you'll actually do if talks fail. Your **reservation point** converts that alternative into a single number *inside this deal*: the exact point where the deal on the table is precisely as good as walking away.\n\nDerive it, don't guess it:\n\n1. **Price your BATNA.** What is the alternative concretely worth?\n2. **Adjust for the differences.** Risk, hassle, time, relationship — translate them into the deal's currency.\n3. **Fix the number before you start.** Written down, it's a tripwire; improvised mid-conversation, it melts.\n\nIn the used-camera negotiation, the $475 listing across town was the BATNA — but an unverified camera plus a 40-minute drive made the true walk-away closer to $460. The reservation point is the yardstick every offer gets measured against. Above it (as a buyer), \"no\" is the profitable answer, however friendly the conversation.",
+  "example": "A freelance designer is negotiating a monthly contract with a new client. Her BATNA: an existing client has offered a **$3,600/month** retainer for the same hours.\n\nBut the two options aren't identical. The new client is a startup — invoices may slip, the scope is fuzzier, and the domain is new to her. She prices that extra risk and hassle at $400/month. Her reservation point: **$3,600 + $400 = $4,000/month**.\n\nThe new client offers $3,800. Notice the trap: $3,800 *beats the raw BATNA number*, and it's tempting to think \"that's more than my other option.\" It isn't — adjusted for risk, it sits $200 below her true walk-away. She counters at $4,500; when the client tops out at $3,850, she takes the retainer without regret. The number did its job.",
+  "common_mistake": "Letting the reservation point drift once you're emotionally invested. Two hours into a friendly negotiation, $3,850 starts to feel \"close enough\" to a $4,000 walk-away — but nothing about your alternative changed; only your sunk time did. Move the number when facts change (your alternative improves or collapses, the deal's scope shifts), never because you've been talking a while and an agreement feels tantalizingly near.",
+  "prep_question": "What exact number makes this deal precisely as good as your best alternative — and what new fact, specifically, would justify moving it?",
+  "quiz": [
+    {
+      "question": "How do your BATNA and your reservation point relate?",
+      "choices": [
+        "They're the same thing expressed in different words",
+        "The reservation point is your BATNA translated into this deal's terms, adjusted for any differences between the two",
+        "The BATNA is derived from the reservation point you set first",
+        "The reservation point is your BATNA plus a standard 10% safety margin"
+      ],
+      "answer_index": 1,
+      "explanation": "The BATNA is a course of action; the reservation point is that alternative's value expressed as a number inside the current deal — after adjusting for risk, hassle, and other differences. The derivation runs from BATNA to reservation point, and there's no fixed formula like \"plus 10%.\""
+    },
+    {
+      "question": "Your alternative gig pays $3,600/month. The deal on the table is riskier — worth about $400/month less to you, all else equal. The client offers $3,800. What should you do?",
+      "choices": [
+        "Accept — $3,800 is more than the $3,600 alternative",
+        "Accept, but ask for $3,900 first to test them",
+        "Treat $4,000 as your reservation point and keep negotiating; below it, take the alternative",
+        "Reject anything under $4,400 to build in an extra cushion"
+      ],
+      "answer_index": 2,
+      "explanation": "The raw BATNA number isn't the yardstick — the adjusted one is. Risk worth $400/month means this deal must pay at least $3,600 + $400 = $4,000 to genuinely beat the alternative. $3,800 loses to your BATNA even though it looks bigger, and padding beyond $4,000 just prices you out of good deals."
+    },
+    {
+      "question": "When is it legitimate to move your reservation point mid-negotiation?",
+      "choices": [
+        "When you've invested hours and a deal is finally close",
+        "When the other side seems offended by your firmness",
+        "When you learn something real that changes the value of the deal or of your alternative",
+        "Never — a reservation point set before talks must not change"
+      ],
+      "answer_index": 2,
+      "explanation": "The reservation point is derived from facts. New facts legitimately move it — your fallback listing sells, or the deal turns out to include extras you'd otherwise buy. Sunk time and social pressure don't. And \"never move it\" fails too: that would mean ignoring genuine new information."
+    }
+  ],
+  "scenario_id": null
+}

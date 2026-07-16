@@ -1,0 +1,47 @@
+{
+  "id": "01-interests-vs-positions",
+  "order": 1,
+  "concept": "interests_vs_positions",
+  "title": "Interests vs. Positions: The Why Behind the What",
+  "emoji": "🎯",
+  "summary": "A **position** is what someone says they want. An **interest** is *why* they want it. Positions are demands — \"$85,000, or I walk\" — and demands collide head-on. Interests are needs, and needs can usually be satisfied more than one way.\n\nThis is the foundational move in negotiation: when you hit a wall, don't push harder on the wall — ask what's behind it. Two positions can be flatly incompatible while the interests underneath fit together neatly.\n\nThree habits:\n\n1. **Ask why** — and ask \"why not?\" when they refuse something.\n2. **Assume multiple interests** — money is rarely the only one; timing, risk, reputation, and hassle all count.\n3. **Trade on differences** — what's cheap for you to give may be exactly what they value most.\n\nIn the used-camera negotiation you'll play, the listing says $520. That's a position. Asking the seller *why* the camera is for sale is how you find the interests — and the better deal — behind it.",
+  "example": "A developer is offered a job at $78,000; she asks for $85,000. The recruiter says the salary band caps at $78,000. Positions: $85,000 vs. $78,000 — deadlock.\n\nThen both sides ask why. Her interests: a $7,200-a-year student-loan payment starting in January, and a fear of falling behind technically. The company's interest: keeping base salaries inside the band so existing engineers aren't underpaid by comparison — but signing bonuses and training budgets sit *outside* the band.\n\nThe deal: **$78,000 base + $7,500 signing bonus + $1,500 annual learning budget**, plus a salary review at six months. Her first-year package totals $87,000 — more than the $85,000 she demanded — and the company never broke its band. Neither position won; both interests did.",
+  "common_mistake": "Treating the other side's position as a problem to defeat rather than a clue to decode. Positional negotiators respond to \"$85,000, firm\" by hammering on the number — $79,000, then $80,000, then splitting the difference — when a single \"help me understand what's driving that number\" might have revealed an interest the deal could satisfy for a fraction of the cost. If you never ask why, the best you can ever do is meet in the middle of two guesses.",
+  "prep_question": "What does the other side actually need this deal to accomplish — and what one question will you ask to find out?",
+  "quiz": [
+    {
+      "question": "What's the difference between a position and an interest?",
+      "choices": [
+        "A position is your opening offer; an interest is your final offer",
+        "A position is what someone says they want; an interest is why they want it",
+        "A position is the buyer's demand; an interest is the seller's demand",
+        "They're synonyms — negotiators use both terms for demands"
+      ],
+      "answer_index": 1,
+      "explanation": "Positions are stated demands; interests are the underlying needs driving them. Two positions can be incompatible while the interests behind them are not — which is why probing interests opens deals that positional haggling can't reach."
+    },
+    {
+      "question": "A seller insists \"$520 — that's the price, firm.\" Which response best probes their interests?",
+      "choices": [
+        "\"Would you take $450?\"",
+        "\"That's above market — here are three comparable listings.\"",
+        "\"Out of curiosity — what's prompting the sale? Any timeline you're working with?\"",
+        "\"I'll pass, then.\""
+      ],
+      "answer_index": 2,
+      "explanation": "The counteroffer and the comps both stay on the position — the number. Asking why they're selling and when they need it done surfaces interests like speed or cash-by-a-deadline, which you can often satisfy far more cheaply than a price cut."
+    },
+    {
+      "question": "You care most about closing fast; the other side cares most about the headline price. What does the interests lens suggest?",
+      "choices": [
+        "Split the difference on price so both sides sacrifice equally",
+        "Give ground on price in exchange for the quick close you value",
+        "Insist on both your price and your timeline — trading signals weakness",
+        "Delay the deal to prove speed doesn't matter to you"
+      ],
+      "answer_index": 1,
+      "explanation": "Differing priorities are the raw material of good deals: concede more of what costs you little (price flexibility here) to secure what you value most (speed). Splitting the difference ignores the fact that the two sides don't value the pieces equally."
+    }
+  ],
+  "scenario_id": null
+}

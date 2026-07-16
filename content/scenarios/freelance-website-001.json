@@ -1,0 +1,237 @@
+{
+  "id": "freelance-website-001",
+  "title": "The Studio Website",
+  "emoji": "🧑‍💻",
+  "difficulty": 2,
+  "concepts": ["interests_vs_positions", "diagnostic_questions", "multi_issue_tradeoffs", "package_offers", "concessions"],
+  "tagline": "Riley has a budget number and a friendly smile. The real deal is hiding behind six moving parts — ask the right questions and trade your way to it.",
+  "public_context": "**Inquiry email from Riley Marsh (owner, Peak & Pulse Studios):**\n\n> Hi! A member of ours raved about the site you built for her bakery, so I looked you up. I run Peak & Pulse — three boutique fitness studios on the east side. Our current website is, honestly, embarrassing: people can't even find the class schedule, and we're turning members away by phone. We need a proper site — schedules, trainer bios, the whole thing. Could we hop on a call this week to talk scope and price?\n\nYou're on the video call now. Riley is warm and energetic, clearly proud of the studios — and clearly has a number in mind. On the table: total price, how many pages, the delivery deadline, revision rounds, payment upfront, and post-launch support.",
+  "player_role": {
+    "name": "Freelance web designer",
+    "persona": "An independent web designer with a solid portfolio and a rate to protect.",
+    "private_brief": "You run a one-person web design studio. Multi-page sites with booking or schedule integration go for **$6,000–$10,000** in your market; your effective day rate works out to roughly $600.\n\n- A past client just offered you a **$3,500 landing-page refresh** — available right now, low-stress, definitely not portfolio material. That's your fallback if this call goes nowhere.\n- Your pipeline is decent but not overflowing. A project this size would anchor your next two months.\n- **Scope is your biggest risk.** Twelve-page builds with schedule integration have a way of swallowing whole weeks. A contained page count, fewer revision rounds, and money upfront are real protection for you.\n- A tight deadline means turning down other work and giving up weekends — if they want speed, charge for it.\n- A month or two of post-launch support costs you little; six months of it quietly does not.\n- You know almost nothing about Riley's constraints. Why now? What's the budget? Who else is bidding? Asking might open trades that pure price haggling never will.",
+    "preferences": {
+      "price": { "weight": 0.4, "best": 12000, "worst": 2000 },
+      "pages": {
+        "weight": 0.2,
+        "option_values": { "5": 1, "8": 0.55, "12": 0 }
+      },
+      "deadline_weeks": { "weight": 0.15, "best": 10, "worst": 2 },
+      "revisions": { "weight": 0.08, "best": 1, "worst": 5 },
+      "payment_upfront": {
+        "weight": 0.12,
+        "option_values": { "0": 0, "25": 0.5, "50": 1 }
+      },
+      "support_months": { "weight": 0.05, "best": 0, "worst": 6 }
+    },
+    "batna": {
+      "description": "A $3,500 landing-page refresh for a past client — available immediately, boring but certain money.",
+      "utility": 42
+    },
+    "reservation_utility": 42,
+    "target_utility": 64
+  },
+  "ai_role": {
+    "name": "Client (Riley)",
+    "persona": "The upbeat owner of Peak & Pulse, a three-location boutique fitness-studio chain.",
+    "private_brief": "You're Riley Marsh, founder of Peak & Pulse Studios. The website is ancient, members complain about it weekly, and you finally have sign-off to replace it. You want a site that feels like the studios do — alive, personal, easy to book. You have a firm number in your head, real time pressure you haven't mentioned yet, and, after what happened with the last freelancer, a hard rule: scope gets nailed down in writing before any money moves.",
+    "preferences": {
+      "price": { "weight": 0.38, "best": 2000, "worst": 12000 },
+      "pages": {
+        "weight": 0.12,
+        "option_values": { "5": 0.25, "8": 0.7, "12": 1 }
+      },
+      "deadline_weeks": { "weight": 0.22, "best": 2, "worst": 10 },
+      "revisions": { "weight": 0.05, "best": 5, "worst": 1 },
+      "payment_upfront": {
+        "weight": 0.08,
+        "option_values": { "0": 1, "25": 0.6, "50": 0.2 }
+      },
+      "support_months": { "weight": 0.15, "best": 6, "worst": 0 }
+    },
+    "batna": {
+      "description": "A template agency quoted about $4,000 for a generic site delivered in three weeks — cookie-cutter design, no real schedule integration, zero support after launch. It would technically exist.",
+      "utility": 38
+    },
+    "reservation_utility": 38,
+    "target_utility": 68,
+    "personality": {
+      "id": "warm_but_budget_anchored",
+      "style_prompt": "You are Riley: upbeat, community-minded, proud of your studios — you talk about members and trainers like family. You open with a firm budget number and keep steering the conversation back to it. After a bad experience with a previous freelancer, vague scope makes you visibly uneasy: you ask exactly what's included, exactly how many pages, and you want it in writing. You're friendly but businesslike — warmth never means a soft yes. Keep replies 2–4 sentences, first person, no lists.",
+      "opening_demand": 0.8,
+      "concession_rate": 0.1,
+      "patience": 3,
+      "warns_before_walking": true
+    },
+    "hidden_info": [
+      {
+        "id": "january_campaign",
+        "fact": "The new site has to be live before your January marketing push — you've already paid for ads and printed flyers that point people to the website for the new-year membership drive. A designer who can genuinely commit to that timeline is worth real money to you.",
+        "reveal_topics": ["deadline", "launch", "when", "timeline", "why now", "why the rush", "campaign", "marketing", "january", "new year", "how soon", "timing", "urgent", "time frame"],
+        "importance": 3
+      },
+      {
+        "id": "budget_ceiling",
+        "fact": "You and your co-owner Dana agreed on a hard ceiling of about $8,000 for the whole project, everything included. You'd much rather trade on scope, timing, or support than blow past that number.",
+        "reveal_topics": ["budget", "afford", "price range", "spend", "cost", "ceiling", "how much can", "number in mind", "what were you hoping", "invest", "approve"],
+        "importance": 3
+      },
+      {
+        "id": "burned_before",
+        "fact": "Two years ago a freelancer took a deposit, let the project sprawl for months, then stopped answering emails — you never got a working site. Clear scope, milestones, and someone who actually replies matter more to you than the rock-bottom price.",
+        "reveal_topics": ["before", "previous", "past", "experience", "freelancer", "why not", "agency", "worked with", "last time", "what happened", "history", "burned", "gone wrong"],
+        "importance": 2
+      },
+      {
+        "id": "nobody_technical",
+        "fact": "Nobody on your staff is remotely technical — the current site breaks whenever anyone touches it. Ongoing support after launch is secretly one of the most valuable things a designer could offer you, though you haven't said so out loud.",
+        "reveal_topics": ["support", "maintenance", "after launch", "updates", "who manages", "upkeep", "technical", "staff", "train", "edits", "keep it running", "hand off", "handoff", "break"],
+        "importance": 2
+      },
+      {
+        "id": "fourth_location",
+        "fact": "You're opening a fourth location next fall — new pages, new schedules, probably a booking overhaul. Whoever builds this site well is first in line for steady follow-up work.",
+        "reveal_topics": ["future", "growth", "expand", "other studio", "long term", "more work", "next year", "plans", "opening another", "down the road", "roadmap", "where is the business"],
+        "importance": 2
+      },
+      {
+        "id": "dana_skeptic",
+        "fact": "Your co-owner Dana runs the books and thinks the $4,000 template quote is plenty. To sign off on anything pricier, Dana needs an itemized, clearly scoped proposal — that's half of why you keep asking what exactly is included.",
+        "reveal_topics": ["partner", "co-owner", "dana", "decision", "who decides", "sign off", "anyone else", "stakeholder", "convince", "approval", "who else"],
+        "importance": 1
+      }
+    ],
+    "talking_points": [
+      "You opened the first Peak & Pulse studio seven years ago in a converted print shop.",
+      "The current website was built by a member's nephew in 2019 and hasn't been meaningfully touched since.",
+      "Classes mostly sell out through word of mouth and one overworked Instagram account."
+    ]
+  },
+  "offer_fields": [
+    {
+      "key": "price",
+      "label": "Total project price",
+      "type": "number",
+      "unit": "$",
+      "min": 2000,
+      "max": 12000,
+      "step": 250
+    },
+    {
+      "key": "pages",
+      "label": "Site scope",
+      "type": "select",
+      "options": [
+        { "value": "5", "label": "5-page essentials site" },
+        { "value": "8", "label": "8-page standard site" },
+        { "value": "12", "label": "12-page full site with class-schedule integration" }
+      ]
+    },
+    {
+      "key": "deadline_weeks",
+      "label": "Delivery deadline",
+      "type": "number",
+      "unit": "weeks",
+      "min": 2,
+      "max": 10,
+      "step": 1
+    },
+    {
+      "key": "revisions",
+      "label": "Revision rounds",
+      "type": "number",
+      "unit": "rounds",
+      "min": 1,
+      "max": 5,
+      "step": 1
+    },
+    {
+      "key": "payment_upfront",
+      "label": "Payment upfront",
+      "type": "select",
+      "options": [
+        { "value": "0", "label": "Nothing upfront" },
+        { "value": "25", "label": "25% upfront" },
+        { "value": "50", "label": "50% upfront" }
+      ]
+    },
+    {
+      "key": "support_months",
+      "label": "Post-launch support",
+      "type": "number",
+      "unit": "months",
+      "min": 0,
+      "max": 6,
+      "step": 1
+    }
+  ],
+  "primary_field": "price",
+  "turn_limit": 14,
+  "preparation": [
+    {
+      "id": "goal",
+      "label": "What do you want out of this negotiation?",
+      "kind": "text",
+      "help": "Think beyond the fee — contained scope? money upfront? a client who leads to more work?"
+    },
+    {
+      "id": "batna",
+      "label": "What's your best alternative if this falls through (your BATNA)?",
+      "kind": "text",
+      "help": "It's in your brief. Knowing it tells you when to walk."
+    },
+    {
+      "id": "reservation",
+      "label": "Your walk-away price — the lowest total you'd accept ($)",
+      "kind": "number",
+      "refers_to": "price",
+      "help": "You're the seller here: below this number, the $3,500 fallback project beats this deal."
+    },
+    {
+      "id": "target",
+      "label": "Your target price — ambitious but realistic ($)",
+      "kind": "number",
+      "refers_to": "price"
+    },
+    {
+      "id": "opening",
+      "label": "Your planned opening quote ($)",
+      "kind": "number",
+      "refers_to": "price",
+      "help": "First numbers anchor the negotiation. Where will you start?"
+    },
+    {
+      "id": "questions",
+      "label": "What will you ask to learn Riley's situation?",
+      "kind": "text",
+      "help": "Why now? What's the budget? What happened with the last designer? Who maintains the site after launch?"
+    },
+    {
+      "id": "avoid_reveal",
+      "label": "What should you avoid revealing?",
+      "kind": "text",
+      "help": "e.g. your $3,500 fallback, or how much you need a project this size right now."
+    }
+  ],
+  "events": [
+    {
+      "id": "co_owner_budget_text",
+      "turn": 5,
+      "player_note": "Riley glances at a buzzing phone and laughs awkwardly: \"Sorry — that's Dana, my co-owner. Gentle reminder that we, quote, 'agreed to keep this lean.'\"",
+      "ai_note": "Dana just texted: \"The template place quoted 4k. Why are we still on this call?\" You feel real pressure to hold the line on price and to justify every dollar above the template quote.",
+      "threshold_delta": 3
+    },
+    {
+      "id": "campaign_dates_locked",
+      "turn": 9,
+      "player_note": "A calendar alert pops up on Riley's screen. They wince: \"The agency just locked our January campaign dates. That is... sooner than it sounds.\"",
+      "ai_note": "The January campaign dates are now locked and immovable. Every ad and flyer points at the new website. Launch anxiety is kicking in — a designer who can hit the timeline is suddenly worth stretching for.",
+      "threshold_delta": -4
+    }
+  ],
+  "variation": {
+    "ai_reservation_utility": { "min": 33, "max": 43 },
+    "opening_demand": { "min": 0.72, "max": 0.88 },
+    "turn_limit": { "min": 12, "max": 14 }
+  }
+}

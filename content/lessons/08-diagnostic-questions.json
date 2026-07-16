@@ -1,0 +1,47 @@
+{
+  "id": "08-diagnostic-questions",
+  "order": 8,
+  "concept": "diagnostic_questions",
+  "title": "Diagnostic Questions: Ask Before You Argue",
+  "emoji": "🔍",
+  "summary": "Most negotiators talk when they should be asking. **Diagnostic questions** — open questions about *why*, *how*, and *what matters most* — uncover the interests behind the other side's positions, and interests are where deals get made.\n\nStudies of negotiators keep finding the same pattern: pairs who **exchange more information** reach better joint outcomes. A position (\"I need it by the 15th\") is a wall; the interest behind it (\"our launch is on the 20th\") is a door.\n\nThree habits:\n\n1. **Open, not leading.** *\"What matters most to you here?\"* beats *\"You just want it cheap, right?\"* Leading questions collect agreement; open questions collect information.\n2. **Ask why and how.** *\"Why that date?\"* and *\"How would the extra budget get used?\"* surface the real drivers you can design a deal around.\n3. **Listen for constraints, not just numbers.** Deadlines, approval chains, cash-flow cycles, and fear of blame shape what the other side can say yes to — often more than price does.",
+  "example": "You're a freelance editor. A client is pushing hard on your $2,000 quote, insisting they \"can only do $1,500.\" Instead of defending the number, you ask: *\"Help me understand — what's driving the budget, and when do you need this finished?\"*\n\nIt turns out the manuscript goes to the printer in ten days, their previous editor vanished mid-project, and $1,500 is what's left in *this month's* budget — not a hard ceiling.\n\nNow the deal designs itself: **$2,000 total, guaranteed delivery in eight days, with $1,500 invoiced this month and $500 next month.** The client saves the deadline and stays inside the monthly limit; you keep your full price. One question found what an hour of price-haggling never would have: the binding constraint was *timing*, not money.",
+  "common_mistake": "Turning questions into pitches. \"Don't you agree this is a fair price?\" isn't a diagnostic question — it's a statement wearing a question mark, and it puts the other side on the defensive. Ask questions you genuinely don't know the answers to, then stop talking and listen for the constraint hidden in the reply.",
+  "prep_question": "What three open questions will you ask before making or defending any offer — and what constraint (deadline, budget cycle, approval, fear) might each answer reveal?",
+  "quiz": [
+    {
+      "question": "Which of these is a diagnostic question?",
+      "choices": [
+        "\"So you'll take $1,500 — final answer?\"",
+        "\"What matters most to you in this project: budget, timing, or something else?\"",
+        "\"Don't you think my price is already fair?\"",
+        "\"Can we just split the difference?\""
+      ],
+      "answer_index": 1,
+      "explanation": "Diagnostic questions are open and information-seeking. The others are closed, leading, or offers in disguise — they end conversations instead of opening them."
+    },
+    {
+      "question": "The other side says: \"I need it delivered by the 15th, period.\" What's the highest-value response?",
+      "choices": [
+        "\"That's impossible — the 22nd is the best I can do.\"",
+        "\"Fine, the 15th — but the price goes up 30%.\"",
+        "\"What happens on your end if it arrives on the 15th versus the 18th?\"",
+        "\"Everyone says they need it fast.\""
+      ],
+      "answer_index": 2,
+      "explanation": "The demand is a position; the question hunts for the interest behind it. If the real driver is a launch on the 20th, options open up — a partial delivery, a draft by the 15th — that a flat refusal or a price ultimatum would never find."
+    },
+    {
+      "question": "Why does information exchange tend to improve outcomes for both sides?",
+      "choices": [
+        "It lets you catch the other side in a lie",
+        "Talking more makes you look confident",
+        "Revealed interests and constraints let the parties find trades a pure price fight would miss",
+        "It runs out the clock so the other side concedes"
+      ],
+      "answer_index": 2,
+      "explanation": "When both sides argue over one number, someone's gain is the other's loss. When interests are on the table — deadlines, cash flow, scope — each side can trade what's cheap for them against what's precious to the other."
+    }
+  ],
+  "scenario_id": null
+}
