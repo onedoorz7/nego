@@ -144,3 +144,26 @@ describe("dialogue guardrail scanner", () => {
     expect(scanDialogue(ctx, "The camera is in great shape, honestly.")).toHaveLength(0);
   });
 });
+
+describe("prep-optional evaluation (arcade flow)", () => {
+  it("drops the preparation category and renormalizes when prep was skipped", async () => {
+    const s = scenario();
+    let st = submitPrep(createSession(s, 31), {});
+    const r = await playTurn(
+      s,
+      st,
+      { type: "offer", values: { price: 560, extras: "none" } },
+      mock,
+      noop
+    );
+    st = r.state;
+    expect(st.status).toBe("agreement");
+    const ev = evaluateSession(s, st);
+    expect(ev.scores.find((x) => x.key === "preparation")).toBeUndefined();
+    expect(ev.scores).toHaveLength(5);
+    expect(ev.total).toBeGreaterThan(0);
+    // Arcade score present with breakdown.
+    expect(ev.arcade).not.toBeNull();
+    expect(ev.arcade!.best_possible).toBeGreaterThan(0);
+  });
+});

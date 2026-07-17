@@ -74,6 +74,6 @@ function gatePage(message = ""): NextResponse {
 }
 
 export const config = {
-  // Everything except Next internals and static assets.
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.svg$).*)"],
+  // Everything except Next internals, static assets, and the health check.
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api/health|.*\\.svg$).*)"],
 };

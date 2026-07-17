@@ -164,6 +164,12 @@ export interface EvaluationResult {
   xp: number;
   observations: Observation[];
   discovery: { revealed: string[]; missed: string[] };
+  /** Player-facing game score (present when the scenario defines arcade). */
+  arcade: {
+    points: number;
+    breakdown: { label: string; points: number; detail: string }[];
+    best_possible: number;
+  } | null;
 }
 
 /** LLM-generated debrief — clearly labeled subjective coaching. */

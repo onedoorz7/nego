@@ -3,7 +3,13 @@
   "title": "The Offer on the Table",
   "emoji": "💼",
   "difficulty": 3,
-  "concepts": ["targets_and_openings", "diagnostic_questions", "multi_issue_tradeoffs", "objective_criteria", "walking_away"],
+  "concepts": [
+    "targets_and_openings",
+    "diagnostic_questions",
+    "multi_issue_tradeoffs",
+    "objective_criteria",
+    "walking_away"
+  ],
   "tagline": "The offer is in writing. The real negotiation is the follow-up call — and every lever moves if you find out which ones Jordan can pull.",
   "public_context": "**Offer email — Meridian Insights, Senior Product Analyst**\n\nTwo days ago, Jordan Reyes — the hiring manager for the analytics team at Meridian Insights, a mid-size analytics company — sent you a written offer:\n\n- Base salary: **$112,000**\n- Signing bonus: **none**\n- Remote work: **2 days/week**\n- Start date: **4 weeks** from acceptance\n- Professional development budget: **$1,500/yr**\n- Compensation review: **standard 12-month cycle**\n\nThe email closed warmly: *\"The whole panel is excited about you. Happy to hop on a call and talk through any questions before you sign.\"*\n\nThat 30-minute follow-up call with Jordan is now — and it's your one real chance to reshape the package.",
   "player_role": {
@@ -11,14 +17,37 @@
     "persona": "A senior product analyst with a written offer in hand, deciding whether to sign, counter, or walk.",
     "private_brief": "You want this job — the team was sharp in interviews, the product is genuinely interesting, and your current role has gone stale. But the offer as written is beatable.\n\n**Your research:** market base for senior product analysts in this city runs **$105k–$130k**, with strong candidates landing in the upper half. At $112k, Meridian is offering below the midpoint for someone with your track record.\n\n**Your situation:**\n- Current job pays **$98k** with a flat growth path and a manager who's stopped advocating for you. Staying is survivable, not exciting.\n- You have **one other interview process** going — a promising company, but you've only finished the second round. Any offer there is weeks away and far from certain.\n- You're tired. Between wrapping up your current job and starting a new one, **a few extra weeks of breathing room** would be genuinely nice — but it's a nice-to-have, not a need.\n- **Remote days matter a lot** to you (focus time, no soul-crushing commute), and a **6-month compensation review** would de-risk accepting a base below your target.\n- Signing bonus and dev budget are real money, but they're seasoning, not the meal.\n\nDon't just haggle base. Ask questions — why is the role open, how is comp set, what's their timeline? What you learn about Jordan's constraints will tell you which levers actually move.",
     "preferences": {
-      "base_salary": { "weight": 0.45, "best": 140000, "worst": 95000 },
-      "signing_bonus": { "weight": 0.1, "best": 15000, "worst": 0 },
-      "remote_days": { "weight": 0.18, "best": 5, "worst": 0 },
-      "start_date_weeks": { "weight": 0.05, "best": 12, "worst": 2 },
-      "dev_budget": { "weight": 0.07, "best": 6000, "worst": 0 },
+      "base_salary": {
+        "weight": 0.45,
+        "best": 140000,
+        "worst": 95000
+      },
+      "signing_bonus": {
+        "weight": 0.1,
+        "best": 15000,
+        "worst": 0
+      },
+      "remote_days": {
+        "weight": 0.18,
+        "best": 5,
+        "worst": 0
+      },
+      "start_date_weeks": {
+        "weight": 0.05,
+        "best": 12,
+        "worst": 2
+      },
+      "dev_budget": {
+        "weight": 0.07,
+        "best": 6000,
+        "worst": 0
+      },
       "review_at_months": {
         "weight": 0.15,
-        "option_values": { "6": 1, "12": 0 }
+        "option_values": {
+          "6": 1,
+          "12": 0
+        }
       }
     },
     "batna": {
@@ -33,14 +62,37 @@
     "persona": "Jordan Reyes, analytics manager at Meridian Insights, running the follow-up call on the offer they extended.",
     "private_brief": "You're Jordan. This candidate was the clear standout of the search and you want them signed — ideally starting soon, because your team is stretched painfully thin. You have hard constraints on base salary but more room than you'll admit on other levers: one-time money, flexibility, development budget, and review timing are all cheaper for you than headline salary. Stay warm, stay collaborative, and keep your internal pressures to yourself unless asked the right questions.",
     "preferences": {
-      "base_salary": { "weight": 0.45, "best": 95000, "worst": 140000 },
-      "signing_bonus": { "weight": 0.08, "best": 0, "worst": 15000 },
-      "remote_days": { "weight": 0.1, "best": 0, "worst": 5 },
-      "start_date_weeks": { "weight": 0.22, "best": 2, "worst": 12 },
-      "dev_budget": { "weight": 0.05, "best": 0, "worst": 6000 },
+      "base_salary": {
+        "weight": 0.45,
+        "best": 95000,
+        "worst": 140000
+      },
+      "signing_bonus": {
+        "weight": 0.08,
+        "best": 0,
+        "worst": 15000
+      },
+      "remote_days": {
+        "weight": 0.1,
+        "best": 0,
+        "worst": 5
+      },
+      "start_date_weeks": {
+        "weight": 0.22,
+        "best": 2,
+        "worst": 12
+      },
+      "dev_budget": {
+        "weight": 0.05,
+        "best": 0,
+        "worst": 6000
+      },
       "review_at_months": {
         "weight": 0.1,
-        "option_values": { "12": 1, "6": 0.35 }
+        "option_values": {
+          "6": 0.35,
+          "12": 1
+        }
       }
     },
     "batna": {
@@ -61,37 +113,115 @@
       {
         "id": "band_cap_122",
         "fact": "The approved salary band for this role tops out at $122,000. Going above it would require VP sign-off you are not willing to seek — you just spent your political capital getting this requisition approved at all.",
-        "reveal_topics": ["band", "range", "cap", "ceiling", "how is salary set", "flexibility on base", "budget for the role", "salary band", "top of the range", "comp structure", "how much room", "approved for", "max you can"],
+        "reveal_topics": [
+          "band",
+          "range",
+          "cap",
+          "ceiling",
+          "how is salary set",
+          "flexibility on base",
+          "budget for the role",
+          "salary band",
+          "top of the range",
+          "comp structure",
+          "how much room",
+          "approved for",
+          "max you can"
+        ],
         "importance": 3
       },
       {
         "id": "second_choice_declined",
         "fact": "Your second-choice candidate accepted another offer last week. If this candidate walks, you're restarting the search from zero — you need this hire.",
-        "reveal_topics": ["other candidates", "how long", "search", "backup", "timeline to fill", "pressure to fill", "runner-up", "second choice", "other finalists", "anyone else in the running", "if i decline", "if i say no", "if this doesn't work"],
+        "reveal_topics": [
+          "other candidates",
+          "how long",
+          "search",
+          "backup",
+          "timeline to fill",
+          "pressure to fill",
+          "runner-up",
+          "second choice",
+          "other finalists",
+          "anyone else in the running",
+          "if i decline",
+          "if i say no",
+          "if this doesn't work"
+        ],
         "importance": 3
       },
       {
         "id": "team_lost_two",
         "fact": "The team lost two analysts in the last three months — one to a competitor, one to a career break. The remaining team is drowning in dashboard requests, and coverage is genuinely painful.",
-        "reveal_topics": ["team", "workload", "why open", "who left", "turnover", "capacity", "attrition", "short-staffed", "backlog", "coverage", "how big is the", "who would i work with", "why is this role"],
+        "reveal_topics": [
+          "team",
+          "workload",
+          "why open",
+          "who left",
+          "turnover",
+          "capacity",
+          "attrition",
+          "short-staffed",
+          "backlog",
+          "coverage",
+          "how big is the",
+          "who would i work with",
+          "why is this role"
+        ],
         "importance": 2
       },
       {
         "id": "fought_for_req",
         "fact": "You personally fought for two months to get this requisition approved. Filling it well is a point of pride — and quietly a point of career stakes for you.",
-        "reveal_topics": ["role history", "how did this role", "new position", "created", "requisition", "why now this role", "how the role came about", "is this a new role"],
+        "reveal_topics": [
+          "role history",
+          "how did this role",
+          "new position",
+          "created",
+          "requisition",
+          "why now this role",
+          "how the role came about",
+          "is this a new role"
+        ],
         "importance": 1
       },
       {
         "id": "early_review_precedent",
         "fact": "An early 6-month compensation review with real raise potential is an easy give for you — two people on an adjacent team got exactly that arrangement last year, so the precedent already exists.",
-        "reveal_topics": ["review", "raise", "growth", "promotion", "revisit", "six month", "early look", "6 month", "comp review", "re-evaluate", "merit", "revisit comp", "path to more"],
+        "reveal_topics": [
+          "review",
+          "raise",
+          "growth",
+          "promotion",
+          "revisit",
+          "six month",
+          "early look",
+          "6 month",
+          "comp review",
+          "re-evaluate",
+          "merit",
+          "revisit comp",
+          "path to more"
+        ],
         "importance": 2
       },
       {
         "id": "hiring_freeze_rumor",
         "fact": "There's a credible rumor of a hiring freeze next quarter. If this offer doesn't close soon, the headcount may simply vanish — it's close now or maybe never.",
-        "reveal_topics": ["freeze", "quarter", "budget cycle", "headcount", "timing", "why now", "hiring freeze", "deadline", "expire", "how long is the offer", "offer good", "any urgency"],
+        "reveal_topics": [
+          "freeze",
+          "quarter",
+          "budget cycle",
+          "headcount",
+          "timing",
+          "why now",
+          "hiring freeze",
+          "deadline",
+          "expire",
+          "how long is the offer",
+          "offer good",
+          "any urgency"
+        ],
         "importance": 2
       }
     ],
@@ -152,8 +282,14 @@
       "label": "Compensation review",
       "type": "select",
       "options": [
-        { "value": "12", "label": "Standard 12-month review" },
-        { "value": "6", "label": "Early 6-month review with raise potential" }
+        {
+          "value": "12",
+          "label": "Standard 12-month review"
+        },
+        {
+          "value": "6",
+          "label": "Early 6-month review with raise potential"
+        }
       ]
     }
   ],
@@ -223,8 +359,68 @@
     }
   ],
   "variation": {
-    "ai_reservation_utility": { "min": 45, "max": 52 },
-    "opening_demand": { "min": 0.68, "max": 0.82 },
-    "turn_limit": { "min": 12, "max": 14 }
+    "ai_reservation_utility": {
+      "min": 45,
+      "max": 52
+    },
+    "opening_demand": {
+      "min": 0.68,
+      "max": 0.82
+    },
+    "turn_limit": {
+      "min": 12,
+      "max": 14
+    }
+  },
+  "arcade": {
+    "mission": "Their written offer: $112k base. Every $100 of base you add is a point — bonus, remote days, dev budget and an early review score too. Push too hard and the offer can vanish.",
+    "short_mission": "Beat the $112k offer — every $100 more is a point",
+    "player_hud": [
+      "🧑‍💻 Current job: $98k, going stale",
+      "📊 Market for this role: $105–130k"
+    ],
+    "points": [
+      {
+        "kind": "per_unit",
+        "field": "base_salary",
+        "baseline": 112000,
+        "direction": "above",
+        "per_unit": 0.01,
+        "label": "Base above the offer"
+      },
+      {
+        "kind": "per_unit",
+        "field": "signing_bonus",
+        "baseline": 0,
+        "direction": "above",
+        "per_unit": 0.005,
+        "label": "Signing bonus"
+      },
+      {
+        "kind": "per_unit",
+        "field": "remote_days",
+        "baseline": 2,
+        "direction": "above",
+        "per_unit": 15,
+        "label": "Remote days won"
+      },
+      {
+        "kind": "per_unit",
+        "field": "dev_budget",
+        "baseline": 1500,
+        "direction": "above",
+        "per_unit": 0.01,
+        "label": "Dev budget growth"
+      },
+      {
+        "kind": "values",
+        "field": "review_at_months",
+        "values": {
+          "6": 25,
+          "12": 0
+        },
+        "label": "Early raise review"
+      }
+    ]
   }
 }

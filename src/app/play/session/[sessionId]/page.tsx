@@ -19,6 +19,11 @@ interface ScenarioView {
   player_role: { name: string };
   ai_role: { name: string };
   offer_fields: OfferField[];
+  arcade: {
+    mission: string;
+    short_mission: string;
+    player_hud: string[];
+  } | null;
 }
 interface TranscriptEntry {
   turn: number;
@@ -31,6 +36,7 @@ interface SessionView {
   id: string; status: string; turn: number; turn_limit: number;
   transcript: TranscriptEntry[];
   standing_offer: { by: "player" | "ai"; values: OfferValues } | null;
+  offer_history: { by: "player" | "ai"; values: OfferValues }[];
   revealed_facts: { id: string; fact: string }[];
   outcome: { type: string } | null;
 }
@@ -101,7 +107,7 @@ export default function SessionPage() {
           setTimeout(() => setFlash(null), 4000);
         }
         if (data.done) {
-          setTimeout(() => router.push(`/play/session/${sessionId}/debrief`), 1600);
+          setTimeout(() => router.push(`/play/session/${sessionId}/result`), 1400);
         }
       } finally {
         setBusy(false);
@@ -120,22 +126,38 @@ export default function SessionPage() {
     <div className="mx-auto flex max-w-5xl flex-col gap-4 lg:flex-row">
       {/* Main column */}
       <div className="min-w-0 flex-1">
-        <div className="flex items-center justify-between">
-          <h1 className="flex items-center gap-2 text-lg font-bold">
-            <span className="text-2xl">{scenario.emoji}</span> {scenario.title}
-          </h1>
-          <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold text-stone-600">
-            turn {session.turn} / {session.turn_limit}
-          </span>
+        {/* Mission HUD — everything the player needs to know, one glance */}
+        <div className="rounded-xl border border-indigo-200 bg-indigo-50/70 px-4 py-3">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-sm font-bold leading-snug text-indigo-900">
+              {scenario.emoji}{" "}
+              {scenario.arcade?.short_mission ?? scenario.title}
+            </p>
+            <span className="shrink-0 rounded-full bg-white px-3 py-1 text-xs font-bold text-stone-600">
+              turn {session.turn}/{session.turn_limit}
+            </span>
+          </div>
+          {scenario.arcade && scenario.arcade.player_hud.length > 0 && (
+            <div className="mt-1.5 flex flex-wrap gap-1.5">
+              {scenario.arcade.player_hud.map((chip) => (
+                <span
+                  key={chip}
+                  className="rounded-full bg-white/80 px-2.5 py-0.5 text-[11px] font-semibold text-stone-600"
+                >
+                  {chip}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Transcript */}
-        <div className="mt-3 h-[26rem] overflow-y-auto rounded-xl border border-stone-200 bg-white p-4">
+        <div className="mt-3 h-[24rem] overflow-y-auto rounded-xl border border-stone-200 bg-white p-4">
           {session.transcript.length === 0 && (
-            <p className="text-sm text-stone-400">
-              You&apos;re at the table with {scenario.ai_role.name}. Say hello, ask a
-              question, or open with an offer.
-            </p>
+            <div className="mx-auto max-w-xs rounded-lg bg-stone-50 px-3 py-2 text-center text-xs text-stone-500">
+              💬 {scenario.ai_role.name} is across the table. Say anything — or
+              jump straight in with an offer. Asking questions can pay off 👀
+            </div>
           )}
           <div className="space-y-3">
             {session.transcript.map((e, i) =>
@@ -174,9 +196,14 @@ export default function SessionPage() {
 
         {flash && <p className="mt-2 text-sm font-medium text-emerald-700">{flash}</p>}
         {error && <p className="mt-2 text-sm text-rose-600">{error}</p>}
+        {!done && aiOffer && session.offer_history.length <= 2 && (
+          <p className="mt-2 text-center text-xs text-stone-400">
+            💡 Their offer is on the table — accept it, talk them down, or counter with 📋
+          </p>
+        )}
         {done && (
-          <div className="mt-3 rounded-xl border border-indigo-200 bg-indigo-50 p-4 text-sm font-medium text-indigo-800">
-            The negotiation has ended — taking you to your debrief…
+          <div className="mt-3 rounded-xl border border-indigo-200 bg-indigo-50 p-4 text-center text-sm font-bold text-indigo-800">
+            Round over — tallying your score… 🥁
           </div>
         )}
 

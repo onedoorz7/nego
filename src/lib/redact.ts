@@ -33,6 +33,8 @@ export function publicScenario(s: Scenario) {
     offer_fields: s.offer_fields,
     primary_field: s.primary_field,
     preparation: s.preparation,
+    /** Player-facing game layer (mission, HUD chips, points table). */
+    arcade: s.arcade ?? null,
   };
 }
 

@@ -104,6 +104,27 @@
   ],
   "primary_field": "price",
   "turn_limit": 12,
+  "arcade": {
+    "mission": "The camera's listed at $520. Every dollar you knock off is a point — extras thrown in score bonus points. No deal, no points.",
+    "short_mission": "Listed at $520 — every $ you save is a point",
+    "player_hud": ["💰 Your budget: $460", "🏃 Backup: same camera, $475, across town"],
+    "points": [
+      {
+        "kind": "per_unit",
+        "field": "price",
+        "baseline": 520,
+        "direction": "below",
+        "per_unit": 1,
+        "label": "Saved off the $520 listing"
+      },
+      {
+        "kind": "values",
+        "field": "extras",
+        "values": { "none": 0, "battery_bag": 60, "full_kit": 85 },
+        "label": "Extras thrown in"
+      }
+    ]
+  },
   "preparation": [
     {
       "id": "goal",

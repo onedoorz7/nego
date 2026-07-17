@@ -126,7 +126,7 @@ export default function QuizCard({
             </span>
             {scenarioId ? (
               <Link
-                href={`/play/${scenarioId}/prepare`}
+                href={`/play/${scenarioId}`}
                 className="rounded-lg bg-indigo-600 px-5 py-2.5 font-semibold text-white hover:bg-indigo-700"
               >
                 Practice it live →

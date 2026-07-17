@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getScenario } from "@/lib/content/loader";
-import { createSession } from "@/lib/engine/session";
+import { createSession, submitPrep } from "@/lib/engine/session";
 import { saveSession } from "@/lib/db/sessions";
 import { publicScenario, publicSession } from "@/lib/redact";
 import { isScenarioUnlocked, getProgress } from "@/lib/progress";
@@ -20,7 +20,10 @@ export async function POST(req: NextRequest) {
   }
   // Founder tool: pass a seed to reproduce an exact game.
   const seed = Number.isFinite(Number(body?.seed)) ? Number(body.seed) : undefined;
-  const state = createSession(scenario, seed);
+  let state = createSession(scenario, seed);
+  // Game-first flow: play starts immediately; prep is an opt-in extra
+  // (POST with_prep: true to get a session waiting on /prep).
+  if (!body?.with_prep) state = submitPrep(state, {});
   saveSession(state);
 
   const replay = (getProgress().scenarios[scenarioId]?.attempts ?? 0) > 0;

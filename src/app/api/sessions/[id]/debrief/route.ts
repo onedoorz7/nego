@@ -7,6 +7,7 @@ import {
   saveEvaluation,
 } from "@/lib/db/sessions";
 import { evaluateSession } from "@/lib/engine/evaluate";
+import { aiFloorOnPrimary } from "@/lib/engine/arcade";
 import { generateCoaching } from "@/lib/coaching/coach";
 import { getProvider } from "@/lib/llm/anthropic";
 import { track } from "@/lib/analytics";
@@ -58,6 +59,11 @@ export async function GET(
         discovered: state.revealed_info.includes(h.id),
       })),
       final_ai_utility: state.outcome.ai_utility,
+      /** Their true limit on the headline field this session (post-game only). */
+      floor_on_primary: aiFloorOnPrimary(
+        scenario,
+        state.resolved.ai_reservation_utility
+      ),
     },
     outcome: state.outcome,
     turn_count: state.turn,

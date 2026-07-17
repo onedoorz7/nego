@@ -1,22 +1,24 @@
 # nego 🤝
 
-**Learn negotiation by playing.** Read a short lesson on one concept, prepare, then negotiate live against an AI counterpart who has private information, a real bottom line, moods, and surprises. Afterwards you get a chess-style review: transparent scores, the other side's secrets revealed, and the deal you could have had.
+**A negotiation game.** Tap play and you're at the table: the camera's listed at $520, and every dollar you knock off is a point. The seller has secrets, moods, and a real bottom line — ask the right questions and the round opens up. Close a deal to bank points and unlock the next round; lose the round and the game shows you what was possible. The theory (10 short lessons) is there for the curious, after the playing.
 
-Think *Duolingo for negotiation* × *Chess.com game review* — currently at the smallest-useful-product stage for founder experimentation.
+Think *a game people replay to beat their score* that quietly happens to be *Duolingo for negotiation* × *Chess.com game review*. Founder-experimentation stage.
 
 ## What's in this build (current scope)
 
-- **10 lessons** (interests vs positions → walking away) with server-graded quizzes, unlocking in order.
-- **3 original scenarios**, easy → advanced:
-  1. 📷 **The Used Camera** (difficulty 1) — mostly single-issue price + one extras variable.
-  2. 🧑‍💻 **The Studio Website** (difficulty 2) — multi-issue freelance project, integrative trades.
-  3. 💼 **The Written Offer** (difficulty 3) — salary negotiation, relationship dynamics.
+- **Game-first flow**: home screen = rounds + PLAY. No briefing walls, no prep forms, no lesson gates — one mission line and you're negotiating. Hints blend into the game itself.
+- **Arcade scoring**: concrete points per round ("every $ you save is a point", bonuses for extras/terms, overpaying eats your bonuses, no deal = 0). Best score per round, total across rounds, best-possible teased after each game.
+- **3 rounds**, easy → advanced (each unlocked by closing a deal in the previous):
+  1. 📷 **The Used Camera** — mostly single-issue price + one extras variable.
+  2. 🧑‍💻 **The Studio Website** — multi-issue freelance project, integrative trades.
+  3. 💼 **The Written Offer** — salary negotiation, relationship dynamics.
+- **10 optional lessons** (interests vs positions → walking away) in the Learn tab — reference material, never a gate.
 - **A deterministic game engine.** The LLM only writes dialogue; it never decides offers, facts, or scores:
   - Every scenario has *phases of play* (explore → bargain → close), *hidden information* that only surfaces when you ask about the right topics, *scripted surprise events* mid-game, and *seeded variation* (bottom lines, aggressiveness, and turn limits are sampled per session — every replay is a different game, and any game can be reproduced from its seed).
   - The AI opponent's accept/counter/walk decisions come from a transparent policy: an acceptance threshold decaying from its target toward (never below) its reservation, counters computed on the exact Pareto frontier of the offer space (so it trades what's cheap for it and valuable for you), frustration and walk-away rules.
 - **Deterministic evaluation** — six scores (personal outcome, joint value, information discovery, concession discipline, preparation, questions & process), each labeled *objective* or *rule-based*, plus rule-based observations. LLM coaching is separate and clearly labeled subjective.
-- **Post-game role reveal** — the other side's brief, secrets you found and missed, their deal value, and any package that was better for both sides.
-- **Progression** — XP, unlocks, personal bests, per-skill rolling averages.
+- **Post-game result screen** — points breakdown, secrets found/missed (with a reveal toggle), the opponent's true floor after a lost round, one tip, replay hook; the full six-score analysis + AI coaching one tap deeper.
+- **Progression** — points, round unlocks, personal bests, per-skill rolling averages.
 - **Founder tools** (`/admin`) — session transcripts with hidden parameters, raw model calls, scenario inspector (computed ZOPA/frontier for authored numbers), metrics, JSON/CSV export, reset.
 - **Analytics** — local event table (no external tracking).
 

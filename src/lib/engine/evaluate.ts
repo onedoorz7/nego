@@ -7,6 +7,7 @@ import type {
   SessionState,
 } from "@/lib/types";
 import { maxJointUtility, paretoImprovement, zopaExists } from "./analysis";
+import { bestPossiblePoints, computeArcadePoints } from "./arcade";
 import { analyzePlayerMessage } from "./classify";
 import { utilityFor } from "./utility";
 
@@ -36,17 +37,26 @@ export function evaluateSession(
   const analysis = analyzeDeal(scenario, state);
   const observations: Observation[] = [];
 
+  // Preparation is optional (arcade flow skips it) — when skipped, the
+  // category is dropped and remaining weights renormalized, not zero-scored.
+  const prepSkipped =
+    !state.prep || Object.keys(state.prep).length === 0;
+
   const scores: ScoreItem[] = [
     personalScore(scenario, state, analysis, observations),
     jointScore(scenario, analysis, observations),
     discoveryScore(scenario, state, observations),
     concessionScore(scenario, state, observations),
-    preparationScore(scenario, state, observations),
+    ...(prepSkipped ? [] : [preparationScore(scenario, state, observations)]),
     processScore(scenario, state, observations),
   ];
 
+  const weightSum = scores.reduce((s, i) => s + (WEIGHTS[i.key] ?? 0), 0);
   const total = round1(
-    scores.reduce((s, item) => s + item.value * (WEIGHTS[item.key] ?? 0), 0)
+    scores.reduce(
+      (s, item) => s + item.value * ((WEIGHTS[item.key] ?? 0) / (weightSum || 1)),
+      0
+    )
   );
 
   const revealed = state.revealed_info;
@@ -56,6 +66,16 @@ export function evaluateSession(
 
   const xp = computeXp(total, scenario.difficulty, analysis.deal_reached);
 
+  const arcadeScore = scenario.arcade
+    ? {
+        ...computeArcadePoints(scenario, analysis.final_offer),
+        best_possible: bestPossiblePoints(
+          scenario,
+          state.resolved.ai_reservation_utility
+        ),
+      }
+    : null;
+
   return {
     analysis,
     scores,
@@ -63,6 +83,7 @@ export function evaluateSession(
     xp,
     observations,
     discovery: { revealed, missed },
+    arcade: arcadeScore,
   };
 }
 

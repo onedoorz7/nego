@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 };
 
 const nav = [
+  { href: "/", label: "Play" },
+  { href: "/progress", label: "Scores" },
   { href: "/learn", label: "Learn" },
-  { href: "/play", label: "Play" },
-  { href: "/progress", label: "Progress" },
   { href: "/admin", label: "Admin" },
 ];
 

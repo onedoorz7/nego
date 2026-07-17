@@ -10,10 +10,10 @@ export default function LearnPage() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="text-2xl font-bold">Learning path</h1>
+      <h1 className="text-2xl font-bold">The theory (optional)</h1>
       <p className="mt-1 text-stone-600">
-        One concept at a time, easy to advanced. Pass the quick check to unlock
-        the next step — some steps end in a live negotiation.
+        Everything here you can learn by just playing. But if you want the
+        concepts behind the game — short reads, one idea each, easy to advanced.
       </p>
       <ol className="mt-6 space-y-3">
         {path.map((step, i) => {

@@ -155,6 +155,47 @@ export const VariationSchema = z.object({
 export type Variation = z.infer<typeof VariationSchema>;
 
 // ---------------------------------------------------------------------------
+// Arcade scoring — the player-facing game layer
+// ---------------------------------------------------------------------------
+
+/** Converts a deal into concrete points ("every $ you save is a point").
+ * The utility model still runs underneath for analysis; THIS is the score the
+ * player chases. Per-entry points are clamped at ≥ 0; no deal = 0 points. */
+export const ArcadePointsEntrySchema = z.discriminatedUnion("kind", [
+  z.object({
+    kind: z.literal("per_unit"),
+    field: z.string(),
+    /** Reference value (e.g. the $520 listing price). */
+    baseline: z.number(),
+    /** "below": points for beating the baseline downward (buyer);
+     * "above": points for beating it upward (seller/candidate). */
+    direction: z.enum(["below", "above"]),
+    /** Points per unit of improvement over the baseline. */
+    per_unit: z.number().positive(),
+    label: z.string(),
+  }),
+  z.object({
+    kind: z.literal("values"),
+    field: z.string(),
+    /** Select-option value → points. */
+    values: z.record(z.string(), z.number()),
+    label: z.string(),
+  }),
+]);
+export type ArcadePointsEntry = z.infer<typeof ArcadePointsEntrySchema>;
+
+export const ArcadeSchema = z.object({
+  /** One-line mission shown on the round card. All the player must read. */
+  mission: z.string(),
+  /** Even shorter version for the in-game header. */
+  short_mission: z.string(),
+  /** 2-3 tiny facts pinned in the game header ("Budget: $460"). */
+  player_hud: z.array(z.string()).max(4).default([]),
+  points: z.array(ArcadePointsEntrySchema).min(1),
+});
+export type Arcade = z.infer<typeof ArcadeSchema>;
+
+// ---------------------------------------------------------------------------
 // Preparation form
 // ---------------------------------------------------------------------------
 
@@ -189,6 +230,9 @@ export const ScenarioSchema = z.object({
   /** The headline field (e.g. "price") used for plan-vs-play comparisons. */
   primary_field: z.string(),
   turn_limit: z.number().int().min(4).max(30).default(12),
+  /** Player-facing points config. Required for playable rounds (the loader
+   * tolerates its absence only for founder drafts). */
+  arcade: ArcadeSchema.optional(),
   preparation: z.array(PrepFieldSchema).min(1),
   events: z.array(ScenarioEventSchema).default([]),
   variation: VariationSchema.default({}),

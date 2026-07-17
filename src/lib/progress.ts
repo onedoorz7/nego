@@ -3,10 +3,10 @@ import { getPath, listLessons, listScenarios } from "./content/loader";
 import type { EvaluationResult } from "./types";
 
 /**
- * Progress engine — single local demo user. Tracks lesson completions, quiz
- * passes, scenario completions/best scores, XP, and per-skill EWMA scores.
- * Unlocking: lessons unlock in path order once the previous quiz is passed;
- * scenarios unlock with their linked lesson (NEGO_UNLOCK_ALL=1 opens all).
+ * Progress engine — single local demo user, game-first.
+ * The headline number is arcade POINTS (best per round, summed into a total).
+ * Rounds unlock by playing: close any deal in a round to open the next.
+ * Lessons are never a gate — they're optional reference material.
  */
 
 export interface ProgressData {
@@ -14,7 +14,14 @@ export interface ProgressData {
   lessons: Record<string, { completed_at: string; quiz_passed: boolean }>;
   scenarios: Record<
     string,
-    { attempts: number; best_total: number; last_total: number; completed_at: string }
+    {
+      attempts: number;
+      best_total: number; // best analysis score (0-100)
+      last_total: number;
+      best_points: number; // best arcade points — the number that unlocks
+      last_points: number;
+      completed_at: string;
+    }
   >;
   skills: Record<string, number>; // score-category key → EWMA 0-100
 }
@@ -23,7 +30,17 @@ const KEY = "progress";
 const EMPTY: ProgressData = { xp: 0, lessons: {}, scenarios: {}, skills: {} };
 
 export function getProgress(): ProgressData {
-  return kvGet<ProgressData>(KEY, EMPTY);
+  const p = kvGet<ProgressData>(KEY, EMPTY);
+  // Migrate pre-arcade records gracefully.
+  for (const rec of Object.values(p.scenarios)) {
+    rec.best_points ??= 0;
+    rec.last_points ??= 0;
+  }
+  return p;
+}
+
+export function totalPoints(p: ProgressData = getProgress()): number {
+  return Object.values(p.scenarios).reduce((s, r) => s + (r.best_points ?? 0), 0);
 }
 
 export function resetProgress(): void {
@@ -37,7 +54,7 @@ export function recordQuizResult(lessonId: string, passed: boolean): ProgressDat
       completed_at: new Date().toISOString(),
       quiz_passed: true,
     };
-    p.xp += p.lessons[lessonId] ? 15 : 15;
+    p.xp += 15;
   }
   kvSet(KEY, p);
   return p;
@@ -50,14 +67,16 @@ export function recordScenarioResult(
   const p = getProgress();
   const prev = p.scenarios[scenarioId];
   const firstCompletion = !prev;
+  const points = ev.arcade?.points ?? 0;
   p.scenarios[scenarioId] = {
     attempts: (prev?.attempts ?? 0) + 1,
     best_total: Math.max(prev?.best_total ?? 0, ev.total),
     last_total: ev.total,
+    best_points: Math.max(prev?.best_points ?? 0, points),
+    last_points: points,
     completed_at: new Date().toISOString(),
   };
   p.xp += ev.xp + (firstCompletion ? 30 : 0);
-  // EWMA skill update per score category.
   const ALPHA = 0.4;
   for (const s of ev.scores) {
     const old = p.skills[s.key];
@@ -70,6 +89,37 @@ export function recordScenarioResult(
   return p;
 }
 
+/** Rounds in play order (by difficulty). A round unlocks when the previous
+ * round has ever produced a deal (best_points > 0). First round always open. */
+export function roundList() {
+  const unlockAll = process.env.NEGO_UNLOCK_ALL === "1";
+  const p = getProgress();
+  const scenarios = listScenarios(); // already sorted by difficulty
+  return scenarios.map((s, i) => {
+    const prevRec = i > 0 ? p.scenarios[scenarios[i - 1].id] : null;
+    const unlocked = unlockAll || i === 0 || (prevRec?.best_points ?? 0) > 0;
+    const rec = p.scenarios[s.id];
+    return {
+      round: i + 1,
+      id: s.id,
+      title: s.title,
+      emoji: s.emoji,
+      difficulty: s.difficulty,
+      mission: s.arcade?.mission ?? s.tagline,
+      unlocked,
+      unlock_hint: unlocked
+        ? null
+        : `Close a deal in Round ${i} to unlock`,
+      best_points: rec?.best_points ?? 0,
+      attempts: rec?.attempts ?? 0,
+    };
+  });
+}
+
+export function isScenarioUnlocked(scenarioId: string): boolean {
+  return roundList().some((r) => r.id === scenarioId && r.unlocked);
+}
+
 export interface PathStep {
   lesson_id: string;
   scenario_id: string | null;
@@ -78,52 +128,27 @@ export interface PathStep {
   scenario_done: boolean;
 }
 
+/** Lessons are all available — optional reading, never a gate. */
 export function getLearningPath(): PathStep[] {
-  const unlockAll = process.env.NEGO_UNLOCK_ALL === "1";
   const path = getPath();
   const lessons = new Map(listLessons().map((l) => [l.id, l]));
   const p = getProgress();
-
-  const steps: PathStep[] = [];
-  let previousPassed = true; // first lesson always unlocked
-  for (const lessonId of path.lessons) {
-    const lesson = lessons.get(lessonId);
-    if (!lesson) continue;
-    const done = !!p.lessons[lessonId]?.quiz_passed;
-    steps.push({
-      lesson_id: lessonId,
-      scenario_id: lesson.scenario_id,
-      lesson_unlocked: unlockAll || previousPassed,
-      lesson_done: done,
-      scenario_done: lesson.scenario_id
-        ? !!p.scenarios[lesson.scenario_id]
-        : false,
+  return path.lessons
+    .filter((id) => lessons.has(id))
+    .map((lessonId) => {
+      const lesson = lessons.get(lessonId)!;
+      return {
+        lesson_id: lessonId,
+        scenario_id: lesson.scenario_id,
+        lesson_unlocked: true,
+        lesson_done: !!p.lessons[lessonId]?.quiz_passed,
+        scenario_done: lesson.scenario_id
+          ? !!p.scenarios[lesson.scenario_id]
+          : false,
+      };
     });
-    previousPassed = done;
-  }
-  return steps;
-}
-
-export function isScenarioUnlocked(scenarioId: string): boolean {
-  if (process.env.NEGO_UNLOCK_ALL === "1") return true;
-  const steps = getLearningPath();
-  const step = steps.find((s) => s.scenario_id === scenarioId);
-  // Scenarios not on the path (or whose lesson is unlocked) are playable.
-  if (!step) return true;
-  return step.lesson_unlocked;
 }
 
 export function scenarioSummaries() {
-  const p = getProgress();
-  return listScenarios().map((s) => ({
-    id: s.id,
-    title: s.title,
-    emoji: s.emoji,
-    tagline: s.tagline,
-    difficulty: s.difficulty,
-    concepts: s.concepts,
-    unlocked: isScenarioUnlocked(s.id),
-    best_total: p.scenarios[s.id]?.best_total ?? null,
-    attempts: p.scenarios[s.id]?.attempts ?? 0,
-  }));
+  return roundList();
 }
