@@ -128,7 +128,8 @@
           "approved for",
           "max you can"
         ],
-        "importance": 3
+        "importance": 3,
+        "probe": "How is the salary for this role set — is there a band?"
       },
       {
         "id": "second_choice_declined",
@@ -148,7 +149,8 @@
           "if i say no",
           "if this doesn't work"
         ],
-        "importance": 3
+        "importance": 3,
+        "probe": "How long has the search been running — where are you in it?"
       },
       {
         "id": "team_lost_two",
@@ -168,7 +170,8 @@
           "who would i work with",
           "why is this role"
         ],
-        "importance": 2
+        "importance": 2,
+        "probe": "What's the team's workload like right now — why is the role open?"
       },
       {
         "id": "fought_for_req",
@@ -183,7 +186,8 @@
           "how the role came about",
           "is this a new role"
         ],
-        "importance": 1
+        "importance": 1,
+        "probe": "How did this position come about?"
       },
       {
         "id": "early_review_precedent",
@@ -203,7 +207,8 @@
           "revisit comp",
           "path to more"
         ],
-        "importance": 2
+        "importance": 2,
+        "probe": "How do reviews and raises work here — could we revisit comp early?"
       },
       {
         "id": "hiring_freeze_rumor",
@@ -222,7 +227,8 @@
           "offer good",
           "any urgency"
         ],
-        "importance": 2
+        "importance": 2,
+        "probe": "Is there any time pressure on closing this from your side?"
       }
     ],
     "talking_points": [

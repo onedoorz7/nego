@@ -66,12 +66,19 @@ function parseAction(body: unknown): PlayerAction | null {
   switch (b.type) {
     case "message":
       return typeof b.text === "string" ? { type: "message", text: b.text } : null;
+    case "probe":
+      return typeof b.info_id === "string" ? { type: "probe", info_id: b.info_id } : null;
+    case "flinch":
+      return { type: "flinch" };
+    case "silence":
+      return { type: "silence" };
     case "offer":
       return b.values && typeof b.values === "object"
         ? {
             type: "offer",
             values: b.values as Record<string, unknown>,
             text: typeof b.text === "string" ? b.text : undefined,
+            final: b.final === true,
           }
         : null;
     case "accept":
@@ -90,8 +97,18 @@ function trackAction(action: PlayerAction, sessionId: string) {
     case "message":
       track("message_sent", sessionId);
       break;
+    case "probe":
+      track("move_probe", sessionId, { info_id: action.info_id });
+      break;
+    case "flinch":
+      track("move_flinch", sessionId);
+      break;
+    case "silence":
+      track("move_silence", sessionId);
+      break;
     case "offer":
       track("offer_made", sessionId);
+      if (action.final) track("offer_final_declared", sessionId);
       break;
     case "reject":
       track("offer_rejected", sessionId);

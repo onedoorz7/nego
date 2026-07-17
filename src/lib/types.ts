@@ -15,7 +15,8 @@ export interface StandingOffer {
 }
 
 export type TranscriptKind =
-  | "message" // free-text chat
+  | "message" // spoken line (player probe question or AI dialogue)
+  | "move" // non-verbal player move (flinch, silence)
   | "offer" // structured offer proposed (offer attached)
   | "accept" // acceptance of the standing offer
   | "reject" // explicit rejection without counter
@@ -58,9 +59,17 @@ export interface AiInternalState {
   /** Turns the AI has spent below-reservation-annoyed; drives walk-away. */
   frustration: number;
   warned_walk: boolean;
-  /** Cumulative threshold shift from fired events. */
+  /** Cumulative threshold shift from fired events and player pressure moves. */
   event_threshold_delta: number;
   mood: "warm" | "neutral" | "wary" | "annoyed";
+  /** Flinches the player has used (only the first 2 move the needle). */
+  flinches_used: number;
+  /** Consecutive silence moves — the AI stops falling for it. */
+  silence_streak: number;
+  /** Player declared their standing offer final ("take it or leave it"). */
+  final_declared: boolean;
+  /** Player made another offer AFTER declaring final — bluff caught. */
+  credibility_broken: boolean;
 }
 
 export interface SessionState {
@@ -100,7 +109,8 @@ export type AiIntent =
   | "counter_offer"
   | "first_offer"
   | "reject_offer"
-  | "answer" // respond to chat without an offer
+  | "answer" // respond to a question/move without an offer
+  | "hold_firm" // brush off pressure (flinch) without changing terms
   | "nudge" // ask the player to get concrete
   | "warn_walk"
   | "walk_away";

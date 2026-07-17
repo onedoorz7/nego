@@ -1,5 +1,6 @@
 import type { Scenario } from "./content/schema";
 import type { SessionState } from "./types";
+import { computeArcadePoints } from "./engine/arcade";
 
 /**
  * Redaction — the ONLY shapes that ever leave the server during a live game.
@@ -35,6 +36,10 @@ export function publicScenario(s: Scenario) {
     preparation: s.preparation,
     /** Player-facing game layer (mission, HUD chips, points table). */
     arcade: s.arcade ?? null,
+    /** Ask-move cards: the question text only — never the hidden facts. */
+    probes: s.ai_role.hidden_info
+      .filter((h) => h.probe)
+      .map((h) => ({ id: h.id, question: h.probe! })),
   };
 }
 
@@ -52,6 +57,11 @@ export function publicSession(state: SessionState, scenario: Scenario) {
     prep: state.prep,
     transcript: state.transcript,
     standing_offer: state.standing_offer,
+    /** What accepting their standing offer is worth right now — the pot. */
+    standing_offer_points:
+      state.standing_offer?.by === "ai" && scenario.arcade
+        ? computeArcadePoints(scenario, state.standing_offer.values).points
+        : null,
     offer_history: state.offer_history,
     revealed_facts: revealedFacts,
     outcome: state.outcome

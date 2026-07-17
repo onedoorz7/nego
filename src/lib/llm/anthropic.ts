@@ -35,7 +35,12 @@ export class AnthropicProvider implements NegotiationProvider {
     ctx: DialogueContext,
     log: ModelCallLogger
   ): Promise<DialogueOutput> {
-    const system = buildDialogueSystemPrompt(ctx.scenario, ctx.state, ctx.decision);
+    const system = buildDialogueSystemPrompt(
+      ctx.scenario,
+      ctx.state,
+      ctx.decision,
+      ctx.playerText
+    );
     const messages = buildTranscriptMessages(ctx.state);
 
     for (let attempt = 0; attempt < 2; attempt++) {

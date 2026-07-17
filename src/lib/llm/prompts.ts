@@ -19,7 +19,9 @@ const INTENT_DIRECTIVES: Record<PolicyDecision["intent"], string> = {
   reject_offer:
     "You have decided to REJECT the standing offer without a counter. Explain in character why it doesn't work, and invite a better one.",
   answer:
-    "Reply conversationally in character. Do NOT state any new offer or any specific deal numbers beyond what is already in the conversation.",
+    "Reply conversationally in character, answering what the player actually asked FIRST. Do NOT state any new offer or any specific deal numbers beyond what is already in the conversation.",
+  hold_firm:
+    "The player is applying silent pressure. Hold your position in character — you may soften in tone or justify your number, but do NOT change any terms and do NOT state new numbers.",
   nudge:
     "Reply in character and press the player to get concrete — you want a decision or an offer now. Do NOT invent new numbers yourself.",
   warn_walk:
@@ -31,7 +33,8 @@ const INTENT_DIRECTIVES: Record<PolicyDecision["intent"], string> = {
 export function buildDialogueSystemPrompt(
   scenario: Scenario,
   state: SessionState,
-  decision: PolicyDecision
+  decision: PolicyDecision,
+  playerMove?: string
 ): string {
   const ai = scenario.ai_role;
   const reveals = ai.hidden_info.filter((h) =>
@@ -59,6 +62,9 @@ export function buildDialogueSystemPrompt(
       ? `# Private facts you MAY share NOW (the player's question earned them — weave in the relevant ones naturally; list their ids in used_reveal_ids)\n${reveals.map((h) => `- id: ${h.id} — ${h.fact}`).join("\n")}`
       : `# No new private facts may be shared this turn. Deflect politely if probed on anything not listed above.`,
     eventNotes.length ? `# Recent developments\n${eventNotes.map((n) => `- ${n}`).join("\n")}` : "",
+    playerMove
+      ? `# The player's latest move (respond to THIS first)\n${playerMove}`
+      : "",
     `# Your mood right now: ${decision.mood}. Negotiation phase: ${decision.phase}.`,
     decision.notes.length ? `# Director's notes\n${decision.notes.map((n) => `- ${n}`).join("\n")}` : "",
     `# YOUR DECISION THIS TURN (made for you — do not deviate)\n${INTENT_DIRECTIVES[decision.intent]}`,

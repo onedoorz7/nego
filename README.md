@@ -7,6 +7,7 @@ Think *a game people replay to beat their score* that quietly happens to be *Duo
 ## What's in this build (current scope)
 
 - **Game-first flow**: home screen = rounds + PLAY. No briefing walls, no prep forms, no lesson gates — one mission line and you're negotiating. Hints blend into the game itself.
+- **Move-based play (no chat)**: each turn is a move, poker-style — 🗣️ Ask (question cards that dig for secrets), 📋 Offer/Counter with a 🎯 take-it-or-leave-it raise (bluff it and they remember), 😤 Flinch, 🤐 Wait (silence pressure), ✓ Accept (shows the pot in points), ✗ Reject, 🚶 Walk. Every move costs a turn.
 - **Arcade scoring**: concrete points per round ("every $ you save is a point", bonuses for extras/terms, overpaying eats your bonuses, no deal = 0). Best score per round, total across rounds, best-possible teased after each game.
 - **3 rounds**, easy → advanced (each unlocked by closing a deal in the previous):
   1. 📷 **The Used Camera** — mostly single-issue price + one extras variable.

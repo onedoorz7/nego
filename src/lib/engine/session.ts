@@ -23,7 +23,10 @@ import type {
 
 export type PlayerAction =
   | { type: "message"; text: string }
-  | { type: "offer"; values: Record<string, unknown>; text?: string }
+  | { type: "probe"; info_id: string } // Ask move: tap a question card
+  | { type: "flinch" } // pressure move: wince at their offer
+  | { type: "silence" } // pressure move: let the silence hang
+  | { type: "offer"; values: Record<string, unknown>; text?: string; final?: boolean }
   | { type: "accept" }
   | { type: "reject"; text?: string }
   | { type: "walk_away" };
@@ -54,6 +57,10 @@ export function createSession(
       warned_walk: false,
       event_threshold_delta: 0,
       mood: "warm",
+      flinches_used: 0,
+      silence_streak: 0,
+      final_declared: false,
+      credibility_broken: false,
     },
     outcome: null,
   };
@@ -103,6 +110,7 @@ export async function playTurn(
 
   // ---- Player side of the turn -------------------------------------------
   let playerText = "";
+  let probeUnlock: string[] = [];
   if (action.type === "message") {
     playerText = action.text.trim();
     if (!playerText) throw new UserError("Empty message");
@@ -110,10 +118,61 @@ export async function playTurn(
     state.transcript.push(
       entry({ turn: state.turn, speaker: "player", kind: "message", text: playerText })
     );
+  } else if (action.type === "probe") {
+    const info = scenario.ai_role.hidden_info.find((h) => h.id === action.info_id);
+    if (!info?.probe) throw new UserError("Unknown question");
+    playerText = info.probe;
+    // The Ask move unlocks its topic deterministically — no keyword roulette.
+    if (!state.revealed_info.includes(info.id)) probeUnlock = [info.id];
+    state.transcript.push(
+      entry({ turn: state.turn, speaker: "player", kind: "message", text: playerText })
+    );
+  } else if (action.type === "flinch") {
+    if (!state.standing_offer || state.standing_offer.by !== "ai") {
+      throw new UserError("There's no offer of theirs to flinch at");
+    }
+    state.ai.flinches_used = (state.ai.flinches_used ?? 0) + 1;
+    if (state.ai.flinches_used <= 2) {
+      // Theatrics work… the first couple of times.
+      state.ai.event_threshold_delta -= 2;
+    }
+    playerText = "[The player winces visibly at your offer and says nothing.]";
+    state.transcript.push(
+      entry({
+        turn: state.turn,
+        speaker: "player",
+        kind: "move",
+        text: "😤 You wince at the number.",
+      })
+    );
+  } else if (action.type === "silence") {
+    playerText = "[The player lets the silence hang and just looks at you.]";
+    state.transcript.push(
+      entry({
+        turn: state.turn,
+        speaker: "player",
+        kind: "move",
+        text: "🤐 You let the silence hang…",
+      })
+    );
   } else if (action.type === "offer") {
     const check = validateOffer(scenario, action.values);
     if (!check.ok) throw new UserError(check.errors.join("; "));
     playerText = (action.text ?? "").trim().slice(0, 1500);
+    // Bluff-catching: a new offer after "final" breaks credibility once.
+    if (state.ai.final_declared && !state.ai.credibility_broken) {
+      state.ai.credibility_broken = true;
+      state.ai.event_threshold_delta += 5;
+      state.transcript.push(
+        entry({
+          turn: state.turn,
+          speaker: "system",
+          kind: "info",
+          text: "Your last offer was supposed to be final. They noticed.",
+        })
+      );
+    }
+    state.ai.final_declared = action.final === true;
     const offer = { by: "player" as const, values: check.values, turn: state.turn };
     state.standing_offer = offer;
     state.offer_history.push(offer);
@@ -122,7 +181,9 @@ export async function playTurn(
         turn: state.turn,
         speaker: "player",
         kind: "offer",
-        text: playerText || `Here's my offer: ${formatOffer(scenario, check.values)}.`,
+        text:
+          playerText ||
+          `${action.final ? "Final offer — take it or leave it: " : "Here's my offer: "}${formatOffer(scenario, check.values)}.`,
         offer: check.values,
       })
     );
@@ -172,17 +233,24 @@ export async function playTurn(
   }
 
   // ---- Deterministic decision ---------------------------------------------
+  state.ai.silence_streak =
+    action.type === "silence" ? (state.ai.silence_streak ?? 0) + 1 : 0;
+
   const analysis = analyzePlayerMessage(scenario, playerText);
   const decision = decide({
     scenario,
     state,
     action:
       action.type === "offer"
-        ? { type: "offer", text: playerText }
+        ? { type: "offer", text: playerText, final: action.final === true }
         : action.type === "reject"
           ? { type: "reject", text: playerText }
-          : { type: "message", text: playerText },
-    unlocked_info: analysis.matched_info_ids,
+          : action.type === "flinch"
+            ? { type: "flinch" }
+            : action.type === "silence"
+              ? { type: "silence" }
+              : { type: "message", text: playerText },
+    unlocked_info: [...new Set([...probeUnlock, ...analysis.matched_info_ids])],
   });
 
   // Bookkeeping the decision implies (before dialogue, so prompts see it).

@@ -3,7 +3,13 @@
   "title": "The Used Camera",
   "emoji": "📷",
   "difficulty": 1,
-  "concepts": ["batna", "reservation_point", "anchoring", "concessions", "walking_away"],
+  "concepts": [
+    "batna",
+    "reservation_point",
+    "anchoring",
+    "concessions",
+    "walking_away"
+  ],
   "tagline": "Buy a secondhand mirrorless camera from a chatty hobbyist. Simple on the surface — but what you learn about the seller changes everything.",
   "public_context": "**Marketplace listing:** \"Solara A6 mirrorless camera + 18–50mm kit lens. Great condition, well cared for. $520. Pickup only.\"\n\nYou've arranged to meet the seller, Sam, at a coffee shop to look at the camera. The camera checks out physically — clean sensor, no scratches. Now it's time to talk price.",
   "player_role": {
@@ -11,10 +17,18 @@
     "persona": "A photography beginner buying their first serious camera.",
     "private_brief": "You've wanted a Solara A6 for months. New ones cost $700 — out of budget. Recent sold listings for used bodies with the kit lens range **$430–$490** depending on condition and accessories.\n\n- Your hard budget cap is **$460** — above that, the deal stops making sense for you.\n- You found **another listing at $475** in a town 40 minutes away; the photos look okay but the seller there hasn't answered your questions. That's your fallback if this falls through.\n- A **spare battery** and a **bag** would genuinely help you (they'd cost ~$70 new), and a small tripod would be a bonus.\n- You know nothing about why Sam is selling or how hard the camera has been used. Asking might pay off.",
     "preferences": {
-      "price": { "weight": 0.85, "best": 380, "worst": 550 },
+      "price": {
+        "weight": 0.85,
+        "best": 380,
+        "worst": 550
+      },
       "extras": {
         "weight": 0.15,
-        "option_values": { "none": 0, "battery_bag": 0.6, "full_kit": 1 }
+        "option_values": {
+          "none": 0,
+          "battery_bag": 0.6,
+          "full_kit": 1
+        }
       }
     },
     "batna": {
@@ -29,10 +43,18 @@
     "persona": "A friendly hobbyist photographer upgrading their gear.",
     "private_brief": "You're Sam. You love this camera but you're upgrading to a full-frame body.",
     "preferences": {
-      "price": { "weight": 0.9, "best": 550, "worst": 380 },
+      "price": {
+        "weight": 0.9,
+        "best": 550,
+        "worst": 380
+      },
       "extras": {
         "weight": 0.1,
-        "option_values": { "none": 1, "battery_bag": 0.5, "full_kit": 0.15 }
+        "option_values": {
+          "none": 1,
+          "battery_bag": 0.5,
+          "full_kit": 0.15
+        }
       }
     },
     "batna": {
@@ -53,26 +75,75 @@
       {
         "id": "needs_cash_friday",
         "fact": "You need the money by Friday to lock in a pre-order discount on a new lens — a reasonably quick sale matters more to you than squeezing out the last dollar.",
-        "reveal_topics": ["why", "selling", "upgrad", "hurry", "timeline", "deadline", "soon", "quick", "when do you", "rush", "new camera", "new lens"],
-        "importance": 3
+        "reveal_topics": [
+          "why",
+          "selling",
+          "upgrad",
+          "hurry",
+          "timeline",
+          "deadline",
+          "soon",
+          "quick",
+          "when do you",
+          "rush",
+          "new camera",
+          "new lens"
+        ],
+        "importance": 3,
+        "probe": "So why are you selling it?"
       },
       {
         "id": "low_shutter_count",
         "fact": "The shutter count is only about 8,000 — genuinely light use for a 3-year-old camera. You'd happily show the menu screen to prove it.",
-        "reveal_topics": ["shutter", "condition", "how much", "how often", "used it", "wear", "history", "issue", "problem", "repairs", "shape"],
-        "importance": 2
+        "reveal_topics": [
+          "shutter",
+          "condition",
+          "how much",
+          "how often",
+          "used it",
+          "wear",
+          "history",
+          "issue",
+          "problem",
+          "repairs",
+          "shape"
+        ],
+        "importance": 2,
+        "probe": "How much use has it actually seen?"
       },
       {
         "id": "spare_extras",
         "fact": "You have a spare battery and a padded camera bag gathering dust in a closet — worth little to you, and you'd gladly throw them in to close a deal at a decent price.",
-        "reveal_topics": ["battery", "batteries", "bag", "extra", "accessor", "include", "throw in", "tripod", "come with", "anything else", "charger", "kit"],
-        "importance": 2
+        "reveal_topics": [
+          "battery",
+          "batteries",
+          "bag",
+          "extra",
+          "accessor",
+          "include",
+          "throw in",
+          "tripod",
+          "come with",
+          "anything else",
+          "charger",
+          "kit"
+        ],
+        "importance": 2,
+        "probe": "Anything else you'd throw in with it?"
       },
       {
         "id": "lowball_last_week",
         "fact": "Someone already offered an insulting $380 this week and you turned them down flat. Another lowball will genuinely annoy you.",
-        "reveal_topics": ["other offer", "other buyer", "anyone else", "interest", "offers so far", "many people"],
-        "importance": 1
+        "reveal_topics": [
+          "other offer",
+          "other buyer",
+          "anyone else",
+          "interest",
+          "offers so far",
+          "many people"
+        ],
+        "importance": 1,
+        "probe": "Had much interest from other buyers?"
       }
     ],
     "talking_points": [
@@ -96,9 +167,18 @@
       "label": "Included extras",
       "type": "select",
       "options": [
-        { "value": "none", "label": "Camera + kit lens only" },
-        { "value": "battery_bag", "label": "+ spare battery & padded bag" },
-        { "value": "full_kit", "label": "+ battery, bag & travel tripod" }
+        {
+          "value": "none",
+          "label": "Camera + kit lens only"
+        },
+        {
+          "value": "battery_bag",
+          "label": "+ spare battery & padded bag"
+        },
+        {
+          "value": "full_kit",
+          "label": "+ battery, bag & travel tripod"
+        }
       ]
     }
   ],
@@ -107,7 +187,10 @@
   "arcade": {
     "mission": "The camera's listed at $520. Every dollar you knock off is a point — extras thrown in score bonus points. No deal, no points.",
     "short_mission": "Listed at $520 — every $ you save is a point",
-    "player_hud": ["💰 Your budget: $460", "🏃 Backup: same camera, $475, across town"],
+    "player_hud": [
+      "💰 Your budget: $460",
+      "🏃 Backup: same camera, $475, across town"
+    ],
     "points": [
       {
         "kind": "per_unit",
@@ -120,7 +203,11 @@
       {
         "kind": "values",
         "field": "extras",
-        "values": { "none": 0, "battery_bag": 60, "full_kit": 85 },
+        "values": {
+          "none": 0,
+          "battery_bag": 60,
+          "full_kit": 85
+        },
         "label": "Extras thrown in"
       }
     ]
@@ -181,8 +268,17 @@
     }
   ],
   "variation": {
-    "ai_reservation_utility": { "min": 18, "max": 28 },
-    "opening_demand": { "min": 0.78, "max": 0.92 },
-    "turn_limit": { "min": 10, "max": 12 }
+    "ai_reservation_utility": {
+      "min": 18,
+      "max": 28
+    },
+    "opening_demand": {
+      "min": 0.78,
+      "max": 0.92
+    },
+    "turn_limit": {
+      "min": 10,
+      "max": 12
+    }
   }
 }

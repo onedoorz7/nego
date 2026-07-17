@@ -63,15 +63,20 @@ export function currentPhase(state: SessionState, scenario: Scenario): GamePhase
   return "explore";
 }
 
+/** Extra slack the AI gives a credible take-it-or-leave-it offer. */
+export const FINAL_OFFER_DISCOUNT = 6;
+
 export interface PolicyInput {
   scenario: Scenario;
   state: SessionState;
   /** What the player just did this turn. */
   action:
     | { type: "message"; text: string }
-    | { type: "offer"; text?: string }
-    | { type: "reject"; text?: string };
-  /** Hidden-info ids unlocked by this turn's message (from classify). */
+    | { type: "offer"; text?: string; final?: boolean }
+    | { type: "reject"; text?: string }
+    | { type: "flinch" }
+    | { type: "silence" };
+  /** Hidden-info ids unlocked by this turn's message/probe. */
   unlocked_info: string[];
 }
 
@@ -102,8 +107,96 @@ export function decide(input: PolicyInput): PolicyDecision {
   let mood: AiInternalState["mood"] = ai.mood;
   const lastTurn = turn >= resolved.turn_limit;
 
+  // --- Pressure move: flinch ----------------------------------------------
+  if (action.type === "flinch") {
+    if (ai.flinches_used > 2) {
+      notes.push(
+        "The player keeps making a show of wincing at your numbers. You see through the theatrics now — say so, lightly."
+      );
+      return decision("hold_firm", null, { mood: "wary" });
+    }
+    notes.push(
+      "The player visibly flinched at your offer. Defend your number in character — you may soften in TONE, but do not change any terms this turn."
+    );
+    return decision("hold_firm", null);
+  }
+
+  // --- Pressure move: silence ---------------------------------------------
+  if (action.type === "silence") {
+    const aiOffers = state.offer_history.filter((o) => o.by === "ai");
+    const lastAiOffer = aiOffers[aiOffers.length - 1];
+    const lastLevel = lastAiOffer
+      ? utilityFor(scenario, "ai", lastAiOffer.values)
+      : null;
+    const level = counterLevel(scenario, resolved, ai, turn);
+
+    // No numbers on the table yet and patience exhausted: the silence forces
+    // the AI to open — exactly what a patient negotiator is playing for.
+    if (
+      state.offer_history.length === 0 &&
+      turn > scenario.ai_role.personality.patience
+    ) {
+      const opening = bestOfferAtAiLevel(scenario, level);
+      notes.push(
+        "The player's silence forces your hand — break it by putting your own number on the table."
+      );
+      return decision("first_offer", opening?.offer ?? null);
+    }
+    if (ai.silence_streak >= 3) {
+      notes.push(
+        "The player keeps sitting in silence. It's stopped working — call it out and push for a real response."
+      );
+      return decision("nudge", null, { mood: "wary" });
+    }
+    // Silence squeezes a seller under pressure: if the AI's own standing
+    // level has decayed meaningfully below its last offer, it sweetens.
+    if (lastLevel !== null && lastLevel > level + 2) {
+      const sweeter = bestOfferAtAiLevel(scenario, level);
+      if (sweeter) {
+        notes.push(
+          "The player let the silence hang and it's working on you — you're filling it by improving your own offer a little. Present the new terms as 'alright, look…'."
+        );
+        return decision("counter_offer", sweeter.offer);
+      }
+    }
+    notes.push(
+      "The player said nothing — an awkward silence. Fill it in character and prod them to react. Do not change your terms."
+    );
+    return decision("nudge", null);
+  }
+
   // --- A fresh player offer is on the table -------------------------------
   if (action.type === "offer" && playerOffer && offerUtility !== null) {
+    const isFinal = action.final === true;
+    // "Take it or leave it": accept with a small extra discount if it clears
+    // (never below reservation) — otherwise it ends the game per the warning
+    // rules. Broken credibility (bluffed final before) removes the discount.
+    if (isFinal) {
+      const bar = ai.credibility_broken
+        ? threshold
+        : Math.max(
+            resolved.ai_reservation_utility,
+            threshold - FINAL_OFFER_DISCOUNT
+          );
+      if (offerUtility >= bar) {
+        notes.push(
+          "The player declared this offer final and it (just) works for you. Accept — a touch grudgingly, in character."
+        );
+        return decision("accept", null);
+      }
+      if (
+        scenario.ai_role.personality.warns_before_walking &&
+        !ai.warned_walk
+      ) {
+        notes.push(
+          "The player declared a final offer you can't take. Tell them plainly: if that's truly final, you're done — give them one chance to reconsider."
+        );
+        return decision("warn_walk", null, { mood: "wary" });
+      }
+      notes.push("Their 'final' offer doesn't work for you. Walk away.");
+      return decision("walk_away", null, { mood: "wary" });
+    }
+
     if (offerUtility >= threshold) {
       return decision("accept", null);
     }

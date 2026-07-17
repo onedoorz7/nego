@@ -137,7 +137,8 @@
           "urgent",
           "time frame"
         ],
-        "importance": 3
+        "importance": 3,
+        "probe": "When do you actually need this live — what's driving the timeline?"
       },
       {
         "id": "budget_ceiling",
@@ -155,7 +156,8 @@
           "invest",
           "approve"
         ],
-        "importance": 3
+        "importance": 3,
+        "probe": "What budget range did you have in mind for the project?"
       },
       {
         "id": "burned_before",
@@ -175,7 +177,8 @@
           "burned",
           "gone wrong"
         ],
-        "importance": 2
+        "importance": 2,
+        "probe": "Have you worked with a freelancer on this before?"
       },
       {
         "id": "nobody_technical",
@@ -196,7 +199,8 @@
           "handoff",
           "break"
         ],
-        "importance": 2
+        "importance": 2,
+        "probe": "Who on your team will manage the site after launch?"
       },
       {
         "id": "fourth_location",
@@ -215,7 +219,8 @@
           "roadmap",
           "where is the business"
         ],
-        "importance": 2
+        "importance": 2,
+        "probe": "Where is the business heading — any growth plans?"
       },
       {
         "id": "dana_skeptic",
@@ -233,7 +238,8 @@
           "approval",
           "who else"
         ],
-        "importance": 1
+        "importance": 1,
+        "probe": "Is anyone else involved in this decision?"
       }
     ],
     "talking_points": [

@@ -114,6 +114,9 @@ export const HiddenInfoSchema = z.object({
   reveal_topics: z.array(z.string()).min(1),
   /** 1–3; weighting for the information-discovery score. */
   importance: z.number().int().min(1).max(3),
+  /** The Ask-move card for this item: a natural question the player can tap
+   * to probe this topic (deterministic unlock — no keyword matching). */
+  probe: z.string().optional(),
 });
 export type HiddenInfo = z.infer<typeof HiddenInfoSchema>;
 

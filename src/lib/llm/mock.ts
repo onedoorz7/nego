@@ -60,6 +60,12 @@ export class MockProvider implements NegotiationProvider {
           ? `${revealText}`
           : `${moodPrefix}Fair question. ${pickTalkingPoint(ctx)} What else would you like to know?`;
         break;
+      case "hold_firm":
+        message =
+          ctx.state.ai.flinches_used > 2
+            ? `${moodPrefix}You can make that face all you like — the number's the number. Do you want it or not?`
+            : `${moodPrefix}I know, I know. But I did my homework on what it's worth — I'm comfortable where I am.`;
+        break;
       case "nudge":
         message = `${revealText} ${moodPrefix}We've been going back and forth a while — where do you actually stand? Give me a number we can work with.`;
         break;
