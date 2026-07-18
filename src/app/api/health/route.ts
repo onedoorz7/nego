@@ -20,6 +20,7 @@ export async function GET() {
   }
   return NextResponse.json({
     ok: true,
+    hint: "This is a status endpoint — the game is at / (the plain domain).",
     version: APP_VERSION,
     provider: getProvider().name,
     recent_model_call_failures: dialogue_quality.failures,
