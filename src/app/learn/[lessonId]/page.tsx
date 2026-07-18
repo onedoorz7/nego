@@ -22,32 +22,41 @@ export default async function LessonPage({
     <div className="mx-auto max-w-2xl">
       <div className="flex items-center gap-3">
         <span className="text-3xl">{lesson.emoji}</span>
-        <h1 className="text-2xl font-bold">{lesson.title}</h1>
+        <h1 className="text-2xl font-black text-white">{lesson.title}</h1>
       </div>
 
-      <section className="mt-6 rounded-xl border border-stone-200 bg-white p-6">
+      <section className="panel anim-rise mt-6 p-6 text-stone-300">
         <Md text={lesson.summary} />
       </section>
 
-      <section className="mt-4 rounded-xl border border-stone-200 bg-white p-6">
-        <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-stone-500">
+      <section
+        className="panel anim-rise mt-4 p-6"
+        style={{ animationDelay: "60ms" }}
+      >
+        <h2 className="mb-2 text-[11px] font-black uppercase tracking-[0.15em] text-stone-500">
           Worked example
         </h2>
-        <Md text={lesson.example} className="text-stone-700" />
+        <Md text={lesson.example} className="text-stone-300" />
       </section>
 
-      <section className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-6">
-        <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-amber-700">
+      <section
+        className="panel anim-rise mt-4 border-amber-400/25 bg-amber-400/8 p-6"
+        style={{ animationDelay: "120ms" }}
+      >
+        <h2 className="mb-2 text-[11px] font-black uppercase tracking-[0.15em] text-amber-300">
           ⚠️ The common mistake
         </h2>
-        <Md text={lesson.common_mistake} className="text-amber-900" />
+        <Md text={lesson.common_mistake} className="text-amber-100/90" />
       </section>
 
-      <section className="mt-4 rounded-xl border border-indigo-200 bg-indigo-50 p-6">
-        <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-indigo-700">
+      <section
+        className="panel anim-rise mt-4 border-indigo-400/25 bg-indigo-400/8 p-6"
+        style={{ animationDelay: "180ms" }}
+      >
+        <h2 className="mb-2 text-[11px] font-black uppercase tracking-[0.15em] text-indigo-300">
           🤔 Before your next negotiation
         </h2>
-        <Md text={lesson.prep_question} className="text-indigo-900" />
+        <Md text={lesson.prep_question} className="text-indigo-100/90" />
       </section>
 
       <QuizCard

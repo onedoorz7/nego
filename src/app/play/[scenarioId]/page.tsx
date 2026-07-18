@@ -32,11 +32,13 @@ export default function StartGamePage() {
   return (
     <div className="mx-auto max-w-md pt-16 text-center">
       {error ? (
-        <p className="text-rose-600">{error}</p>
+        <p className="font-bold text-rose-400">{error}</p>
       ) : (
         <>
-          <div className="animate-bounce text-5xl">🤝</div>
-          <p className="mt-3 font-semibold text-stone-500">
+          <div className="anim-float text-6xl drop-shadow-[0_0_24px_rgba(99,102,241,0.5)]">
+            🤝
+          </div>
+          <p className="mt-4 font-extrabold text-stone-400">
             Taking you to the table…
           </p>
         </>

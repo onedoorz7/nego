@@ -87,8 +87,15 @@ export default function DebriefPage() {
     })();
   }, [sessionId]);
 
-  if (error) return <p className="text-rose-600">{error}</p>;
-  if (!d) return <p className="text-stone-500">Analyzing your game…</p>;
+  if (error) return <p className="text-center font-bold text-rose-400">{error}</p>;
+  if (!d) {
+    return (
+      <div className="pt-16 text-center">
+        <div className="anim-float inline-block text-5xl">🔬</div>
+        <p className="mt-3 font-bold text-stone-400">Analyzing your game…</p>
+      </div>
+    );
+  }
 
   const { evaluation: ev, coaching, role_reveal: rr, analysis } = {
     evaluation: d.evaluation,
@@ -100,30 +107,32 @@ export default function DebriefPage() {
   return (
     <div className="mx-auto max-w-3xl">
       {/* Headline */}
-      <div className="rounded-2xl border border-stone-200 bg-white p-6 text-center">
-        <p className="text-sm font-semibold text-stone-500">{d.scenario.title}</p>
-        <h1 className="mt-1 text-2xl font-bold">
+      <div className="panel panel-glow-indigo anim-pop p-6 text-center">
+        <p className="text-sm font-bold text-stone-500">{d.scenario.title}</p>
+        <h1 className="mt-1 text-2xl font-black text-white">
           {OUTCOME_LABELS[d.outcome.type] ?? d.outcome.type}
         </h1>
         {analysis.final_offer && (
-          <p className="mt-1 text-stone-600">{fmtOffer(d, analysis.final_offer)}</p>
+          <p className="mt-1 font-semibold text-stone-400">
+            {fmtOffer(d, analysis.final_offer)}
+          </p>
         )}
         <div className="mt-4 flex items-end justify-center gap-8">
           <div>
-            <div className="text-4xl font-extrabold text-indigo-600">{ev.total}</div>
-            <div className="text-xs font-semibold uppercase tracking-wide text-stone-400">
+            <div className="text-4xl font-black tabular-nums text-indigo-400">{ev.total}</div>
+            <div className="text-xs font-black uppercase tracking-[0.12em] text-stone-500">
               overall / 100
             </div>
           </div>
           <div>
-            <div className="text-4xl font-extrabold text-amber-500">+{ev.xp}</div>
-            <div className="text-xs font-semibold uppercase tracking-wide text-stone-400">
+            <div className="text-4xl font-black tabular-nums text-amber-300">+{ev.xp}</div>
+            <div className="text-xs font-black uppercase tracking-[0.12em] text-stone-500">
               XP earned
             </div>
           </div>
           <div>
-            <div className="text-4xl font-extrabold text-stone-700">{d.turn_count}</div>
-            <div className="text-xs font-semibold uppercase tracking-wide text-stone-400">
+            <div className="text-4xl font-black tabular-nums text-stone-300">{d.turn_count}</div>
+            <div className="text-xs font-black uppercase tracking-[0.12em] text-stone-500">
               turns
             </div>
           </div>
@@ -131,48 +140,48 @@ export default function DebriefPage() {
       </div>
 
       {/* Objective outcome vs plan */}
-      <section className="mt-4 rounded-xl border border-stone-200 bg-white p-6">
-        <h2 className="text-sm font-bold uppercase tracking-wide text-stone-500">
-          📐 The math <span className="ml-1 rounded bg-stone-100 px-1.5 py-0.5 text-[10px] font-semibold text-stone-500">objective</span>
+      <section className="panel mt-4 p-6">
+        <h2 className="text-[11px] font-black uppercase tracking-[0.15em] text-stone-500">
+          📐 The math <span className="ml-1 rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-bold text-stone-400">objective</span>
         </h2>
-        <ul className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
+        <ul className="mt-3 grid gap-2 text-sm text-stone-300 sm:grid-cols-2">
           {analysis.deal_reached ? (
             <>
-              <li>Your deal value: <strong>{analysis.player_utility}/100</strong></li>
+              <li>Your deal value: <strong className="text-white">{analysis.player_utility}/100</strong></li>
               <li>
                 vs your walk-away point:{" "}
-                <strong className={analysis.player_vs_reservation! >= 0 ? "text-emerald-700" : "text-rose-600"}>
+                <strong className={analysis.player_vs_reservation! >= 0 ? "text-emerald-300" : "text-rose-400"}>
                   {analysis.player_vs_reservation! >= 0 ? "+" : ""}{analysis.player_vs_reservation}
                 </strong>
               </li>
               <li>
                 vs your target:{" "}
-                <strong className={analysis.player_vs_target! >= 0 ? "text-emerald-700" : "text-amber-600"}>
+                <strong className={analysis.player_vs_target! >= 0 ? "text-emerald-300" : "text-amber-300"}>
                   {analysis.player_vs_target! >= 0 ? "+" : ""}{analysis.player_vs_target}
                 </strong>
               </li>
               <li>
-                Joint value: <strong>{analysis.joint_utility}</strong> of{" "}
-                <strong>{analysis.max_joint_utility}</strong> possible
+                Joint value: <strong className="text-white">{analysis.joint_utility}</strong> of{" "}
+                <strong className="text-white">{analysis.max_joint_utility}</strong> possible
               </li>
             </>
           ) : (
             <>
               <li>
                 A zone of agreement{" "}
-                <strong>{analysis.zopa_existed ? "existed" : "did not exist"}</strong>
+                <strong className="text-white">{analysis.zopa_existed ? "existed" : "did not exist"}</strong>
               </li>
               {analysis.walk_was_reasonable !== null && (
                 <li>
                   Walking away was{" "}
-                  <strong>{analysis.walk_was_reasonable ? "disciplined ✓" : "premature"}</strong>
+                  <strong className="text-white">{analysis.walk_was_reasonable ? "disciplined ✓" : "premature"}</strong>
                 </li>
               )}
             </>
           )}
         </ul>
         {analysis.pareto_improvement && (
-          <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <div className="mt-3 rounded-lg border border-amber-400/25 bg-amber-400/8 px-4 py-3 text-sm text-amber-100/90">
             💡 A better package existed for BOTH sides:{" "}
             <strong>{fmtOffer(d, analysis.pareto_improvement)}</strong>
           </div>
@@ -180,98 +189,102 @@ export default function DebriefPage() {
       </section>
 
       {/* Scores */}
-      <section className="mt-4 rounded-xl border border-stone-200 bg-white p-6">
-        <h2 className="text-sm font-bold uppercase tracking-wide text-stone-500">
+      <section className="panel mt-4 p-6">
+        <h2 className="text-[11px] font-black uppercase tracking-[0.15em] text-stone-500">
           📊 Skill scores
         </h2>
-        <div className="mt-4 space-y-3">
+        <div className="mt-4 space-y-3.5">
           {ev.scores.map((s) => (
             <div key={s.key}>
               <div className="flex items-baseline justify-between text-sm">
-                <span className="font-medium">
+                <span className="font-semibold text-stone-300">
                   {s.label}{" "}
-                  <span className="ml-1 rounded bg-stone-100 px-1.5 py-0.5 text-[10px] font-semibold text-stone-500">
+                  <span className="ml-1 rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-bold text-stone-500">
                     {s.basis === "objective" ? "objective" : "rule-based"}
                   </span>
                 </span>
-                <span className="font-bold">{s.value}</span>
+                <span className="font-black tabular-nums text-white">{s.value}</span>
               </div>
-              <div className="mt-1 h-2 w-full overflow-hidden rounded-full bg-stone-100">
+              <div className="mt-1.5 h-2.5 w-full overflow-hidden rounded-full bg-white/10">
                 <div
                   className={`h-full rounded-full ${
-                    s.value >= 70 ? "bg-emerald-500" : s.value >= 40 ? "bg-amber-400" : "bg-rose-400"
+                    s.value >= 70
+                      ? "bg-gradient-to-r from-emerald-500 to-emerald-400"
+                      : s.value >= 40
+                        ? "bg-gradient-to-r from-amber-500 to-amber-400"
+                        : "bg-gradient-to-r from-rose-500 to-rose-400"
                   }`}
                   style={{ width: `${s.value}%` }}
                 />
               </div>
-              <p className="mt-1 text-xs text-stone-500">{s.explanation}</p>
+              <p className="mt-1 text-xs font-medium text-stone-500">{s.explanation}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Coaching */}
-      <section className="mt-4 rounded-xl border border-indigo-200 bg-indigo-50/50 p-6">
-        <h2 className="text-sm font-bold uppercase tracking-wide text-indigo-700">
+      <section className="panel mt-4 border-indigo-400/25 bg-indigo-400/8 p-6">
+        <h2 className="text-[11px] font-black uppercase tracking-[0.15em] text-indigo-300">
           🎓 Coaching{" "}
-          <span className="ml-1 rounded bg-indigo-100 px-1.5 py-0.5 text-[10px] font-semibold text-indigo-600">
+          <span className="ml-1 rounded bg-indigo-400/15 px-1.5 py-0.5 text-[10px] font-bold text-indigo-300">
             {coaching.generated_by === "llm" ? "AI-generated · subjective" : "rule-based template"}
           </span>
         </h2>
-        <p className="mt-3 text-sm text-stone-800">{coaching.what_happened}</p>
+        <p className="mt-3 text-sm font-medium text-stone-200">{coaching.what_happened}</p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div>
-            <h3 className="text-xs font-bold uppercase text-emerald-700">What you did well</h3>
-            <ul className="mt-1 list-disc space-y-1 pl-4 text-sm">
+            <h3 className="text-xs font-black uppercase text-emerald-300">What you did well</h3>
+            <ul className="mt-1 list-disc space-y-1 pl-4 text-sm text-stone-300">
               {coaching.strengths.map((s, i) => <li key={i}>{s}</li>)}
             </ul>
           </div>
           <div>
-            <h3 className="text-xs font-bold uppercase text-amber-700">Missed opportunities</h3>
-            <ul className="mt-1 list-disc space-y-1 pl-4 text-sm">
+            <h3 className="text-xs font-black uppercase text-amber-300">Missed opportunities</h3>
+            <ul className="mt-1 list-disc space-y-1 pl-4 text-sm text-stone-300">
               {coaching.missed_opportunities.map((s, i) => <li key={i}>{s}</li>)}
             </ul>
           </div>
         </div>
         <div className="mt-4">
-          <h3 className="text-xs font-bold uppercase text-indigo-700">Lines you could have used</h3>
+          <h3 className="text-xs font-black uppercase text-indigo-300">Lines you could have used</h3>
           {coaching.example_lines.map((l, i) => (
-            <p key={i} className="mt-1 rounded-lg border border-indigo-200 bg-white px-4 py-2 text-sm italic">
+            <p key={i} className="mt-1.5 rounded-lg border border-indigo-400/25 bg-black/25 px-4 py-2 text-sm font-medium italic text-stone-200">
               {l}
             </p>
           ))}
         </div>
-        <p className="mt-4 text-sm">
+        <p className="mt-4 text-sm text-stone-300">
           📘 Concept to review:{" "}
-          <strong>{coaching.concept_to_review.replaceAll("_", " ")}</strong>
+          <strong className="text-white">{coaching.concept_to_review.replaceAll("_", " ")}</strong>
         </p>
       </section>
 
       {/* Role reveal */}
-      <section className="mt-4 rounded-xl border border-stone-200 bg-white p-6">
-        <h2 className="text-sm font-bold uppercase tracking-wide text-stone-500">
+      <section className="panel mt-4 p-6">
+        <h2 className="text-[11px] font-black uppercase tracking-[0.15em] text-stone-500">
           🎭 Role reveal — what {rr.name} was really working with
         </h2>
         <div className="mt-3">
-          <Md text={rr.private_brief} className="text-sm text-stone-700" />
-          <p className="mt-2 text-sm text-stone-600">
-            <strong>Their fallback:</strong> {rr.batna.description}
+          <Md text={rr.private_brief} className="text-sm text-stone-300" />
+          <p className="mt-2 text-sm text-stone-400">
+            <strong className="text-stone-200">Their fallback:</strong> {rr.batna.description}
           </p>
           {rr.final_ai_utility !== null && (
-            <p className="mt-1 text-sm text-stone-600">
-              <strong>Their deal value:</strong> {rr.final_ai_utility}/100
+            <p className="mt-1 text-sm text-stone-400">
+              <strong className="text-stone-200">Their deal value:</strong> {rr.final_ai_utility}/100
             </p>
           )}
         </div>
-        <h3 className="mt-4 text-xs font-bold uppercase text-stone-500">Their secrets</h3>
+        <h3 className="mt-4 text-xs font-black uppercase text-stone-500">Their secrets</h3>
         <ul className="mt-2 space-y-2">
           {rr.hidden_info.map((h) => (
             <li
               key={h.id}
-              className={`rounded-lg border px-4 py-2.5 text-sm ${
+              className={`rounded-lg border px-4 py-2.5 text-sm font-medium ${
                 h.discovered
-                  ? "border-emerald-200 bg-emerald-50 text-emerald-900"
-                  : "border-stone-200 bg-stone-50 text-stone-600"
+                  ? "border-emerald-400/25 bg-emerald-400/8 text-emerald-100/90"
+                  : "border-white/10 bg-white/5 text-stone-400"
               }`}
             >
               {h.discovered ? "🔓 You found this: " : "🔒 You never learned: "}
@@ -283,22 +296,16 @@ export default function DebriefPage() {
 
       <div className="mt-6 flex flex-wrap justify-center gap-3 pb-8">
         <Link
-          href={`/play/${d.scenario.id}/prepare`}
-          className="rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white hover:bg-indigo-700"
+          href={`/play/${d.scenario.id}`}
+          className="btn3d btn3d-indigo px-6 py-3 text-sm"
         >
-          🔁 Replay (new variation)
+          🔁 REPLAY (NEW VARIATION)
         </Link>
-        <Link
-          href="/learn"
-          className="rounded-lg border border-stone-300 bg-white px-6 py-3 font-semibold text-stone-700 hover:bg-stone-100"
-        >
+        <Link href="/learn" className="btn3d btn3d-ghost px-6 py-3 text-sm">
           Continue learning
         </Link>
-        <Link
-          href="/play"
-          className="rounded-lg border border-stone-300 bg-white px-6 py-3 font-semibold text-stone-700 hover:bg-stone-100"
-        >
-          More scenarios
+        <Link href="/" className="btn3d btn3d-ghost px-6 py-3 text-sm">
+          All tables
         </Link>
       </div>
     </div>

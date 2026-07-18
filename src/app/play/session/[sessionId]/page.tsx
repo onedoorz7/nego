@@ -50,6 +50,27 @@ function formatValue(f: OfferField, v: number | string): string {
   return f.options.find((o) => o.value === v)?.label ?? String(v);
 }
 
+/** Remaining-moves pips: ●●●○○ */
+function MovePips({ total, used }: { total: number; used: number }) {
+  const shown = Math.min(total, 12);
+  return (
+    <span className="flex items-center gap-1" title={`${total - used} moves left`}>
+      {Array.from({ length: shown }, (_, i) => (
+        <span
+          key={i}
+          className={`h-2 w-2 rounded-full ${
+            i < total - used
+              ? total - used <= 2
+                ? "bg-rose-400"
+                : "bg-indigo-400"
+              : "bg-white/15"
+          }`}
+        />
+      ))}
+    </span>
+  );
+}
+
 export default function SessionPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const router = useRouter();
@@ -142,14 +163,20 @@ export default function SessionPage() {
     [session, busy, sessionId, router]
   );
 
-  if (error && !session) return <p className="text-rose-600">{error}</p>;
-  if (!scenario || !session) return <p className="text-stone-500">Taking your seat…</p>;
+  if (error && !session) return <p className="text-center font-bold text-rose-400">{error}</p>;
+  if (!scenario || !session) {
+    return (
+      <div className="pt-16 text-center">
+        <div className="anim-float inline-block text-5xl">🎲</div>
+        <p className="mt-3 font-bold text-stone-400">Taking your seat…</p>
+      </div>
+    );
+  }
 
   const done = !!session.outcome;
   const aiOffer = session.standing_offer?.by === "ai" ? session.standing_offer : null;
   const revealedIds = new Set(session.revealed_facts.map((f) => f.id));
   const openProbes = scenario.probes.filter((p) => !revealedIds.has(p.id));
-  const movesLeft = session.turn_limit - session.turn;
   const secondsLeft = deadlineMs
     ? Math.max(0, Math.ceil((deadlineMs - now) / 1000))
     : null;
@@ -157,100 +184,125 @@ export default function SessionPage() {
     secondsLeft !== null
       ? `${Math.floor(secondsLeft / 60)}:${String(secondsLeft % 60).padStart(2, "0")}`
       : null;
-
-  const moveBtn =
-    "rounded-xl border px-3 py-2.5 text-sm font-bold transition disabled:opacity-40";
+  const blitzFraction =
+    secondsLeft !== null && scenario.blitz_seconds
+      ? Math.min(1, secondsLeft / scenario.blitz_seconds)
+      : null;
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-4 lg:flex-row">
       {/* Main column */}
       <div className="min-w-0 flex-1">
         {/* Mission HUD */}
-        <div className="rounded-xl border border-indigo-200 bg-indigo-50/70 px-4 py-3">
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-sm font-bold leading-snug text-indigo-900">
-              {scenario.emoji} {scenario.arcade?.short_mission ?? scenario.title}
-            </p>
-            {clock !== null && !done ? (
-              <span
-                className={`shrink-0 rounded-full px-3 py-1 text-sm font-black tabular-nums ${
-                  secondsLeft! <= 15
-                    ? "animate-pulse bg-rose-600 text-white"
-                    : secondsLeft! <= 30
-                      ? "bg-rose-100 text-rose-700"
-                      : "bg-white text-stone-700"
-                }`}
-              >
-                ⏱️ {clock}
-              </span>
-            ) : (
-              <span
-                className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold ${
-                  movesLeft <= 2 ? "bg-rose-100 text-rose-700" : "bg-white text-stone-600"
-                }`}
-              >
-                {done ? "round over" : `${movesLeft} moves left`}
-              </span>
+        <div className="panel panel-glow-indigo overflow-hidden">
+          <div className="px-4 py-3">
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-sm font-extrabold leading-snug text-white">
+                {scenario.emoji} {scenario.arcade?.short_mission ?? scenario.title}
+              </p>
+              {clock !== null && !done ? (
+                <span
+                  className={`shrink-0 rounded-full px-3 py-1 text-sm font-black tabular-nums ${
+                    secondsLeft! <= 15
+                      ? "anim-glow-pulse bg-rose-500 text-white"
+                      : secondsLeft! <= 30
+                        ? "bg-rose-400/20 text-rose-300"
+                        : "bg-white/10 text-stone-200"
+                  }`}
+                >
+                  ⏱️ {clock}
+                </span>
+              ) : done ? (
+                <span className="shrink-0 rounded-full bg-white/10 px-3 py-1 text-xs font-black text-stone-300">
+                  round over
+                </span>
+              ) : (
+                <MovePips total={session.turn_limit} used={session.turn} />
+              )}
+            </div>
+            {((scenario.arcade && scenario.arcade.player_hud.length > 0) ||
+              scenario.mystery) && (
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {scenario.mystery && (
+                  <span className="rounded-full border border-violet-400/30 bg-violet-400/10 px-2.5 py-0.5 text-[11px] font-extrabold text-violet-300">
+                    🎰 Inside: worth ${scenario.mystery.value_range.min}–$
+                    {scenario.mystery.value_range.max} — nobody knows
+                  </span>
+                )}
+                {(scenario.arcade?.player_hud ?? []).map((chip) => (
+                  <span
+                    key={chip}
+                    className="rounded-full bg-white/8 px-2.5 py-0.5 text-[11px] font-bold text-stone-300"
+                  >
+                    {chip}
+                  </span>
+                ))}
+              </div>
             )}
           </div>
-          {((scenario.arcade && scenario.arcade.player_hud.length > 0) ||
-            scenario.mystery) && (
-            <div className="mt-1.5 flex flex-wrap gap-1.5">
-              {scenario.mystery && (
-                <span className="rounded-full bg-violet-100 px-2.5 py-0.5 text-[11px] font-bold text-violet-700">
-                  🎰 Inside: worth ${scenario.mystery.value_range.min}–$
-                  {scenario.mystery.value_range.max} — nobody knows
-                </span>
-              )}
-              {(scenario.arcade?.player_hud ?? []).map((chip) => (
-                <span key={chip} className="rounded-full bg-white/80 px-2.5 py-0.5 text-[11px] font-semibold text-stone-600">
-                  {chip}
-                </span>
-              ))}
+          {/* Blitz fuse */}
+          {blitzFraction !== null && !done && (
+            <div className="h-1.5 w-full bg-white/10">
+              <div
+                className={`h-full transition-[width] duration-300 ${
+                  secondsLeft! <= 15
+                    ? "bg-rose-500"
+                    : secondsLeft! <= 30
+                      ? "bg-amber-400"
+                      : "bg-emerald-400"
+                }`}
+                style={{ width: `${blitzFraction * 100}%` }}
+              />
             </div>
           )}
         </div>
 
         {/* Transcript */}
-        <div className="mt-3 h-[22rem] overflow-y-auto rounded-xl border border-stone-200 bg-white p-4">
+        <div className="panel mt-3 h-[22rem] overflow-y-auto p-4">
           {session.transcript.length === 0 && (
-            <div className="mx-auto max-w-xs rounded-lg bg-stone-50 px-3 py-2 text-center text-xs text-stone-500">
+            <div className="anim-pop mx-auto max-w-xs rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center text-xs font-semibold text-stone-400">
               🎲 {scenario.ai_role.name} is across the table. Make your first
-              move — ask a question to dig for an edge, or open with an offer.
+              move — dig for an edge, or open with an offer.
             </div>
           )}
           <div className="space-y-3">
             {session.transcript.map((e, i) => {
               if (e.speaker === "system") {
                 return (
-                  <div key={i} className="mx-auto max-w-md rounded-lg bg-amber-50 px-3 py-2 text-center text-xs text-amber-800">
+                  <div
+                    key={i}
+                    className="anim-pop mx-auto max-w-md rounded-xl border border-amber-400/25 bg-amber-400/10 px-3 py-2 text-center text-xs font-semibold text-amber-200"
+                  >
                     {e.text}
                   </div>
                 );
               }
               if (e.kind === "move") {
                 return (
-                  <div key={i} className="text-right text-xs italic text-stone-400">
+                  <div key={i} className="anim-pop text-right text-xs font-semibold italic text-stone-500">
                     {e.text}
                   </div>
                 );
               }
               return (
-                <div key={i} className={`flex ${e.speaker === "player" ? "justify-end" : "justify-start"}`}>
+                <div
+                  key={i}
+                  className={`anim-pop flex ${e.speaker === "player" ? "justify-end" : "justify-start"}`}
+                >
                   <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
+                    className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm font-medium ${
                       e.speaker === "player"
-                        ? "rounded-br-sm bg-indigo-600 text-white"
-                        : "rounded-bl-sm bg-stone-100 text-stone-900"
+                        ? "rounded-br-sm bg-gradient-to-b from-indigo-500 to-indigo-600 text-white shadow-[0_6px_20px_-8px_rgba(99,102,241,0.7)]"
+                        : "rounded-bl-sm border border-white/10 bg-white/8 text-stone-100"
                     }`}
                   >
                     <p className="whitespace-pre-wrap">{e.text}</p>
                     {e.offer && (
                       <div
-                        className={`mt-2 rounded-lg border px-3 py-2 text-xs font-semibold ${
+                        className={`mt-2 rounded-lg border px-3 py-2 text-xs font-extrabold ${
                           e.speaker === "player"
-                            ? "border-indigo-400 bg-indigo-500/40"
-                            : "border-stone-300 bg-white"
+                            ? "border-indigo-300/40 bg-indigo-400/25"
+                            : "border-white/15 bg-black/25 text-stone-100"
                         }`}
                       >
                         📋 {scenario.offer_fields.map((f) => formatValue(f, e.offer![f.key])).join(" · ")}
@@ -264,28 +316,36 @@ export default function SessionPage() {
           <div ref={bottomRef} />
         </div>
 
-        {flash && <p className="mt-2 text-center text-sm font-bold text-emerald-600">{flash}</p>}
-        {error && <p className="mt-2 text-center text-sm text-rose-600">{error}</p>}
+        {flash && (
+          <p className="anim-pop mt-2 text-center text-sm font-black text-emerald-400">
+            {flash}
+          </p>
+        )}
+        {error && (
+          <p className="anim-shake mt-2 text-center text-sm font-bold text-rose-400">
+            {error}
+          </p>
+        )}
         {done && (
-          <div className="mt-3 rounded-xl border border-indigo-200 bg-indigo-50 p-4 text-center text-sm font-bold text-indigo-800">
+          <div className="panel panel-glow-indigo anim-pop mt-3 p-4 text-center text-sm font-black text-indigo-200">
             Round over — tallying your score… 🥁
           </div>
         )}
 
         {/* ------- MOVE BAR ------- */}
         {!done && (
-          <div className="mt-3 rounded-xl border border-stone-200 bg-white p-3">
+          <div className="panel mt-3 p-3">
             {/* The pot: their offer + accept */}
             {aiOffer && (
               <div className="mb-3 flex items-stretch gap-2">
                 <button
                   onClick={() => act({ type: "accept" })}
                   disabled={busy}
-                  className="flex-1 rounded-xl bg-emerald-600 px-3 py-3 text-center font-extrabold text-white shadow-sm hover:bg-emerald-700 disabled:opacity-40"
+                  className="btn3d btn3d-emerald flex-1 px-3 py-3.5 text-base"
                 >
                   {scenario.mode === "mystery" ? "✂️ Buy it & cut the lock" : "✓ Accept"}
                   {session.standing_offer_points !== null && (
-                    <span className="ml-1.5 rounded-full bg-emerald-500 px-2 py-0.5 text-xs">
+                    <span className="ml-2 rounded-full bg-black/25 px-2.5 py-0.5 text-xs">
                       +{session.standing_offer_points} pts
                     </span>
                   )}
@@ -293,9 +353,10 @@ export default function SessionPage() {
                 <button
                   onClick={() => act({ type: "reject" })}
                   disabled={busy}
-                  className={`${moveBtn} border-stone-300 text-stone-600 hover:bg-stone-100`}
+                  className="btn3d btn3d-ghost px-4 text-sm"
                 >
-                  ✗ Reject
+                  ✗<br />
+                  <span className="text-[10px] font-bold uppercase">reject</span>
                 </button>
               </div>
             )}
@@ -305,39 +366,47 @@ export default function SessionPage() {
               <button
                 onClick={() => setDrawer(drawer === "ask" ? null : "ask")}
                 disabled={busy || openProbes.length === 0}
-                className={`${moveBtn} ${drawer === "ask" ? "border-indigo-400 bg-indigo-50 text-indigo-700" : "border-stone-300 text-stone-700 hover:bg-stone-50"}`}
+                className={`movebtn ${drawer === "ask" ? "movebtn-active" : ""}`}
               >
-                🗣️<br />Ask
+                <span className="movebtn-emoji">🗣️</span>
+                {scenario.mode === "mystery" ? "Snoop" : "Ask"}
               </button>
               <button
                 onClick={() => setDrawer(drawer === "offer" ? null : "offer")}
                 disabled={busy}
-                className={`${moveBtn} ${drawer === "offer" ? "border-indigo-400 bg-indigo-50 text-indigo-700" : "border-indigo-300 bg-indigo-600 text-white hover:bg-indigo-700"}`}
+                className={`movebtn ${
+                  drawer === "offer"
+                    ? "movebtn-active"
+                    : "border-indigo-400/50 bg-indigo-500/25"
+                }`}
               >
-                📋<br />{aiOffer ? "Counter" : "Offer"}
+                <span className="movebtn-emoji">📋</span>
+                {aiOffer ? "Counter" : "Offer"}
               </button>
               <button
                 onClick={() => act({ type: "flinch" })}
                 disabled={busy || !aiOffer}
                 title="Wince at their number — pressure without words"
-                className={`${moveBtn} border-stone-300 text-stone-700 hover:bg-stone-50`}
+                className="movebtn"
               >
-                😤<br />Flinch
+                <span className="movebtn-emoji">😤</span>
+                Flinch
               </button>
               <button
                 onClick={() => act({ type: "silence" })}
                 disabled={busy}
                 title="Say nothing. Let them sweat."
-                className={`${moveBtn} border-stone-300 text-stone-700 hover:bg-stone-50`}
+                className="movebtn"
               >
-                🤐<br />Wait
+                <span className="movebtn-emoji">🤐</span>
+                Wait
               </button>
             </div>
 
             {/* Ask drawer: question cards */}
             {drawer === "ask" && (
-              <div className="mt-3 space-y-1.5 rounded-lg border border-stone-200 bg-stone-50 p-3">
-                <p className="text-[11px] font-bold uppercase tracking-wide text-stone-400">
+              <div className="anim-rise mt-3 space-y-1.5 rounded-xl border border-white/10 bg-black/25 p-3">
+                <p className="text-[11px] font-black uppercase tracking-[0.15em] text-stone-500">
                   Pick a question — costs one move
                 </p>
                 {openProbes.map((p) => (
@@ -345,13 +414,16 @@ export default function SessionPage() {
                     key={p.id}
                     onClick={() => act({ type: "probe", info_id: p.id })}
                     disabled={busy}
-                    className="block w-full rounded-lg border border-stone-200 bg-white px-3 py-2.5 text-left text-sm font-medium hover:border-indigo-300 hover:bg-indigo-50/50 disabled:opacity-40"
+                    className="block w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-left text-sm font-bold text-stone-200 transition hover:border-indigo-400/50 hover:bg-indigo-400/10 disabled:opacity-40"
                   >
                     ❓ {p.question}
                   </button>
                 ))}
                 {scenario.probes.filter((p) => revealedIds.has(p.id)).map((p) => (
-                  <div key={p.id} className="block w-full rounded-lg border border-emerald-100 bg-emerald-50/50 px-3 py-2 text-left text-xs text-emerald-700 opacity-70">
+                  <div
+                    key={p.id}
+                    className="block w-full rounded-xl border border-emerald-400/15 bg-emerald-400/5 px-3 py-2 text-left text-xs font-semibold text-emerald-300/70"
+                  >
                     ✓ {p.question}
                   </div>
                 ))}
@@ -360,58 +432,140 @@ export default function SessionPage() {
 
             {/* Offer drawer */}
             {drawer === "offer" && (
-              <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {scenario.offer_fields.map((f) => (
-                    <label key={f.key} className="block">
-                      <span className="text-xs font-semibold uppercase tracking-wide text-stone-500">
-                        {f.label} {f.type === "number" && f.unit ? `(${f.unit})` : ""}
-                      </span>
-                      {f.type === "number" ? (
-                        <input
-                          type="number"
-                          min={f.min} max={f.max} step={f.step}
-                          value={offerDraft[f.key] ?? ""}
-                          onChange={(e) => setOfferDraft((d) => ({ ...d, [f.key]: e.target.value }))}
-                          className="mt-1 w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:border-indigo-400 focus:outline-none"
-                        />
-                      ) : (
-                        <select
-                          value={offerDraft[f.key] ?? ""}
-                          onChange={(e) => setOfferDraft((d) => ({ ...d, [f.key]: e.target.value }))}
-                          className="mt-1 w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm focus:border-indigo-400 focus:outline-none"
-                        >
-                          {f.options.map((o) => (
-                            <option key={o.value} value={o.value}>{o.label}</option>
-                          ))}
-                        </select>
-                      )}
-                    </label>
-                  ))}
+              <div className="anim-rise mt-3 rounded-xl border border-white/10 bg-black/25 p-4">
+                <div className="space-y-5">
+                  {scenario.offer_fields.map((f) => {
+                    if (f.type === "number") {
+                      const v = Number(offerDraft[f.key] ?? f.min);
+                      const fill = ((v - f.min) / (f.max - f.min)) * 100;
+                      const fmt = (x: number) =>
+                        f.unit === "$" ? `$${x.toLocaleString()}` : `${x}`;
+                      const nudge = (dir: 1 | -1) =>
+                        setOfferDraft((d) => ({
+                          ...d,
+                          [f.key]: String(
+                            Math.min(f.max, Math.max(f.min, v + dir * f.step))
+                          ),
+                        }));
+                      return (
+                        <div key={f.key}>
+                          <div className="flex items-baseline justify-between">
+                            <span className="text-[11px] font-black uppercase tracking-[0.15em] text-stone-500">
+                              {f.label}
+                            </span>
+                            <span className="text-2xl font-black tabular-nums text-amber-300">
+                              {fmt(v)}
+                              {f.unit && f.unit !== "$" && (
+                                <span className="ml-1 text-xs font-bold text-stone-500">
+                                  {f.unit}
+                                </span>
+                              )}
+                            </span>
+                          </div>
+                          <div className="mt-2 flex items-center gap-2">
+                            <button
+                              onClick={() => nudge(-1)}
+                              className="h-9 w-9 shrink-0 rounded-full border border-white/15 bg-white/8 text-lg font-black text-stone-300 active:scale-90"
+                            >
+                              −
+                            </button>
+                            <input
+                              type="range"
+                              className="slider"
+                              min={f.min}
+                              max={f.max}
+                              step={f.step}
+                              value={v}
+                              style={{ "--fill": `${fill}%` } as React.CSSProperties}
+                              onChange={(e) =>
+                                setOfferDraft((d) => ({ ...d, [f.key]: e.target.value }))
+                              }
+                            />
+                            <button
+                              onClick={() => nudge(1)}
+                              className="h-9 w-9 shrink-0 rounded-full border border-white/15 bg-white/8 text-lg font-black text-stone-300 active:scale-90"
+                            >
+                              +
+                            </button>
+                          </div>
+                          <div className="mt-1 flex justify-between px-11 text-[10px] font-bold text-stone-600">
+                            <span>{fmt(f.min)}</span>
+                            <span>{fmt(f.max)}</span>
+                          </div>
+                        </div>
+                      );
+                    }
+                    return (
+                      <div key={f.key}>
+                        <span className="text-[11px] font-black uppercase tracking-[0.15em] text-stone-500">
+                          {f.label}
+                        </span>
+                        <div className="mt-2 flex flex-wrap gap-1.5">
+                          {f.options.map((o) => {
+                            const selected = (offerDraft[f.key] ?? "") === o.value;
+                            return (
+                              <button
+                                key={o.value}
+                                onClick={() =>
+                                  setOfferDraft((d) => ({ ...d, [f.key]: o.value }))
+                                }
+                                className={`rounded-full px-3.5 py-2 text-xs font-extrabold transition active:scale-95 ${
+                                  selected
+                                    ? "bg-indigo-500 text-white shadow-[0_4px_14px_-4px_rgba(99,102,241,0.8)]"
+                                    : "border border-white/15 bg-white/5 text-stone-300 hover:bg-white/10"
+                                }`}
+                              >
+                                {o.label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-                <label className="mt-3 flex items-center gap-2 text-sm font-semibold text-stone-700">
-                  <input
-                    type="checkbox"
-                    checked={finalOffer}
-                    onChange={(e) => setFinalOffer(e.target.checked)}
-                    className="h-4 w-4 accent-rose-600"
-                  />
-                  🎯 Final offer — take it or leave it
-                  <span className="text-xs font-normal text-stone-400">
-                    (high risk: bluff and they&apos;ll remember)
+                <button
+                  onClick={() => setFinalOffer((x) => !x)}
+                  className={`mt-4 flex w-full items-center justify-between rounded-xl border px-3.5 py-2.5 text-left transition ${
+                    finalOffer
+                      ? "border-rose-400/60 bg-rose-500/15"
+                      : "border-white/10 bg-white/5"
+                  }`}
+                >
+                  <span className="text-sm font-extrabold text-stone-200">
+                    🎯 Final offer{" "}
+                    <span className="font-semibold text-stone-500">
+                      — take it or leave it
+                    </span>
                   </span>
-                </label>
+                  <span
+                    className={`relative h-6 w-11 shrink-0 rounded-full transition ${
+                      finalOffer ? "bg-rose-500" : "bg-white/15"
+                    }`}
+                  >
+                    <span
+                      className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${
+                        finalOffer ? "left-[22px]" : "left-0.5"
+                      }`}
+                    />
+                  </span>
+                </button>
+                {finalOffer && (
+                  <p className="anim-rise mt-1.5 text-center text-[11px] font-bold text-rose-300/80">
+                    high risk: bluff and they&apos;ll remember
+                  </p>
+                )}
                 <button
                   onClick={() => {
                     act({ type: "offer", values: offerDraft, final: finalOffer });
                     setFinalOffer(false);
                   }}
                   disabled={busy}
-                  className={`mt-3 w-full rounded-xl py-3 text-sm font-extrabold text-white disabled:opacity-40 ${
-                    finalOffer ? "bg-rose-600 hover:bg-rose-700" : "bg-indigo-600 hover:bg-indigo-700"
+                  className={`mt-3 w-full py-3.5 text-base ${
+                    finalOffer ? "btn3d btn3d-rose" : "btn3d btn3d-indigo"
                   }`}
                 >
-                  {finalOffer ? "🎯 PUT IT ALL ON THE TABLE" : "Propose this offer →"}
+                  {finalOffer ? "🎯 PUT IT ALL ON THE TABLE" : "PROPOSE THIS OFFER →"}
                 </button>
               </div>
             )}
@@ -424,7 +578,7 @@ export default function SessionPage() {
                 }
               }}
               disabled={busy}
-              className="mt-2 w-full rounded-lg py-1.5 text-center text-xs font-semibold text-stone-400 hover:text-rose-600 disabled:opacity-40"
+              className="mt-2 w-full rounded-lg py-1.5 text-center text-xs font-bold text-stone-500 transition hover:text-rose-400 disabled:opacity-40"
             >
               🚶 walk away (fold)
             </button>
@@ -435,37 +589,47 @@ export default function SessionPage() {
       {/* Sidebar */}
       <aside className="w-full shrink-0 space-y-4 lg:w-72">
         {aiOffer && !done && (
-          <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
-            <h3 className="text-xs font-bold uppercase tracking-wide text-emerald-700">
-              On the table
+          <div className="panel panel-glow-emerald anim-pop p-4">
+            <h3 className="flex items-center justify-between text-xs font-black uppercase tracking-[0.15em] text-emerald-300">
+              💰 On the table
               {session.standing_offer_points !== null && (
-                <span className="ml-2 rounded-full bg-emerald-600 px-2 py-0.5 text-white">
+                <span className="rounded-full bg-emerald-400/20 px-2 py-0.5 text-emerald-200">
                   +{session.standing_offer_points} pts
                 </span>
               )}
             </h3>
-            <ul className="mt-2 space-y-1 text-sm text-emerald-900">
+            <ul className="mt-2.5 space-y-1.5 text-sm text-stone-200">
               {scenario.offer_fields.map((f) => (
-                <li key={f.key}>
-                  <span className="text-emerald-700/70">{f.label}:</span>{" "}
-                  <strong>{formatValue(f, aiOffer.values[f.key])}</strong>
+                <li key={f.key} className="flex items-baseline justify-between gap-2">
+                  <span className="text-stone-500">{f.label}</span>
+                  <strong className="font-black text-white">
+                    {formatValue(f, aiOffer.values[f.key])}
+                  </strong>
                 </li>
               ))}
             </ul>
           </div>
         )}
-        <div className="rounded-xl border border-stone-200 bg-white p-4">
-          <h3 className="text-xs font-bold uppercase tracking-wide text-stone-500">
-            🔓 Secrets found ({session.revealed_facts.length}/{scenario.probes.length})
+        <div className="panel p-4">
+          <h3 className="text-xs font-black uppercase tracking-[0.15em] text-stone-400">
+            🔓 Secrets found{" "}
+            <span className="text-stone-600">
+              {session.revealed_facts.length}/{scenario.probes.length}
+            </span>
           </h3>
           {session.revealed_facts.length === 0 ? (
-            <p className="mt-2 text-sm text-stone-400">
-              None yet — the 🗣️ Ask move digs for their weaknesses.
+            <p className="mt-2 text-sm font-medium text-stone-500">
+              None yet — the 🗣️ move digs for their weaknesses.
             </p>
           ) : (
-            <ul className="mt-2 list-disc space-y-2 pl-4 text-sm text-stone-700">
+            <ul className="mt-2 space-y-2">
               {session.revealed_facts.map((f) => (
-                <li key={f.id}>{f.fact}</li>
+                <li
+                  key={f.id}
+                  className="anim-pop rounded-lg border border-emerald-400/15 bg-emerald-400/5 px-3 py-2 text-xs font-semibold text-emerald-100/90"
+                >
+                  {f.fact}
+                </li>
               ))}
             </ul>
           )}

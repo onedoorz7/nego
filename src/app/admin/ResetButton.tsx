@@ -27,14 +27,14 @@ export default function ResetButton() {
       <button
         onClick={() => reset(false)}
         disabled={busy}
-        className="rounded-lg border border-amber-300 px-4 py-2 font-medium text-amber-700 hover:bg-amber-50 disabled:opacity-40"
+        className="rounded-lg border border-amber-400/40 bg-amber-400/10 px-4 py-2 font-semibold text-amber-300 hover:bg-amber-400/20 disabled:opacity-40"
       >
         ♻️ Reset progress
       </button>
       <button
         onClick={() => reset(true)}
         disabled={busy}
-        className="rounded-lg border border-rose-300 px-4 py-2 font-medium text-rose-700 hover:bg-rose-50 disabled:opacity-40"
+        className="rounded-lg border border-rose-400/40 bg-rose-400/10 px-4 py-2 font-semibold text-rose-300 hover:bg-rose-400/20 disabled:opacity-40"
       >
         🗑️ Wipe everything
       </button>

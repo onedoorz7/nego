@@ -52,8 +52,8 @@ export default function QuizCard({
   };
 
   return (
-    <section className="mt-4 rounded-xl border border-stone-200 bg-white p-6">
-      <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-stone-500">
+    <section className="panel mt-4 p-6" style={{ animationDelay: "240ms" }}>
+      <h2 className="mb-4 text-[11px] font-black uppercase tracking-[0.15em] text-stone-500">
         ✅ Quick check
       </h2>
       <div className="space-y-6">
@@ -61,22 +61,22 @@ export default function QuizCard({
           const graded = result?.results[qi];
           return (
             <div key={qi}>
-              <p className="font-medium">
+              <p className="font-bold text-stone-200">
                 {qi + 1}. {q.question}
               </p>
               <div className="mt-2 space-y-1.5">
                 {q.choices.map((choice, ci) => {
                   const selected = answers[qi] === ci;
                   let cls =
-                    "border-stone-200 hover:border-indigo-300 hover:bg-indigo-50/50";
+                    "border-white/10 bg-white/5 text-stone-300 hover:border-indigo-400/50 hover:bg-indigo-400/10";
                   if (result && graded) {
                     if (ci === graded.answer_index)
-                      cls = "border-emerald-300 bg-emerald-50";
+                      cls = "border-emerald-400/50 bg-emerald-400/15 text-emerald-100";
                     else if (selected && !graded.correct)
-                      cls = "border-rose-300 bg-rose-50";
-                    else cls = "border-stone-200 opacity-60";
+                      cls = "border-rose-400/50 bg-rose-400/15 text-rose-100";
+                    else cls = "border-white/10 bg-white/5 text-stone-500 opacity-60";
                   } else if (selected) {
-                    cls = "border-indigo-400 bg-indigo-50";
+                    cls = "border-indigo-400/70 bg-indigo-500/25 text-white";
                   }
                   return (
                     <button
@@ -86,7 +86,7 @@ export default function QuizCard({
                       onClick={() =>
                         setAnswers((a) => a.map((v, i) => (i === qi ? ci : v)))
                       }
-                      className={`block w-full rounded-lg border px-4 py-2.5 text-left text-sm transition ${cls}`}
+                      className={`block w-full rounded-xl border px-4 py-2.5 text-left text-sm font-semibold transition active:scale-[0.99] ${cls}`}
                     >
                       {choice}
                     </button>
@@ -95,10 +95,10 @@ export default function QuizCard({
               </div>
               {result && graded && (
                 <p
-                  className={`mt-2 rounded-md px-3 py-2 text-sm ${
+                  className={`anim-pop mt-2 rounded-lg px-3 py-2 text-sm font-medium ${
                     graded.correct
-                      ? "bg-emerald-50 text-emerald-800"
-                      : "bg-rose-50 text-rose-800"
+                      ? "bg-emerald-400/10 text-emerald-200"
+                      : "bg-rose-400/10 text-rose-200"
                   }`}
                 >
                   {graded.correct ? "Correct. " : "Not quite. "}
@@ -110,45 +110,39 @@ export default function QuizCard({
         })}
       </div>
 
-      <div className="mt-6 flex items-center gap-3">
+      <div className="mt-6 flex flex-wrap items-center gap-3">
         {!result ? (
           <button
             onClick={submit}
             disabled={busy || answers.some((a) => a === null)}
-            className="rounded-lg bg-indigo-600 px-5 py-2.5 font-semibold text-white hover:bg-indigo-700 disabled:opacity-40"
+            className="btn3d btn3d-indigo px-6 py-3 text-sm"
           >
-            {busy ? "Checking…" : "Check answers"}
+            {busy ? "Checking…" : "CHECK ANSWERS"}
           </button>
         ) : result.passed ? (
           <>
-            <span className="font-semibold text-emerald-700">
+            <span className="font-extrabold text-emerald-300">
               🎉 Passed ({result.score}/{result.total})
             </span>
             {scenarioId ? (
               <Link
                 href={`/play/${scenarioId}`}
-                className="rounded-lg bg-indigo-600 px-5 py-2.5 font-semibold text-white hover:bg-indigo-700"
+                className="btn3d btn3d-indigo px-6 py-3 text-sm"
               >
-                Practice it live →
+                PRACTICE IT LIVE →
               </Link>
             ) : (
-              <Link
-                href="/learn"
-                className="rounded-lg border border-stone-300 px-5 py-2.5 font-semibold text-stone-700 hover:bg-stone-100"
-              >
+              <Link href="/learn" className="btn3d btn3d-ghost px-6 py-3 text-sm">
                 Next lesson →
               </Link>
             )}
           </>
         ) : (
           <>
-            <span className="font-semibold text-rose-700">
+            <span className="font-extrabold text-rose-300">
               {result.score}/{result.total} — review and retry
             </span>
-            <button
-              onClick={retry}
-              className="rounded-lg border border-stone-300 px-5 py-2.5 font-semibold text-stone-700 hover:bg-stone-100"
-            >
+            <button onClick={retry} className="btn3d btn3d-ghost px-6 py-3 text-sm">
               Try again
             </button>
           </>

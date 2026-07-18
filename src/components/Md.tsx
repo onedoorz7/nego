@@ -15,7 +15,7 @@ function inline(md: string): string {
   return md
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-    .replace(/`([^`]+)`/g, '<code class="rounded bg-stone-100 px-1 text-[0.9em]">$1</code>');
+    .replace(/`([^`]+)`/g, '<code class="rounded bg-white/10 px-1 text-[0.9em]">$1</code>');
 }
 
 export function mdToHtml(md: string): string {
