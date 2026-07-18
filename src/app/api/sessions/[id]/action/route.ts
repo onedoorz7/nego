@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getScenario } from "@/lib/content/loader";
 import { loadSession, logModelCall, saveSession } from "@/lib/db/sessions";
 import { playTurn, UserError, type PlayerAction } from "@/lib/engine/session";
-import { evaluateSession } from "@/lib/engine/evaluate";
-import { recordScenarioResult } from "@/lib/progress";
-import { saveEvaluation } from "@/lib/db/sessions";
+import { recordFinished, settleExpiry } from "@/lib/settle";
 import { getProvider } from "@/lib/llm/anthropic";
 import { publicSession } from "@/lib/redact";
 import { track } from "@/lib/analytics";
@@ -23,6 +21,16 @@ export async function POST(
   const action = parseAction(body);
   if (!action) return NextResponse.json({ error: "Bad action" }, { status: 400 });
 
+  // Blitz: the clock beats the move. An action after the deadline ends the
+  // round instead of playing.
+  if (settleExpiry(scenario, state)) {
+    return NextResponse.json({
+      session: publicSession(state, scenario),
+      new_reveals: [],
+      done: true,
+    });
+  }
+
   trackAction(action, id);
 
   try {
@@ -35,14 +43,7 @@ export async function POST(
 
     // Session just finished → evaluate deterministically and record progress.
     if (result.state.outcome) {
-      const evaluation = evaluateSession(scenario, result.state);
-      saveEvaluation(id, evaluation, null);
-      recordScenarioResult(scenario.id, evaluation);
-      track("scenario_completed", id, {
-        outcome: result.state.outcome.type,
-        total: evaluation.total,
-        turns: result.state.turn,
-      });
+      recordFinished(scenario, result.state);
       if (result.state.outcome.type === "agreement") track("offer_accepted", id);
     }
 

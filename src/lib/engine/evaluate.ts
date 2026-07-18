@@ -7,8 +7,9 @@ import type {
   SessionState,
 } from "@/lib/types";
 import { maxJointUtility, paretoImprovement, zopaExists } from "./analysis";
-import { bestPossiblePoints, computeArcadePoints } from "./arcade";
+import { aiFloorOnPrimary, bestPossiblePoints, computeArcadePoints } from "./arcade";
 import { analyzePlayerMessage } from "./classify";
+import { mysteryTier } from "./variation";
 import { utilityFor } from "./utility";
 
 /**
@@ -66,15 +67,7 @@ export function evaluateSession(
 
   const xp = computeXp(total, scenario.difficulty, analysis.deal_reached);
 
-  const arcadeScore = scenario.arcade
-    ? {
-        ...computeArcadePoints(scenario, analysis.final_offer),
-        best_possible: bestPossiblePoints(
-          scenario,
-          state.resolved.ai_reservation_utility
-        ),
-      }
-    : null;
+  const arcadeScore = buildArcadeScore(scenario, state, analysis.final_offer);
 
   return {
     analysis,
@@ -508,4 +501,58 @@ function processScore(
 
 function computeXp(total: number, difficulty: number, dealReached: boolean): number {
   return Math.round(total / 2) + difficulty * 20 + (dealReached ? 10 : 0);
+}
+
+function buildArcadeScore(
+  scenario: Scenario,
+  state: SessionState,
+  finalOffer: EvaluationResult["analysis"]["final_offer"]
+): EvaluationResult["arcade"] {
+  if (!scenario.arcade) return null;
+
+  // Mystery mode: the score IS the gamble — value revealed minus price paid.
+  if (
+    scenario.mode === "mystery" &&
+    scenario.mystery &&
+    state.resolved.mystery_value !== undefined
+  ) {
+    const value = state.resolved.mystery_value;
+    const tier = mysteryTier(scenario, value);
+    const price = finalOffer
+      ? Number(finalOffer[scenario.mystery.value_field])
+      : null;
+    const points = price !== null ? Math.round(value - price) : 0;
+    const floor = Number(
+      aiFloorOnPrimary(scenario, state.resolved.ai_reservation_utility) ?? NaN
+    );
+    return {
+      points,
+      breakdown:
+        price !== null
+          ? [
+              {
+                label: "What was inside",
+                points: value,
+                detail: "the haul, at resale",
+              },
+              { label: "What you paid", points: -price, detail: `$${price}` },
+            ]
+          : [],
+      best_possible: Number.isFinite(floor) ? Math.round(value - floor) : value,
+      mystery: {
+        value,
+        tier,
+        reveal_text: scenario.mystery.reveal_text,
+        price_paid: price,
+      },
+    };
+  }
+
+  return {
+    ...computeArcadePoints(scenario, finalOffer),
+    best_possible: bestPossiblePoints(
+      scenario,
+      state.resolved.ai_reservation_utility
+    ),
+  };
 }

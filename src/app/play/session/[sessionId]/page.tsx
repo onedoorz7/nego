@@ -16,6 +16,9 @@ type OfferValues = Record<string, number | string>;
 
 interface ScenarioView {
   id: string; title: string; emoji: string;
+  mode: "standard" | "blitz" | "mystery";
+  blitz_seconds: number | null;
+  mystery: { value_field: string; value_range: { min: number; max: number } } | null;
   player_role: { name: string };
   ai_role: { name: string };
   offer_fields: OfferField[];
@@ -31,6 +34,7 @@ interface TranscriptEntry {
 }
 interface SessionView {
   id: string; status: string; turn: number; turn_limit: number;
+  deadline_at: string | null;
   transcript: TranscriptEntry[];
   standing_offer: { by: "player" | "ai"; values: OfferValues } | null;
   standing_offer_points: number | null;
@@ -57,6 +61,8 @@ export default function SessionPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
+  const [now, setNow] = useState(() => Date.now());
+  const expiredRef = useRef(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -74,6 +80,27 @@ export default function SessionPage() {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [session?.transcript.length]);
+
+  // Blitz clock: tick 4×/sec while a live deadline exists.
+  const deadlineMs = session?.deadline_at ? Date.parse(session.deadline_at) : null;
+  const live = !!session && !session.outcome;
+  useEffect(() => {
+    if (!deadlineMs || !live) return;
+    const t = setInterval(() => setNow(Date.now()), 250);
+    return () => clearInterval(t);
+  }, [deadlineMs, live]);
+
+  // Clock hit zero → the server settles the round; fetch it and show the result.
+  useEffect(() => {
+    if (!deadlineMs || !live || now < deadlineMs || expiredRef.current) return;
+    expiredRef.current = true;
+    (async () => {
+      const res = await fetch(`/api/sessions/${sessionId}`);
+      const data = await res.json();
+      if (res.ok) setSession(data.session);
+      setTimeout(() => router.push(`/play/session/${sessionId}/result`), 1400);
+    })();
+  }, [deadlineMs, live, now, sessionId, router]);
 
   const seedDraft = (sc: ScenarioView, se: SessionView) => {
     const base: Record<string, string> = {};
@@ -123,6 +150,13 @@ export default function SessionPage() {
   const revealedIds = new Set(session.revealed_facts.map((f) => f.id));
   const openProbes = scenario.probes.filter((p) => !revealedIds.has(p.id));
   const movesLeft = session.turn_limit - session.turn;
+  const secondsLeft = deadlineMs
+    ? Math.max(0, Math.ceil((deadlineMs - now) / 1000))
+    : null;
+  const clock =
+    secondsLeft !== null
+      ? `${Math.floor(secondsLeft / 60)}:${String(secondsLeft % 60).padStart(2, "0")}`
+      : null;
 
   const moveBtn =
     "rounded-xl border px-3 py-2.5 text-sm font-bold transition disabled:opacity-40";
@@ -137,17 +171,38 @@ export default function SessionPage() {
             <p className="text-sm font-bold leading-snug text-indigo-900">
               {scenario.emoji} {scenario.arcade?.short_mission ?? scenario.title}
             </p>
-            <span
-              className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold ${
-                movesLeft <= 2 ? "bg-rose-100 text-rose-700" : "bg-white text-stone-600"
-              }`}
-            >
-              {done ? "round over" : `${movesLeft} moves left`}
-            </span>
+            {clock !== null && !done ? (
+              <span
+                className={`shrink-0 rounded-full px-3 py-1 text-sm font-black tabular-nums ${
+                  secondsLeft! <= 15
+                    ? "animate-pulse bg-rose-600 text-white"
+                    : secondsLeft! <= 30
+                      ? "bg-rose-100 text-rose-700"
+                      : "bg-white text-stone-700"
+                }`}
+              >
+                ⏱️ {clock}
+              </span>
+            ) : (
+              <span
+                className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold ${
+                  movesLeft <= 2 ? "bg-rose-100 text-rose-700" : "bg-white text-stone-600"
+                }`}
+              >
+                {done ? "round over" : `${movesLeft} moves left`}
+              </span>
+            )}
           </div>
-          {scenario.arcade && scenario.arcade.player_hud.length > 0 && (
+          {((scenario.arcade && scenario.arcade.player_hud.length > 0) ||
+            scenario.mystery) && (
             <div className="mt-1.5 flex flex-wrap gap-1.5">
-              {scenario.arcade.player_hud.map((chip) => (
+              {scenario.mystery && (
+                <span className="rounded-full bg-violet-100 px-2.5 py-0.5 text-[11px] font-bold text-violet-700">
+                  🎰 Inside: worth ${scenario.mystery.value_range.min}–$
+                  {scenario.mystery.value_range.max} — nobody knows
+                </span>
+              )}
+              {(scenario.arcade?.player_hud ?? []).map((chip) => (
                 <span key={chip} className="rounded-full bg-white/80 px-2.5 py-0.5 text-[11px] font-semibold text-stone-600">
                   {chip}
                 </span>
@@ -228,7 +283,7 @@ export default function SessionPage() {
                   disabled={busy}
                   className="flex-1 rounded-xl bg-emerald-600 px-3 py-3 text-center font-extrabold text-white shadow-sm hover:bg-emerald-700 disabled:opacity-40"
                 >
-                  ✓ Accept
+                  {scenario.mode === "mystery" ? "✂️ Buy it & cut the lock" : "✓ Accept"}
                   {session.standing_offer_points !== null && (
                     <span className="ml-1.5 rounded-full bg-emerald-500 px-2 py-0.5 text-xs">
                       +{session.standing_offer_points} pts

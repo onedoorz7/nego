@@ -1,13 +1,47 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getScenario } from "@/lib/content/loader";
 import { createSession, submitPrep } from "@/lib/engine/session";
-import { saveSession } from "@/lib/db/sessions";
+import { loadSession, saveSession } from "@/lib/db/sessions";
 import { publicScenario, publicSession } from "@/lib/redact";
 import { isScenarioUnlocked, getProgress } from "@/lib/progress";
+import { dailyScenario, dailySeed, getDailyRecord, setDailyRecord } from "@/lib/daily";
 import { track } from "@/lib/analytics";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
+
+  // ---- Daily challenge: same table + same seed for everyone, one attempt ---
+  if (body?.daily === true) {
+    const scenario = dailyScenario();
+    const record = getDailyRecord();
+    if (record) {
+      const existing = loadSession(record.session_id);
+      if (record.finished || existing?.outcome) {
+        return NextResponse.json(
+          { error: "You've already played today's table — a new one opens at midnight UTC.", session_id: record.session_id },
+          { status: 409 }
+        );
+      }
+      if (existing) {
+        // Resume the unfinished attempt instead of granting a fresh one.
+        return NextResponse.json({
+          session: publicSession(existing, scenario),
+          scenario: publicScenario(scenario),
+        });
+      }
+    }
+    let state = createSession(scenario, dailySeed(), { is_daily: true });
+    state = submitPrep(state, {});
+    saveSession(state);
+    setDailyRecord({ session_id: state.id, finished: false, points: null });
+    track("daily_started", state.id, { scenario: scenario.id, seed: state.seed });
+    return NextResponse.json({
+      session: publicSession(state, scenario),
+      scenario: publicScenario(scenario),
+    });
+  }
+
+  // ---- Regular round / lab table -------------------------------------------
   const scenarioId = String(body?.scenario_id ?? "");
   let scenario;
   try {

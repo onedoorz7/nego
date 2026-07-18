@@ -25,6 +25,8 @@ export type AnalyticsEvent =
   | "scenario_completed"
   | "debrief_viewed"
   | "scenario_replayed"
+  | "daily_started"
+  | "blitz_expired"
   | "session_abandoned"
   | "ai_fallback_used"
   | "ai_guardrail_triggered";

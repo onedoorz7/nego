@@ -52,6 +52,8 @@ export interface ResolvedParams {
   ai_target_utility: number;
   opening_demand: number;
   turn_limit: number;
+  /** Mystery mode: the item's true value this session (hidden until reveal). */
+  mystery_value?: number;
 }
 
 export interface AiInternalState {
@@ -88,9 +90,15 @@ export interface SessionState {
   /** All offers ever made, in order. */
   offer_history: StandingOffer[];
   revealed_info: string[];
+  /** Session-specific reveal texts (mystery clue answers vary by seed). */
+  dynamic_facts: Record<string, string>;
   events_fired: string[];
   ai: AiInternalState;
   outcome: Outcome | null;
+  /** Blitz mode: wall-clock cutoff (ISO). Actions after this end the round. */
+  deadline_at: string | null;
+  /** This session is today's daily challenge. */
+  is_daily: boolean;
 }
 
 export interface Outcome {
@@ -179,6 +187,13 @@ export interface EvaluationResult {
     points: number;
     breakdown: { label: string; points: number; detail: string }[];
     best_possible: number;
+    /** Mystery mode: the reveal (populated only after the round ends). */
+    mystery?: {
+      value: number;
+      tier: "low" | "mid" | "high";
+      reveal_text: string;
+      price_paid: number | null;
+    };
   } | null;
 }
 

@@ -8,7 +8,7 @@ import type {
 import { analyzePlayerMessage } from "./classify";
 import { formatOffer, offersEqual, validateOffer } from "./offers";
 import { decide, INSULT_MARGIN } from "./policy";
-import { resolveParams } from "./variation";
+import { mysteryTier, resolveParams } from "./variation";
 import { randomSeed } from "./rng";
 import { utilityFor } from "./utility";
 import type {
@@ -33,7 +33,8 @@ export type PlayerAction =
 
 export function createSession(
   scenario: Scenario,
-  seed: number = randomSeed()
+  seed: number = randomSeed(),
+  opts: { is_daily?: boolean } = {}
 ): SessionState {
   const now = new Date().toISOString();
   return {
@@ -50,6 +51,12 @@ export function createSession(
     standing_offer: null,
     offer_history: [],
     revealed_info: [],
+    dynamic_facts: {},
+    deadline_at:
+      scenario.mode === "blitz" && scenario.blitz_seconds
+        ? new Date(Date.now() + scenario.blitz_seconds * 1000).toISOString()
+        : null,
+    is_daily: opts.is_daily ?? false,
     events_fired: [],
     ai: {
       offers_made: 0,
@@ -81,6 +88,30 @@ export function submitPrep(
 
 export class UserError extends Error {}
 
+/** Blitz mode: if the wall-clock deadline passed on a live session, end it.
+ * Returns true when the state was mutated (caller must persist + evaluate). */
+export function expireIfNeeded(scenario: Scenario, state: SessionState): boolean {
+  if (state.outcome || state.status !== "active") return false;
+  if (!state.deadline_at || Date.now() <= Date.parse(state.deadline_at)) return false;
+  state.transcript.push(
+    entry({
+      turn: state.turn,
+      speaker: "system",
+      kind: "info",
+      text: `⏰ Time's up — ${scenario.ai_role.name} locked up and left.`,
+    })
+  );
+  state.status = "turn_limit";
+  state.outcome = {
+    type: "turn_limit",
+    final_offer: null,
+    player_utility: null,
+    ai_utility: null,
+  };
+  state.updated_at = new Date().toISOString();
+  return true;
+}
+
 function entry(
   partial: Omit<TranscriptEntry, "at">
 ): TranscriptEntry {
@@ -111,6 +142,8 @@ export async function playTurn(
   // ---- Player side of the turn -------------------------------------------
   let playerText = "";
   let probeUnlock: string[] = [];
+  let clueText: string | null = null;
+  let clueId: string | null = null;
   if (action.type === "message") {
     playerText = action.text.trim();
     if (!playerText) throw new UserError("Empty message");
@@ -120,13 +153,21 @@ export async function playTurn(
     );
   } else if (action.type === "probe") {
     const info = scenario.ai_role.hidden_info.find((h) => h.id === action.info_id);
-    if (!info?.probe) throw new UserError("Unknown question");
-    playerText = info.probe;
+    const clue = scenario.mystery?.clues.find((c) => c.id === action.info_id);
+    if (!info?.probe && !clue) throw new UserError("Unknown question");
+    playerText = (info?.probe ?? clue!.probe)!;
     // The Ask move unlocks its topic deterministically — no keyword roulette.
-    if (!state.revealed_info.includes(info.id)) probeUnlock = [info.id];
+    if (info && !state.revealed_info.includes(info.id)) probeUnlock = [info.id];
     state.transcript.push(
       entry({ turn: state.turn, speaker: "player", kind: "message", text: playerText })
     );
+    // Mystery clue: the answer is a seeded narrative beat, not AI dialogue.
+    if (clue && state.resolved.mystery_value !== undefined) {
+      const tier = mysteryTier(scenario, state.resolved.mystery_value);
+      clueText = clue[tier];
+      clueId = clue.id;
+      state.dynamic_facts[clue.id] = clueText;
+    }
   } else if (action.type === "flinch") {
     if (!state.standing_offer || state.standing_offer.by !== "ai") {
       throw new UserError("There's no offer of theirs to flinch at");
@@ -230,6 +271,25 @@ export async function playTurn(
         entry({ turn: state.turn, speaker: "system", kind: "event", text: ev.player_note })
       );
     }
+  }
+
+  // ---- Mystery clue: narrative answer, no AI turn needed -------------------
+  if (clueText !== null) {
+    state.transcript.push(
+      entry({ turn: state.turn, speaker: "system", kind: "info", text: clueText })
+    );
+    if (state.turn >= state.resolved.turn_limit && !state.outcome) {
+      state.transcript.push(
+        entry({
+          turn: state.turn,
+          speaker: "system",
+          kind: "info",
+          text: "Time ran out — the negotiation ended without a deal.",
+        })
+      );
+      return finishWith(state, scenario, "turn_limit", null, false, []);
+    }
+    return { state, new_reveals: clueId ? [clueId] : [], ai_fallback: false };
   }
 
   // ---- Deterministic decision ---------------------------------------------

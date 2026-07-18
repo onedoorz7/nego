@@ -29,10 +29,28 @@ export function resolveParams(scenario: Scenario, seed: number): ResolvedParams 
     ? Math.round(sampleRange(rng, v.turn_limit.min, v.turn_limit.max))
     : scenario.turn_limit;
 
+  // Mystery mode: sample the item's true value for this session.
+  const mysteryValue = scenario.mystery
+    ? Math.round(
+        sampleRange(rng, scenario.mystery.value_range.min, scenario.mystery.value_range.max)
+      )
+    : undefined;
+
   return {
     ai_reservation_utility: Math.round(reservation * 10) / 10,
     ai_target_utility: Math.round(target * 10) / 10,
     opening_demand: Math.round(openingDemand * 100) / 100,
     turn_limit: turnLimit,
+    ...(mysteryValue !== undefined ? { mystery_value: mysteryValue } : {}),
   };
+}
+
+/** Mystery tier for clue answers: which third of the range the value fell in. */
+export function mysteryTier(
+  scenario: Scenario,
+  value: number
+): "low" | "mid" | "high" {
+  const { min, max } = scenario.mystery!.value_range;
+  const t = (value - min) / (max - min);
+  return t < 1 / 3 ? "low" : t < 2 / 3 ? "mid" : "high";
 }

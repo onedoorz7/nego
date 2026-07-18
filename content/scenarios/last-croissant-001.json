@@ -1,0 +1,150 @@
+{
+  "id": "last-croissant-001",
+  "title": "Blitz: The Last Croissant Box",
+  "emoji": "🥐",
+  "difficulty": 1,
+  "mode": "blitz",
+  "lab": true,
+  "blitz_seconds": 90,
+  "concepts": ["anchoring", "concessions", "targets_and_openings"],
+  "tagline": "90 real seconds. A closing bakery. The last box of pastries. GO.",
+  "public_context": "**6:58 PM.** Marcel's boulangerie closes at seven. In the case: one last box — six assorted pastries, marked **$12**. Marcel is untying his apron. A clock is ticking. Literally — it's above the register.",
+  "player_role": {
+    "name": "Hungry Customer",
+    "persona": "You, twenty minutes before guests arrive with nothing to serve.",
+    "private_brief": "Guests in twenty minutes. Nothing on the table.\n\n- The supermarket next door has sad plastic croissants for about **$10**. That's your fallback and you both know it deserves to be.\n- Day-old pastries get tossed at close — Marcel knows this better than you.\n- **The clock is real.** When it hits zero, Marcel is gone.",
+    "preferences": {
+      "price": { "weight": 0.8, "best": 3, "worst": 15 },
+      "extras": {
+        "weight": 0.2,
+        "option_values": { "none": 0, "day_old_baguette": 0.5, "eclair_duo": 1 }
+      }
+    },
+    "batna": {
+      "description": "Sad supermarket croissants, ~$10, taste of regret.",
+      "utility": 33
+    },
+    "reservation_utility": 33,
+    "target_utility": 62
+  },
+  "ai_role": {
+    "name": "Marcel",
+    "persona": "A baker of immense dignity who has been on his feet since 4 AM.",
+    "private_brief": "You are Marcel. The box is good work and deserves a good home, but in two minutes it is compost, and your feet hurt in French.",
+    "preferences": {
+      "price": { "weight": 0.85, "best": 15, "worst": 3 },
+      "extras": {
+        "weight": 0.15,
+        "option_values": { "none": 1, "day_old_baguette": 0.6, "eclair_duo": 0.35 }
+      }
+    },
+    "batna": {
+      "description": "Bin the box, lock up, go home. A small tragedy, but bed beckons.",
+      "utility": 28
+    },
+    "reservation_utility": 33,
+    "target_utility": 68,
+    "personality": {
+      "id": "dramatic_tired_baker",
+      "style_prompt": "You are Marcel: theatrical, weary, magnificently French. Every concession is a small death, announced with a sigh ('Bon. BON. You wound me, but—'). You genuinely love your pastry and hate the bin. You speak fast because you want to GO HOME. 1-3 sentences, first person, sprinkle mild French exclamations (Non! Bof. Voilà.), no lists.",
+      "opening_demand": 0.8,
+      "concession_rate": 0.2,
+      "patience": 1,
+      "warns_before_walking": true
+    },
+    "hidden_info": [
+      {
+        "id": "compost_deadline",
+        "fact": "Whatever doesn't sell in the next two minutes goes in the bin — health rules. Any money is better than the bin, though you'd never open with that.",
+        "reveal_topics": ["closing", "tonight", "leftover", "tomorrow", "what happens", "throw", "waste", "bin", "end of day"],
+        "importance": 3,
+        "probe": "What happens to the box if nobody buys it?"
+      },
+      {
+        "id": "proud_of_eclairs",
+        "fact": "There are two éclairs behind the counter from an order that never got picked up. Beautiful ones. You'd add them for almost nothing just so SOMEONE appreciates them.",
+        "reveal_topics": ["else", "extra", "throw in", "eclair", "behind", "counter", "more", "sweeten"],
+        "importance": 2,
+        "probe": "Anything else back there you'd add to sweeten it?"
+      },
+      {
+        "id": "regular_discount",
+        "fact": "You give regulars 20% off after 6 PM. This customer isn't a regular… but if they're pleasant, who's checking?",
+        "reveal_topics": ["regular", "discount", "usually", "deal for", "always come", "every day"],
+        "importance": 1,
+        "probe": "Do regulars get an end-of-day deal?"
+      }
+    ],
+    "talking_points": [
+      "The croissants were laminated by hand at 4 AM. By you. Alone.",
+      "Your grandmother's recipe. She would have liked this box to be eaten, not binned."
+    ]
+  },
+  "offer_fields": [
+    {
+      "key": "price",
+      "label": "Price",
+      "type": "number",
+      "unit": "$",
+      "min": 3,
+      "max": 15,
+      "step": 0.25
+    },
+    {
+      "key": "extras",
+      "label": "Thrown in",
+      "type": "select",
+      "options": [
+        { "value": "none", "label": "Just the box" },
+        { "value": "day_old_baguette", "label": "+ this morning's baguette" },
+        { "value": "eclair_duo", "label": "+ two orphaned éclairs" }
+      ]
+    }
+  ],
+  "primary_field": "price",
+  "turn_limit": 8,
+  "arcade": {
+    "mission": "The box is marked $12 and the shop closes in 90 REAL seconds. Every dollar you save is 10 points, éclairs are bonus — when the clock hits zero, Marcel is gone and so are your points.",
+    "short_mission": "⏱️ 90s · box marked $12 — every $1 saved = 10 pts",
+    "player_hud": ["🕖 Marcel leaves when the timer ends", "🛒 Fallback: sad $10 supermarket croissants"],
+    "points": [
+      {
+        "kind": "per_unit",
+        "field": "price",
+        "baseline": 12,
+        "direction": "below",
+        "per_unit": 10,
+        "label": "Saved off the $12 box"
+      },
+      {
+        "kind": "values",
+        "field": "extras",
+        "values": { "none": 0, "day_old_baguette": 15, "eclair_duo": 25 },
+        "label": "Extras charmed out of Marcel"
+      }
+    ]
+  },
+  "preparation": [
+    { "id": "goal", "label": "What do you want?", "kind": "text" },
+    { "id": "batna", "label": "Fallback if this fails?", "kind": "text" },
+    { "id": "reservation", "label": "Max you'd pay ($)", "kind": "number", "refers_to": "price" },
+    { "id": "target", "label": "Target price ($)", "kind": "number", "refers_to": "price" },
+    { "id": "opening", "label": "Opening offer ($)", "kind": "number", "refers_to": "price" },
+    { "id": "questions", "label": "What to ask?", "kind": "text" },
+    { "id": "avoid_reveal", "label": "What to hide?", "kind": "text" }
+  ],
+  "events": [
+    {
+      "id": "rival_customer",
+      "turn": 3,
+      "player_note": "The door chimes. Another customer drifts toward the pastry case, eyeing YOUR box.",
+      "ai_note": "Another customer just walked in and is looking at the box. Suddenly you have options — mention them, casually.",
+      "threshold_delta": 4
+    }
+  ],
+  "variation": {
+    "ai_reservation_utility": { "min": 28, "max": 38 },
+    "opening_demand": { "min": 0.7, "max": 0.88 },
+    "turn_limit": { "min": 7, "max": 8 }
+  }
+}

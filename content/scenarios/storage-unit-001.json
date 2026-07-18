@@ -1,0 +1,219 @@
+{
+  "id": "storage-unit-001",
+  "title": "Mystery: Unit 44",
+  "emoji": "📦",
+  "difficulty": 2,
+  "mode": "mystery",
+  "lab": true,
+  "mystery": {
+    "value_field": "price",
+    "value_range": {
+      "min": 60,
+      "max": 900
+    },
+    "reveal_text": "The bolt cutters bite. The door rattles up…",
+    "clues": [
+      {
+        "id": "clue_knock",
+        "probe": "Mind if I knock on the door panel?",
+        "low": "You rap the door. A thin, hollow echo — like knocking on an empty biscuit tin.",
+        "mid": "You rap the door. Dull, solid thuds. Something's stacked against it — furniture, maybe boxes.",
+        "high": "You rap the door. Something DENSE shifts inside. A slow metallic slide, then a clink."
+      },
+      {
+        "id": "clue_tenant",
+        "probe": "Who rented it, do you know?",
+        "low": "\"College kid. Skipped town mid-semester owing two months. You know the type.\"",
+        "mid": "\"Quiet couple, paid on time for six years, then just… stopped. Moved abroad, I heard.\"",
+        "high": "\"Older gentleman. Collector type — always paid cash, always locked it himself. Fussy about the humidity, which, you know. Says something.\""
+      },
+      {
+        "id": "clue_vent",
+        "probe": "Any chance of a peek through the vent?",
+        "low": "You squint through the vent. Dusty plastic bins and what might be a deflated air mattress.",
+        "mid": "You squint through the vent. A guitar case, taped boxes, something draped in a moving blanket.",
+        "high": "You squint through the vent. Darkness — then your phone light catches the corner of a glass display case."
+      }
+    ]
+  },
+  "concepts": [
+    "diagnostic_questions",
+    "batna",
+    "walking_away"
+  ],
+  "tagline": "A sealed storage unit. Could be treasure. Could be a deflated air mattress. Your call.",
+  "public_context": "**SELF-STORE 24 — DELINQUENT UNIT SALE.** Unit 44's renter stopped paying months ago. Contents: sealed, unknown, sold as-is. The facility manager, Pat, has the bolt cutters and somewhere better to be.\n\nWhatever's inside is yours the moment you agree a price. *After* you agree a price.",
+  "player_role": {
+    "name": "Bargain Hunter",
+    "persona": "A weekend reseller with a van, a flashlight, and a gambler's heart.",
+    "private_brief": "Units like this can hold anything from mildewed cardboard to estate treasure.\n\n- Your working capital is about **$600** — losses are real money.\n- Pat has seen a thousand of these and gives NOTHING away for free. But you're allowed to poke around the outside… and Pat does like to chat.\n- Rule of thumb in the trade: a blind unit is 'worth' about **$300** — but this one is whatever THIS one is.",
+    "preferences": {
+      "price": {
+        "weight": 1,
+        "best": 50,
+        "worst": 600
+      }
+    },
+    "batna": {
+      "description": "Keep your cash and hit the estate sales on Sunday instead.",
+      "utility": 36
+    },
+    "reservation_utility": 36,
+    "target_utility": 60
+  },
+  "ai_role": {
+    "name": "Pat (facility manager)",
+    "persona": "Seen-it-all storage manager with a clipboard and zero sentimentality.",
+    "private_brief": "You're Pat. Corporate wants delinquent units GONE. You don't know what's in 44 either — and you've stopped caring what's in any of them.",
+    "preferences": {
+      "price": {
+        "weight": 1,
+        "best": 600,
+        "worst": 50
+      }
+    },
+    "batna": {
+      "description": "Let the clearance crew haul it — which costs the facility money and paperwork.",
+      "utility": 10
+    },
+    "reservation_utility": 13,
+    "target_utility": 45,
+    "personality": {
+      "id": "deadpan_clipboard",
+      "style_prompt": "You are Pat: dry, unhurried, mildly amused by treasure hunters. Short sentences. You've genuinely no idea what's in the unit and say so when pushed — but you'll happily share what you remember about tenants and let buyers knock on doors; watching them guess is the best part of this job. Never invent facts about the contents beyond what you're given. 1-3 sentences, first person.",
+      "opening_demand": 0.75,
+      "concession_rate": 0.15,
+      "patience": 2,
+      "warns_before_walking": true
+    },
+    "hidden_info": [
+      {
+        "id": "clearout_friday",
+        "fact": "Corporate wants every delinquent unit cleared by Friday. If it doesn't sell, YOU pay the haul-away crew out of the site budget — so honestly, most any offer beats that.",
+        "reveal_topics": [
+          "how soon",
+          "deadline",
+          "corporate",
+          "clear",
+          "when",
+          "pressure",
+          "what if nobody",
+          "haul"
+        ],
+        "importance": 3,
+        "probe": "How soon do you need this thing gone?"
+      },
+      {
+        "id": "dealers_saturday",
+        "fact": "A couple of resale dealers usually cruise the lot on Saturdays. If this buyer walks, there's a fair chance someone else bites — you're not desperate, just tidy.",
+        "reveal_topics": [
+          "who else",
+          "other buyer",
+          "interest",
+          "anyone",
+          "competition"
+        ],
+        "importance": 1,
+        "probe": "Anyone else been sniffing around it?"
+      }
+    ],
+    "talking_points": [
+      "Best thing ever found in a unit here: a canoe full of taxidermy owls.",
+      "Worst thing: forty boxes labeled 'misc'. All accurate."
+    ]
+  },
+  "offer_fields": [
+    {
+      "key": "price",
+      "label": "Price for the unit",
+      "type": "number",
+      "unit": "$",
+      "min": 50,
+      "max": 600,
+      "step": 10
+    }
+  ],
+  "primary_field": "price",
+  "turn_limit": 10,
+  "arcade": {
+    "mission": "Unit 44 is sealed. Whatever's inside minus what you pay is your score — knock, peek, and quiz Pat for clues, then bid. Yes, you can end up in the red.",
+    "short_mission": "📦 Contents unknown — score = what's inside − what you pay",
+    "player_hud": [
+      "💵 Capital: $600 (losses are real)",
+      "📐 Blind units run ~$300 in the trade"
+    ],
+    "points": [
+      {
+        "kind": "per_unit",
+        "field": "price",
+        "baseline": 300,
+        "direction": "below",
+        "per_unit": 1,
+        "label": "Bought under the $300 rule of thumb"
+      }
+    ]
+  },
+  "preparation": [
+    {
+      "id": "goal",
+      "label": "What's your play?",
+      "kind": "text"
+    },
+    {
+      "id": "batna",
+      "label": "Fallback if you pass?",
+      "kind": "text"
+    },
+    {
+      "id": "reservation",
+      "label": "Max you'd bid blind ($)",
+      "kind": "number",
+      "refers_to": "price"
+    },
+    {
+      "id": "target",
+      "label": "Target price ($)",
+      "kind": "number",
+      "refers_to": "price"
+    },
+    {
+      "id": "opening",
+      "label": "Opening bid ($)",
+      "kind": "number",
+      "refers_to": "price"
+    },
+    {
+      "id": "questions",
+      "label": "What clues will you chase?",
+      "kind": "text"
+    },
+    {
+      "id": "avoid_reveal",
+      "label": "What to keep to yourself?",
+      "kind": "text"
+    }
+  ],
+  "events": [
+    {
+      "id": "van_pulls_up",
+      "turn": 6,
+      "player_note": "A van with 'R&J ESTATE BUYERS' on the side rolls slowly past the row of units. Pat checks their watch.",
+      "ai_note": "The Saturday dealers are early. Leverage. Use it, mildly.",
+      "threshold_delta": 3
+    }
+  ],
+  "variation": {
+    "ai_reservation_utility": {
+      "min": 10,
+      "max": 18
+    },
+    "opening_demand": {
+      "min": 0.65,
+      "max": 0.85
+    },
+    "turn_limit": {
+      "min": 9,
+      "max": 11
+    }
+  }
+}

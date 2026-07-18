@@ -1,0 +1,176 @@
+{
+  "id": "dragons-toll-001",
+  "title": "The Dragon's Toll",
+  "emoji": "🐉",
+  "difficulty": 2,
+  "mode": "standard",
+  "lab": true,
+  "concepts": ["interests_vs_positions", "diagnostic_questions", "multi_issue_tradeoffs", "batna"],
+  "tagline": "The dragon wants 40 cows a year. The village sent you. Good luck.",
+  "public_context": "For nine hundred years, the dragon **Vermithrax the Resplendent** has taken a toll from your village: **40 cows a year**, delivered to the mountain. The herds are thinning and the council has voted — someone must renegotiate.\n\nThat someone is you. You stand in the great cave. Gold glitters in heaps. Two enormous eyes open in the dark.",
+  "player_role": {
+    "name": "Village Negotiator",
+    "persona": "A shepherd with steady nerves, chosen because you once talked a bear out of the granary.",
+    "private_brief": "The village can survive paying the toll, but 40 cows a year is slowly bleeding the herds dry.\n\n- Anything **under 40 cows** is a win; under 25 makes you a hero.\n- The council authorized up to **10 chests of gold** as a one-time sweetener — but gold buys grain in winter, so every chest hurts.\n- Some elders proposed holding an annual **festival in the dragon's honor** to butter him up. Costs some coin and pride, but cheaper than cows.\n- Nobody has actually SEEN the dragon burn anything in living memory. Interesting, that.",
+    "preferences": {
+      "cows_per_year": { "weight": 0.6, "best": 5, "worst": 60 },
+      "gold_chests": { "weight": 0.2, "best": 0, "worst": 10 },
+      "festival": {
+        "weight": 0.2,
+        "option_values": { "none": 1, "modest": 0.65, "grand": 0.35 }
+      }
+    },
+    "batna": {
+      "description": "Keep paying 40 cows a year and hope the herds hold out.",
+      "utility": 60
+    },
+    "reservation_utility": 60,
+    "target_utility": 75
+  },
+  "ai_role": {
+    "name": "Vermithrax the Resplendent",
+    "persona": "A 900-year-old dragon of tremendous vanity and, lately, tremendous boredom.",
+    "private_brief": "You are Vermithrax. The toll is tradition. Tradition is dignity. Dignity is... honestly, most of what you have left up here.",
+    "preferences": {
+      "cows_per_year": { "weight": 0.5, "best": 60, "worst": 5 },
+      "gold_chests": { "weight": 0.15, "best": 10, "worst": 0 },
+      "festival": {
+        "weight": 0.35,
+        "option_values": { "none": 0, "modest": 0.6, "grand": 1 }
+      }
+    },
+    "batna": {
+      "description": "Keep enforcing the old toll with the occasional menacing flyover — tiresome, at your age.",
+      "utility": 26
+    },
+    "reservation_utility": 30,
+    "target_utility": 60,
+    "personality": {
+      "id": "pompous_lonely_wyrm",
+      "style_prompt": "You are Vermithrax: grandiose, theatrical, archaic turns of phrase ('mortal', 'my hoard', 'nine centuries'). You open every topic as if addressing a coronation. Beneath the pomp you are LONELY — nine hundred years and nobody visits except to argue about cows. Flattery genuinely delights you, though you pretend it is merely your due. You never admit weakness directly. Speak in 2-4 sentences, first person, no lists.",
+      "opening_demand": 0.9,
+      "concession_rate": 0.1,
+      "patience": 2,
+      "warns_before_walking": true
+    },
+    "hidden_info": [
+      {
+        "id": "lonely_vain",
+        "fact": "The cows were never really the point — what you crave is RECOGNITION. A village festival in your honor, banners, songs… you would trade a great many cows for that.",
+        "reveal_topics": ["really about", "truly about", "what do you want", "why the toll", "honor", "festival", "celebrate", "admire", "respect", "lonely", "company"],
+        "importance": 3,
+        "probe": "Is this truly about the cows, O Resplendent One?"
+      },
+      {
+        "id": "flame_failing",
+        "fact": "Your flame isn't what it was — these days it's more of an aggressive cough of sparks. If the village simply refused, enforcing the toll would be… embarrassing to attempt.",
+        "reveal_topics": ["burn", "flame", "fire", "last time", "when did you", "enforce", "what if we refuse", "actually do"],
+        "importance": 3,
+        "probe": "When did you last actually burn anything?"
+      },
+      {
+        "id": "knight_costs",
+        "fact": "The king's new dragonslayer order has been asking about you. A quarrel loud enough to reach the capital could bring them — you'd much rather settle quietly.",
+        "reveal_topics": ["knight", "king", "dragonslayer", "soldiers", "army", "capital", "trouble", "war"],
+        "importance": 2,
+        "probe": "You've heard of the king's new dragonslayers, I trust?"
+      },
+      {
+        "id": "hoard_full",
+        "fact": "Frankly, the hoard is FULL. You sleep on gold, you sneeze on gold, there is gold in places gold should never be. More chests interest you far less than the village imagines.",
+        "reveal_topics": ["gold", "treasure", "chest", "riches", "payment", "hoard", "wealth"],
+        "importance": 2,
+        "probe": "Perhaps more gold would sweeten the arrangement?"
+      }
+    ],
+    "talking_points": [
+      "You remember when the village was six huts and a superstition.",
+      "The mountain gets terribly quiet in winter.",
+      "You once dined with an emperor. He was chewy."
+    ]
+  },
+  "offer_fields": [
+    {
+      "key": "cows_per_year",
+      "label": "Cows per year",
+      "type": "number",
+      "unit": "cows",
+      "min": 5,
+      "max": 60,
+      "step": 1
+    },
+    {
+      "key": "gold_chests",
+      "label": "One-time gold tribute",
+      "type": "number",
+      "unit": "chests",
+      "min": 0,
+      "max": 10,
+      "step": 1
+    },
+    {
+      "key": "festival",
+      "label": "Annual festival in his honor",
+      "type": "select",
+      "options": [
+        { "value": "none", "label": "No festival" },
+        { "value": "modest", "label": "A modest feast day" },
+        { "value": "grand", "label": "A grand festival with banners & songs" }
+      ]
+    }
+  ],
+  "primary_field": "cows_per_year",
+  "turn_limit": 10,
+  "arcade": {
+    "mission": "The toll stands at 40 cows a year. Every cow you save the village is 5 points — gold costs you, and flattery is cheaper than either. He's 900 and nobody ever asks him anything.",
+    "short_mission": "Toll: 40 cows/yr — every cow saved = 5 pts",
+    "player_hud": ["🐄 Herds are thinning", "💰 Up to 10 chests authorized (each hurts)", "⚔️ Nobody's seen him burn anything in decades"],
+    "points": [
+      {
+        "kind": "per_unit",
+        "field": "cows_per_year",
+        "baseline": 40,
+        "direction": "below",
+        "per_unit": 5,
+        "label": "Cows saved off the old toll"
+      },
+      {
+        "kind": "per_unit",
+        "field": "gold_chests",
+        "baseline": 0,
+        "direction": "below",
+        "per_unit": 8,
+        "label": "Gold kept in the granary"
+      },
+      {
+        "kind": "values",
+        "field": "festival",
+        "values": { "none": 15, "modest": 8, "grand": 0 },
+        "label": "Village pride intact"
+      }
+    ]
+  },
+  "preparation": [
+    { "id": "goal", "label": "What does the village actually need?", "kind": "text" },
+    { "id": "batna", "label": "What happens if there's no new deal?", "kind": "text" },
+    { "id": "reservation", "label": "Most cows/year you'd still accept", "kind": "number", "refers_to": "cows_per_year" },
+    { "id": "target", "label": "Your target cows/year", "kind": "number", "refers_to": "cows_per_year" },
+    { "id": "opening", "label": "Your opening proposal (cows/year)", "kind": "number", "refers_to": "cows_per_year" },
+    { "id": "questions", "label": "What will you ask the dragon?", "kind": "text" },
+    { "id": "avoid_reveal", "label": "What should the dragon not learn?", "kind": "text" }
+  ],
+  "events": [
+    {
+      "id": "knights_sighted",
+      "turn": 5,
+      "player_note": "A horn echoes from the valley below. Riders — with lances. The dragon's eyes flick toward the cave mouth.",
+      "ai_note": "You hear a hunting horn in the valley. Knights, possibly the dragonslayer order. Suddenly a quiet settlement sounds much more attractive.",
+      "threshold_delta": -5
+    }
+  ],
+  "variation": {
+    "ai_reservation_utility": { "min": 26, "max": 35 },
+    "opening_demand": { "min": 0.82, "max": 0.95 },
+    "turn_limit": { "min": 9, "max": 11 }
+  }
+}

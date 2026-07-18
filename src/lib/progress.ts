@@ -90,11 +90,12 @@ export function recordScenarioResult(
 }
 
 /** Rounds in play order (by difficulty). A round unlocks when the previous
- * round has ever produced a deal (best_points > 0). First round always open. */
+ * round has ever produced a deal (best_points > 0). First round always open.
+ * Lab scenarios live outside this progression (see labList). */
 export function roundList() {
   const unlockAll = process.env.NEGO_UNLOCK_ALL === "1";
   const p = getProgress();
-  const scenarios = listScenarios(); // already sorted by difficulty
+  const scenarios = listScenarios().filter((s) => !s.lab); // sorted by difficulty
   return scenarios.map((s, i) => {
     const prevRec = i > 0 ? p.scenarios[scenarios[i - 1].id] : null;
     const unlocked = unlockAll || i === 0 || (prevRec?.best_points ?? 0) > 0;
@@ -116,7 +117,29 @@ export function roundList() {
   });
 }
 
+/** The Lab 🧪 — experimental tables that break the format. Always unlocked,
+ * never part of the numbered-round progression. */
+export function labList() {
+  const p = getProgress();
+  return listScenarios()
+    .filter((s) => s.lab)
+    .map((s) => {
+      const rec = p.scenarios[s.id];
+      return {
+        id: s.id,
+        title: s.title,
+        emoji: s.emoji,
+        mode: s.mode,
+        blitz_seconds: s.blitz_seconds ?? null,
+        mission: s.arcade?.mission ?? s.tagline,
+        best_points: rec?.best_points ?? 0,
+        attempts: rec?.attempts ?? 0,
+      };
+    });
+}
+
 export function isScenarioUnlocked(scenarioId: string): boolean {
+  if (labList().some((l) => l.id === scenarioId)) return true;
   return roundList().some((r) => r.id === scenarioId && r.unlocked);
 }
 

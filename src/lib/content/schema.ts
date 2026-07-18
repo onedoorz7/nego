@@ -217,11 +217,45 @@ export type PrepField = z.infer<typeof PrepFieldSchema>;
 // Scenario
 // ---------------------------------------------------------------------------
 
+/** Mystery mode: the thing being traded has a hidden true value, sampled per
+ * session. Clue probes return tier-dependent hints; the value is revealed only
+ * after the deal — points = value − price, and CAN go negative. */
+export const MysterySchema = z.object({
+  /** The offer field that is the purchase price. */
+  value_field: z.string(),
+  /** True-value sampling range (uniform, seeded). */
+  value_range: z.object({ min: z.number(), max: z.number() }),
+  /** Flavor line for the reveal moment, e.g. "You cut the lock…". */
+  reveal_text: z.string(),
+  /** Tappable clue probes with tier-dependent answers (thirds of the range). */
+  clues: z
+    .array(
+      z.object({
+        id: z.string(),
+        probe: z.string(),
+        low: z.string(),
+        mid: z.string(),
+        high: z.string(),
+      })
+    )
+    .min(1),
+});
+export type Mystery = z.infer<typeof MysterySchema>;
+
 export const ScenarioSchema = z.object({
   id: z.string(),
   title: z.string(),
   emoji: z.string().default("🤝"),
   difficulty: z.number().int().min(1).max(5),
+  /** Game mode: standard bargaining, real-time blitz, or hidden-value mystery. */
+  mode: z.enum(["standard", "blitz", "mystery"]).default("standard"),
+  /** Lab scenarios are experimental: always unlocked, shown on the Lab shelf,
+   * outside the numbered-round progression. */
+  lab: z.boolean().default(false),
+  /** Blitz only: wall-clock seconds before the counterpart walks out. */
+  blitz_seconds: z.number().int().min(20).max(600).optional(),
+  /** Mystery only. */
+  mystery: MysterySchema.optional(),
   concepts: z.array(z.string()).min(1),
   /** One-line pitch shown on the scenario card. */
   tagline: z.string(),

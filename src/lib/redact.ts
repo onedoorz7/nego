@@ -16,6 +16,14 @@ export function publicScenario(s: Scenario) {
     title: s.title,
     emoji: s.emoji,
     difficulty: s.difficulty,
+    mode: s.mode,
+    lab: s.lab,
+    blitz_seconds: s.blitz_seconds ?? null,
+    /** Mystery mode: the value RANGE is public (that's the gamble) — the
+     * sampled true value and the clue answer texts are not. */
+    mystery: s.mystery
+      ? { value_field: s.mystery.value_field, value_range: s.mystery.value_range }
+      : null,
     concepts: s.concepts,
     tagline: s.tagline,
     public_context: s.public_context,
@@ -36,17 +44,25 @@ export function publicScenario(s: Scenario) {
     preparation: s.preparation,
     /** Player-facing game layer (mission, HUD chips, points table). */
     arcade: s.arcade ?? null,
-    /** Ask-move cards: the question text only — never the hidden facts. */
-    probes: s.ai_role.hidden_info
-      .filter((h) => h.probe)
-      .map((h) => ({ id: h.id, question: h.probe! })),
+    /** Ask-move cards: the question text only — never the hidden facts.
+     * Mystery clue probes are merged in (answers stay server-side). */
+    probes: [
+      ...s.ai_role.hidden_info
+        .filter((h) => h.probe)
+        .map((h) => ({ id: h.id, question: h.probe! })),
+      ...(s.mystery?.clues ?? []).map((c) => ({ id: c.id, question: c.probe })),
+    ],
   };
 }
 
 export function publicSession(state: SessionState, scenario: Scenario) {
-  const revealedFacts = scenario.ai_role.hidden_info
-    .filter((h) => state.revealed_info.includes(h.id))
-    .map((h) => ({ id: h.id, fact: h.fact }));
+  const revealedFacts = [
+    ...scenario.ai_role.hidden_info
+      .filter((h) => state.revealed_info.includes(h.id))
+      .map((h) => ({ id: h.id, fact: h.fact })),
+    // Mystery clue answers already shown this session (seeded, tier-dependent).
+    ...Object.entries(state.dynamic_facts ?? {}).map(([id, fact]) => ({ id, fact })),
+  ];
 
   return {
     id: state.id,
@@ -54,12 +70,18 @@ export function publicSession(state: SessionState, scenario: Scenario) {
     status: state.status,
     turn: state.turn,
     turn_limit: state.resolved.turn_limit,
+    /** Blitz: wall-clock cutoff the client counts down to. */
+    deadline_at: state.deadline_at,
+    is_daily: state.is_daily,
     prep: state.prep,
     transcript: state.transcript,
     standing_offer: state.standing_offer,
-    /** What accepting their standing offer is worth right now — the pot. */
+    /** What accepting their standing offer is worth right now — the pot.
+     * Mystery mode: unknown by design (that IS the game), so null. */
     standing_offer_points:
-      state.standing_offer?.by === "ai" && scenario.arcade
+      state.standing_offer?.by === "ai" &&
+      scenario.arcade &&
+      scenario.mode !== "mystery"
         ? computeArcadePoints(scenario, state.standing_offer.values).points
         : null,
     offer_history: state.offer_history,

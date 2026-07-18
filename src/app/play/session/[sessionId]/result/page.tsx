@@ -10,6 +10,12 @@ interface ResultData {
       points: number;
       breakdown: { label: string; points: number; detail: string }[];
       best_possible: number;
+      mystery?: {
+        value: number;
+        tier: "low" | "mid" | "high";
+        reveal_text: string;
+        price_paid: number | null;
+      };
     } | null;
     analysis: {
       deal_reached: boolean;
@@ -52,11 +58,18 @@ const CONCEPT_LESSONS: Record<string, string> = {
   walking_away: "10-walking-away",
 };
 
+const TIER_LABEL: Record<string, { emoji: string; line: string }> = {
+  low: { emoji: "🕸️", line: "dusty junk" },
+  mid: { emoji: "🪑", line: "a decent haul" },
+  high: { emoji: "💎", line: "a collector's trove" },
+};
+
 export default function ResultPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const [d, setD] = useState<ResultData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showSecrets, setShowSecrets] = useState(false);
+  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -64,6 +77,9 @@ export default function ResultPage() {
       const data = await res.json();
       if (!res.ok) { setError(data.error ?? "Could not load the result"); return; }
       setD(data);
+      // Mystery: hold the number back for a beat — let the lock get cut.
+      if (data.evaluation?.arcade?.mystery) setTimeout(() => setRevealed(true), 1800);
+      else setRevealed(true);
     })();
   }, [sessionId]);
 
@@ -73,6 +89,8 @@ export default function ResultPage() {
   const arcade = d.evaluation.arcade;
   const deal = d.evaluation.analysis.deal_reached;
   const points = arcade?.points ?? 0;
+  const mystery = arcade?.mystery ?? null;
+  const tier = mystery ? TIER_LABEL[mystery.tier] : null;
   const missedSecrets = d.role_reveal.hidden_info.filter((h) => !h.discovered);
   const foundSecrets = d.role_reveal.hidden_info.filter((h) => h.discovered);
   const primaryField = d.scenario.offer_fields[0];
@@ -92,29 +110,63 @@ export default function ResultPage() {
       <div
         className={`rounded-3xl border-2 p-6 text-center ${
           deal
-            ? "border-emerald-300 bg-emerald-50"
+            ? points < 0
+              ? "border-rose-300 bg-rose-50"
+              : "border-emerald-300 bg-emerald-50"
             : "border-stone-300 bg-stone-100"
         }`}
       >
-        <div className="text-5xl">{deal ? "🤝" : "💔"}</div>
+        <div className="text-5xl">{deal ? (mystery ? "📦" : "🤝") : "💔"}</div>
         <h1 className="mt-2 text-2xl font-extrabold">
           {deal
-            ? "DEAL!"
+            ? mystery
+              ? "SOLD!"
+              : "DEAL!"
             : d.outcome.type === "player_walked"
               ? "You walked away"
               : d.outcome.type === "ai_walked"
                 ? "They walked out!"
                 : "Time ran out"}
         </h1>
-        <div className={`mt-3 text-6xl font-black ${deal ? "text-emerald-600" : "text-stone-400"}`}>
-          {points > 0 ? `+${points}` : "0"}
+
+        {/* Mystery: the lock gets cut before the number lands */}
+        {mystery && deal && (
+          <div className="mx-auto mt-3 max-w-xs rounded-xl border border-violet-200 bg-white/80 p-3 text-sm">
+            <p className="italic text-stone-600">{mystery.reveal_text}</p>
+            {!revealed ? (
+              <div className="mt-2 animate-pulse text-3xl">📦 …</div>
+            ) : (
+              <p className="mt-2 font-bold text-stone-800">
+                {tier?.emoji} Inside: {tier?.line} — worth ${mystery.value}
+                {mystery.price_paid !== null && (
+                  <span className="block text-xs font-semibold text-stone-500">
+                    you paid ${mystery.price_paid}
+                  </span>
+                )}
+              </p>
+            )}
+          </div>
+        )}
+
+        <div
+          className={`mt-3 text-6xl font-black ${
+            !revealed
+              ? "text-stone-300"
+              : deal
+                ? points < 0
+                  ? "text-rose-600"
+                  : "text-emerald-600"
+                : "text-stone-400"
+          }`}
+        >
+          {!revealed ? "?" : points > 0 ? `+${points}` : `${points}`}
         </div>
         <div className="text-sm font-bold uppercase tracking-widest text-stone-400">
           points
         </div>
 
         {/* Points breakdown */}
-        {arcade && arcade.breakdown.length > 0 && deal && (
+        {arcade && arcade.breakdown.length > 0 && deal && revealed && (
           <div className="mx-auto mt-4 max-w-xs space-y-1 text-left text-sm">
             {arcade.breakdown.map((b, i) => (
               <div key={i} className="flex items-baseline justify-between">
@@ -131,7 +183,16 @@ export default function ResultPage() {
         )}
 
         {/* No-deal sting + hook */}
-        {!deal && (
+        {!deal && mystery && (
+          <p className="mx-auto mt-3 max-w-xs text-sm font-semibold text-stone-600">
+            {mystery.tier === "low"
+              ? `Good instincts — inside was ${tier?.line}, worth just $${mystery.value}. 🕵️`
+              : `You passed… and inside was ${tier?.line} worth $${mystery.value}. ${
+                  mystery.tier === "high" ? "Ouch." : ""
+                }`}
+          </p>
+        )}
+        {!deal && !mystery && (
           <p className="mx-auto mt-3 max-w-xs text-sm text-stone-600">
             {d.outcome.type === "player_walked" &&
             d.evaluation.analysis.walk_was_reasonable === false &&
@@ -144,7 +205,7 @@ export default function ResultPage() {
         )}
 
         {/* Best-possible tease */}
-        {arcade && arcade.best_possible > points && (
+        {arcade && revealed && arcade.best_possible > points && (
           <p className="mt-3 text-sm font-semibold text-indigo-600">
             A perfect round was worth {arcade.best_possible} pts — can you find
             the missing {arcade.best_possible - points}?
